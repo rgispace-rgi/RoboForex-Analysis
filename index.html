@@ -121,11 +121,32 @@
   .chip.error    { background: var(--error-bg);    color: var(--error);    border-color: var(--error); }
 
   /* ---------- хронологія ---------- */
-  h2.round {
-    font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-    margin: 48px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  .round-head {
+    text-align: center;
+    margin: 70px 0 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
   }
-  h2.round:first-of-type { margin-top: 0; }
+  .round-head.first { margin-top: 6px; padding-top: 0; border-top: none; }
+  .round-n {
+    font-size: clamp(26px, 4.4vw, 36px);
+    font-weight: 750;
+    letter-spacing: -.025em;
+    line-height: 1.15;
+  }
+  .round-n .slash { color: var(--muted); font-weight: 400; margin: 0 .28em; }
+  .round-sub {
+    color: var(--muted);
+    font-size: 16.5px;
+    margin-top: 8px;
+  }
+  .round-sub.solo {
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 750;
+    letter-spacing: -.025em;
+    color: var(--text);
+    margin-top: 0;
+  }
 
   .entry {
     background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--muted);
@@ -255,6 +276,7 @@ uk: {
     { c: "var(--error)", l: "Фаза 0",           v: "ще не запущена" },
     { c: "var(--ok)",    l: "Тести",            v: "20 / 20" }
   ],
+  roundLabel: "Раунд %N%<span class='slash'>/</span>Взаємодія",
   statusTitle: "Поточний стан",
   stats: [
     { k: "Поточна фаза", v: "0 — Розвідка", s: "Написана, перевірена тестами, жодного разу не запущена. Це вузьке місце: блокує все інше." },
@@ -271,7 +293,7 @@ uk: {
   ],
   rounds: [
     {
-      title: "Коло 0 · Початкова ідея",
+      n: 1, title: "Початкова ідея",
       entries: [
         {
           c: "user", a: "Геннадій", w: "23 серпня 2026",
@@ -308,7 +330,7 @@ uk: {
       ]
     },
     {
-      title: "Коло 1 · Технічний промпт на 26 розділів",
+      n: 2, title: "Технічний промпт на 26 розділів",
       entries: [
         {
           c: "user", a: "Геннадій", w: "23 серпня 2026",
@@ -385,7 +407,7 @@ uk: {
       ]
     },
     {
-      title: "Коло 2 · Перехресне рецензування",
+      n: 3, title: "Перехресне рецензування",
       entries: [
         {
           c: "deepseek", a: "DeepSeek", w: "23 серпня 2026",
@@ -474,7 +496,7 @@ uk: {
       ]
     },
     {
-      title: "Коло 3 · Код віддано на перевірку",
+      n: 4, title: "Код віддано на перевірку",
       entries: [
         {
           c: "deepseek", a: "DeepSeek", w: "23 серпня 2026",
@@ -598,6 +620,7 @@ ru: {
     { c: "var(--error)", l: "Фаза 0",             v: "ещё не запущена" },
     { c: "var(--ok)",    l: "Тесты",              v: "20 / 20" }
   ],
+  roundLabel: "Раунд %N%<span class='slash'>/</span>Взаимодействие",
   statusTitle: "Текущее состояние",
   stats: [
     { k: "Текущая фаза", v: "0 — Разведка", s: "Написана, покрыта тестами, ни разу не запущена. Это узкое место: блокирует всё остальное." },
@@ -614,7 +637,7 @@ ru: {
   ],
   rounds: [
     {
-      title: "Круг 0 · Первоначальная идея",
+      n: 1, title: "Первоначальная идея",
       entries: [
         {
           c: "user", a: "Геннадий", w: "23 августа 2026",
@@ -651,7 +674,7 @@ ru: {
       ]
     },
     {
-      title: "Круг 1 · Технический промпт на 26 разделов",
+      n: 2, title: "Технический промпт на 26 разделов",
       entries: [
         {
           c: "user", a: "Геннадий", w: "23 августа 2026",
@@ -728,7 +751,7 @@ ru: {
       ]
     },
     {
-      title: "Круг 2 · Перекрёстное рецензирование",
+      n: 3, title: "Перекрёстное рецензирование",
       entries: [
         {
           c: "deepseek", a: "DeepSeek", w: "23 августа 2026",
@@ -817,7 +840,7 @@ ru: {
       ]
     },
     {
-      title: "Круг 3 · Код отдан на проверку",
+      n: 4, title: "Код отдан на проверку",
       entries: [
         {
           c: "deepseek", a: "DeepSeek", w: "23 августа 2026",
@@ -941,6 +964,7 @@ it: {
     { c: "var(--error)", l: "Fase 0",             v: "non ancora eseguita" },
     { c: "var(--ok)",    l: "Test",               v: "20 / 20" }
   ],
+  roundLabel: "Round %N%<span class='slash'>/</span>Interazione",
   statusTitle: "Stato attuale",
   stats: [
     { k: "Fase corrente", v: "0 — Ricognizione", s: "Scritta, coperta da test, mai lanciata. È il collo di bottiglia: blocca tutto il resto." },
@@ -957,7 +981,7 @@ it: {
   ],
   rounds: [
     {
-      title: "Giro 0 · L'idea iniziale",
+      n: 1, title: "L'idea iniziale",
       entries: [
         {
           c: "user", a: "Hennadiy", w: "23 agosto 2026",
@@ -994,7 +1018,7 @@ it: {
       ]
     },
     {
-      title: "Giro 1 · Il prompt tecnico a 26 sezioni",
+      n: 2, title: "Il prompt tecnico a 26 sezioni",
       entries: [
         {
           c: "user", a: "Hennadiy", w: "23 agosto 2026",
@@ -1071,7 +1095,7 @@ it: {
       ]
     },
     {
-      title: "Giro 2 · Revisione incrociata",
+      n: 3, title: "Revisione incrociata",
       entries: [
         {
           c: "deepseek", a: "DeepSeek", w: "23 agosto 2026",
@@ -1160,7 +1184,7 @@ it: {
       ]
     },
     {
-      title: "Giro 3 · Il codice va in revisione",
+      n: 4, title: "Il codice va in revisione",
       entries: [
         {
           c: "deepseek", a: "DeepSeek", w: "23 agosto 2026",
@@ -1305,8 +1329,15 @@ function render(lang) {
   d.legend.forEach(function (l) { h += '<span class="chip ' + l.c + '">' + l.t + '</span>'; });
   h += '</div>';
 
-  d.rounds.forEach(function (r) {
-    h += '<h2 class="round">' + r.title + '</h2>';
+  d.rounds.forEach(function (r, i) {
+    h += '<div class="round-head' + (i === 0 ? ' first' : '') + '">';
+    if (r.n) {
+      h += '<div class="round-n">' + d.roundLabel.replace("%N%", r.n) + '</div>';
+      h += '<div class="round-sub">' + r.title + '</div>';
+    } else {
+      h += '<div class="round-sub solo">' + r.title + '</div>';
+    }
+    h += '</div>';
     r.entries.forEach(function (e) {
       h += '<article class="entry ' + e.c + '">';
       h += '<div class="entry-head"><span class="author">' + e.a + '</span>'

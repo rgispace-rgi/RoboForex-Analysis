@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboForex Analysis — Cronologia</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #16202e;
+    --muted: #5d6b7d;
+    --border: #dde3ea;
+    --shadow: 0 1px 3px rgba(16,32,54,.06), 0 8px 24px rgba(16,32,54,.05);
+
+    --claude:   #7c5cff;
+    --gpt:      #12a150;
+    --deepseek: #0b8bd0;
+    --user:     #c77700;
+    --error:    #d92d20;
+    --ok:       #12a150;
+
+    --claude-bg:   rgba(124,92,255,.09);
+    --gpt-bg:      rgba(18,161,80,.09);
+    --deepseek-bg: rgba(11,139,208,.09);
+    --user-bg:     rgba(199,119,0,.10);
+    --error-bg:    rgba(217,45,32,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f141b;
+      --card: #161d26;
+      --text: #e6ecf3;
+      --muted: #9aa8ba;
+      --border: #27313d;
+      --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+
+      --claude:   #a58bff;
+      --gpt:      #3ecf7e;
+      --deepseek: #4cb3f5;
+      --user:     #f0a72a;
+      --error:    #ff6b5e;
+      --ok:       #3ecf7e;
+
+      --claude-bg:   rgba(165,139,255,.12);
+      --gpt-bg:      rgba(62,207,126,.12);
+      --deepseek-bg: rgba(76,179,245,.12);
+      --user-bg:     rgba(240,167,42,.12);
+      --error-bg:    rgba(255,107,94,.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f141b; --card: #161d26; --text: #e6ecf3; --muted: #9aa8ba;
+    --border: #27313d; --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    --claude: #a58bff; --gpt: #3ecf7e; --deepseek: #4cb3f5; --user: #f0a72a;
+    --error: #ff6b5e; --ok: #3ecf7e;
+    --claude-bg: rgba(165,139,255,.12); --gpt-bg: rgba(62,207,126,.12);
+    --deepseek-bg: rgba(76,179,245,.12); --user-bg: rgba(240,167,42,.12);
+    --error-bg: rgba(255,107,94,.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.62; font-size: 16px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 90px; }
+
+  /* ---------- intestazione ---------- */
+  header { padding: 54px 0 30px; border-bottom: 1px solid var(--border); margin-bottom: 34px; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600; margin-bottom: 12px;
+  }
+  h1 { margin: 0 0 12px; font-size: clamp(28px, 5vw, 40px); line-height: 1.15; letter-spacing: -.02em; }
+  .lede { margin: 0; color: var(--muted); font-size: 17px; max-width: 68ch; }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 5px 12px; border-radius: 999px; font-size: 13px; font-weight: 500;
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+  }
+  .pill b { color: var(--text); font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+
+  /* ---------- pannello stato ---------- */
+  .status {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px 26px; box-shadow: var(--shadow); margin-bottom: 34px;
+  }
+  .status h2 { margin: 0 0 16px; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
+  .stat .k { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 5px; }
+  .stat .v { font-size: 19px; font-weight: 650; letter-spacing: -.01em; }
+  .stat .v small { font-size: 13px; font-weight: 400; color: var(--muted); display: block; margin-top: 3px; letter-spacing: 0; }
+
+  /* ---------- legenda ---------- */
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 13px; border-radius: 8px; font-size: 13.5px; font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .chip.claude   { background: var(--claude-bg);   color: var(--claude);   border-color: var(--claude); }
+  .chip.gpt      { background: var(--gpt-bg);      color: var(--gpt);      border-color: var(--gpt); }
+  .chip.deepseek { background: var(--deepseek-bg); color: var(--deepseek); border-color: var(--deepseek); }
+  .chip.user     { background: var(--user-bg);     color: var(--user);     border-color: var(--user); }
+  .chip.error    { background: var(--error-bg);    color: var(--error);    border-color: var(--error); }
+
+  /* ---------- cronologia ---------- */
+  h2.round {
+    font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 48px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+  h2.round:first-of-type { margin-top: 0; }
+
+  .entry {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--muted);
+    border-radius: 12px; padding: 22px 26px; margin-bottom: 18px; box-shadow: var(--shadow);
+  }
+  .entry.claude   { border-left-color: var(--claude); }
+  .entry.gpt      { border-left-color: var(--gpt); }
+  .entry.deepseek { border-left-color: var(--deepseek); }
+  .entry.user     { border-left-color: var(--user); }
+  .entry.error    { border-left-color: var(--error); background: var(--error-bg); }
+
+  .entry-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .author { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .entry.claude   .author { color: var(--claude); }
+  .entry.gpt      .author { color: var(--gpt); }
+  .entry.deepseek .author { color: var(--deepseek); }
+  .entry.user     .author { color: var(--user); }
+  .entry.error    .author { color: var(--error); }
+  .when { font-size: 12.5px; color: var(--muted); }
+
+  .entry h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.3; letter-spacing: -.01em; }
+  .entry h4 { margin: 22px 0 9px; font-size: 15px; letter-spacing: -.005em; }
+  .entry p { margin: 0 0 12px; }
+  .entry ul { margin: 0 0 12px; padding-left: 20px; }
+  .entry li { margin-bottom: 7px; }
+  .entry li::marker { color: var(--muted); }
+  .entry > :last-child { margin-bottom: 0; }
+
+  code {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 5px;
+    padding: 1px 5px; font-size: .88em;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .quote {
+    border-left: 3px solid var(--border); padding: 3px 0 3px 16px;
+    color: var(--muted); font-style: italic; margin: 0 0 14px;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .tag {
+    font-size: 11.5px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 5px; border: 1px solid var(--border); color: var(--muted);
+  }
+  .tag.ok    { color: var(--ok);    border-color: var(--ok);    background: var(--gpt-bg); }
+  .tag.bad   { color: var(--error); border-color: var(--error); background: var(--error-bg); }
+  .tag.open  { color: var(--user);  border-color: var(--user);  background: var(--user-bg); }
+
+  /* ---------- tabelle ---------- */
+  .scroll { overflow-x: auto; margin: 0 0 14px; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 460px; }
+  th, td { text-align: left; padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 650; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.no  { color: var(--error); font-weight: 600; }
+  td.yes { color: var(--ok); font-weight: 600; }
+
+  /* ---------- riquadri ---------- */
+  .box {
+    border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin: 0 0 14px;
+    background: var(--bg);
+  }
+  .box.danger { border-color: var(--error); background: var(--error-bg); }
+  .box .box-title {
+    font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    margin-bottom: 8px; color: var(--muted);
+  }
+  .box.danger .box-title { color: var(--error); }
+  .box p:last-child, .box ul:last-child { margin-bottom: 0; }
+
+  footer {
+    margin-top: 60px; padding-top: 26px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13.5px;
+  }
+  footer p { margin: 0 0 8px; }
+
+  @media (max-width: 600px) {
+    .entry { padding: 18px 18px; }
+    .status { padding: 20px 18px; }
+    body { font-size: 15.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">RoboForex CopyFX · Progetto</div>
+  <h1>Cronologia del progetto</h1>
+  <p class="lede">
+    Sistema di raccolta, analisi e monitoraggio dei trader disponibili per il copy trading
+    su RoboForex CopyFX. Questa pagina registra ogni passo: le richieste, le analisi,
+    le revisioni incrociate fra tre assistenti, e soprattutto gli errori trovati e corretti.
+  </p>
+  <div class="meta-row">
+    <span class="pill"><span class="dot" style="background:var(--user)"></span> Inizio <b>23 agosto 2026</b></span>
+    <span class="pill"><span class="dot" style="background:var(--user)"></span> Ultimo aggiornamento <b>23 agosto 2026</b></span>
+    <span class="pill"><span class="dot" style="background:var(--error)"></span> Fase 0 <b>non ancora eseguita</b></span>
+    <span class="pill"><span class="dot" style="background:var(--ok)"></span> Test <b>20 / 20</b></span>
+  </div>
+</header>
+
+<section class="status">
+  <h2>Stato attuale</h2>
+  <div class="grid">
+    <div class="stat">
+      <div class="k">Fase corrente</div>
+      <div class="v">0 — Ricognizione<small>Scritta, testata, mai lanciata. È il collo di bottiglia: blocca tutto il resto.</small></div>
+    </div>
+    <div class="stat">
+      <div class="k">Domanda che decide il progetto</div>
+      <div class="v">Ci sono le operazioni?<small>Se CopyFX non espone lo storico dei singoli trade, cade circa il 40% della specifica.</small></div>
+    </div>
+    <div class="stat">
+      <div class="k">Giri di revisione</div>
+      <div class="v">2 completati<small>Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione.</small></div>
+    </div>
+    <div class="stat">
+      <div class="k">Decisione aperta</div>
+      <div class="v">Dashboard<small>Locale o remota con autenticazione. Unico punto ancora da decidere.</small></div>
+    </div>
+  </div>
+</section>
+
+<div class="legend">
+  <span class="chip user">Hennadiy — committente</span>
+  <span class="chip claude">Claude — analisi e sviluppo</span>
+  <span class="chip gpt">GPT — revisione</span>
+  <span class="chip deepseek">DeepSeek — revisione</span>
+  <span class="chip error">Errori e ritrattazioni</span>
+</div>
+
+
+<!-- ============================ GIRO 0 ============================ -->
+<h2 class="round">Giro 0 · L'idea iniziale</h2>
+
+<article class="entry user">
+  <div class="entry-head"><span class="author">Hennadiy</span><span class="when">23 agosto 2026</span></div>
+  <h3>La richiesta di partenza</h3>
+  <p>
+    Un agente che apre un browser <em>visibile</em> su
+    <code>my.roboforex.com/en/copyfx/traders/</code>, fa il login, scarica e analizza tutta
+    la lista dei trader. Poi entra in ogni singolo trader, ne scarica tutta la storia di
+    trading e tutta l'analitica, e ne analizza le statistiche: quanto capitale è entrato,
+    quale percentuale ha reso da quando è attivo, tutte le informazioni disponibili.
+  </p>
+  <p>
+    In più una pagina HTML che il bot deve tenere aggiornata.
+  </p>
+</article>
+
+<article class="entry claude">
+  <div class="entry-head"><span class="author">Claude</span><span class="when">23 agosto 2026</span></div>
+  <h3>Prima verifica sul campo, poi la proposta</h3>
+  <p>Prima di scrivere qualsiasi cosa, tre accertamenti:</p>
+  <ul>
+    <li>La pagina della rating <strong>non è pubblica</strong>: senza sessione risponde
+        <code>302 → /en/login/</code>. Un browser autenticato è quindi obbligatorio, non una scelta di comodo.</li>
+    <li>Ambiente: Python 3.12 e Node 24 presenti, <strong>Playwright assente</strong> (poi installato con Chromium).</li>
+    <li>La cartella di lavoro era completamente vuota: si partiva da zero.</li>
+  </ul>
+
+  <h4>La scelta tecnica che regge tutto il progetto</h4>
+  <p>
+    Il sito è una SPA. Invece di grattare l'HTML — fragile, si rompe a ogni restyling —
+    l'agente <strong>intercetta le chiamate JSON</strong> che la pagina fa già da sola.
+    Più solido e molto più leggero per il server.
+  </p>
+
+  <h4>Quattro decisioni chieste al committente</h4>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Tema</th><th>Scelta</th></tr></thead>
+    <tbody>
+      <tr><td>Login</td><td>Manuale al primo avvio, poi sessione persistente. <strong>Nessuna password salvata da nessuna parte.</strong></td></tr>
+      <tr><td>Ambito</td><td>Lista completa scaricata; dettaglio approfondito sui primi 250 dopo filtri</td></tr>
+      <tr><td>Dashboard</td><td>GitHub Pages <em>(decisione poi riaperta, vedi Giro 1)</em></td></tr>
+      <tr><td>Esecuzione</td><td>A comando, tramite file <code>.bat</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>Consegnato</h4>
+  <p>
+    Scheletro del progetto, <code>config.yaml</code>, <code>common.py</code>,
+    <code>recon.py</code> (Fase 0), lanciatore <code>.bat</code>, documentazione standard,
+    <code>.gitignore</code> che esclude credenziali e cookie.
+  </p>
+  <p>
+    Un avvertimento dato subito, non richiesto: servono <strong>pause fra le richieste</strong>.
+    Un bot che apre centinaia di schede in due minuti è il modo più rapido per farsi
+    bloccare il conto.
+  </p>
+  <div class="tags"><span class="tag ok">Fase 0 scritta</span><span class="tag">Playwright installato</span></div>
+</article>
+
+
+<!-- ============================ GIRO 1 ============================ -->
+<h2 class="round">Giro 1 · Il prompt tecnico a 26 sezioni</h2>
+
+<article class="entry user">
+  <div class="entry-head"><span class="author">Hennadiy</span><span class="when">23 agosto 2026</span></div>
+  <h3>Arriva la specifica completa</h3>
+  <p>
+    Un prompt tecnico in russo, 26 sezioni, molto più ampio della richiesta iniziale:
+    collector, database Firestore, motore analitico, sistema di rating multipli, dashboard web,
+    pagina per ogni trader, bot Telegram con messaggi vocali, interrogazioni in linguaggio
+    naturale, agente AI che ricontrolla i dati sul sito quando il database non basta.
+  </p>
+  <p class="quote">
+    «Analizza, confronta il nostro progetto con questo prompt e, se possibile, fai tutto
+    come dice. Se si può migliorare quello che c'è scritto — quale sarebbe la critica?»
+  </p>
+</article>
+
+<article class="entry claude">
+  <div class="entry-head"><span class="author">Claude</span><span class="when">23 agosto 2026</span></div>
+  <h3>Analisi e critica: 12 rilievi</h3>
+  <p>
+    Giudizio d'insieme: il prompt è buono. La sezione 25 pone la domanda giusta — non
+    «chi ha guadagnato di più» ma «chi rende in modo statisticamente stabile con rischio
+    ragionevole, e cosa segnala che il comportamento sta cambiando». La sezione 26 impone
+    il discovery prima del codice, ed è corretto.
+  </p>
+  <p>
+    Il nostro <code>recon.py</code> era già, indipendentemente, la sezione 26 del prompt.
+    Conferma che il primo passo era giusto.
+  </p>
+
+  <h4>I tre rilievi critici</h4>
+
+  <div class="box danger">
+    <div class="box-title">1 · Il 40% del prompt poggia su un'ipotesi mai verificata</div>
+    <p>
+      Le sezioni 3, 6, 7 e 12 pretendono lo storico completo delle singole operazioni di un
+      trader terzo. Le piattaforme di copy trading di norma <em>nascondono</em> quel dettaglio:
+      altrimenti la strategia si copierebbe gratis senza abbonarsi. Il prompt non ammette
+      da nessuna parte che quel dato possa non esistere, e non prevede un piano B.
+    </p>
+    <p>
+      <strong>Piano B proposto:</strong> quasi tutta l'analisi si ricostruisce dalla
+      <em>serie temporale dell'equity</em>. La serie storica è quindi un bene più prezioso
+      dello storico operazioni — ed è quasi certamente ottenibile.
+    </p>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Metrica</th><th>Servono le operazioni?</th><th>Dalla serie equity</th></tr></thead>
+    <tbody>
+      <tr><td>Max drawdown, drawdown medio</td><td>no</td><td class="yes">sì</td></tr>
+      <tr><td>Volatilità</td><td>no</td><td class="yes">sì</td></tr>
+      <tr><td>Sharpe · Sortino · Calmar</td><td>no</td><td class="yes">sì</td></tr>
+      <tr><td>Rolling 7 / 30 / 90 / 180 / 365</td><td>no</td><td class="yes">sì</td></tr>
+      <tr><td>Consistenza, % mesi positivi</td><td>no</td><td class="yes">sì</td></tr>
+      <tr><td>Win rate, Profit Factor, expectancy</td><td><strong>sì</strong></td><td>solo se aggregato dalla piattaforma</td></tr>
+      <tr><td>Martingala, griglia, mediazione</td><td><strong>sì</strong></td><td class="no">no</td></tr>
+      <tr><td>Concentrazione per strumento</td><td><strong>sì</strong></td><td class="no">no</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box danger">
+    <div class="box-title">2 · Il rendimento in percentuale è calcolato male</div>
+    <p>
+      Il prompt chiede «rendimento» decine di volte senza <strong>mai definire il metodo</strong>.
+      Se un trader versa denaro, l'equity sale senza che abbia guadagnato nulla; se preleva,
+      scende. La formula ingenua <code>equity_fine / equity_inizio − 1</code> mente in entrambi
+      i casi. Serve il <strong>time-weighted return</strong>: spezzare il periodo ai movimenti
+      di capitale e concatenare i rendimenti. Senza, il «top per rendimento» può essere
+      popolato da chi ha semplicemente versato altri soldi.
+    </p>
+  </div>
+
+  <div class="box danger">
+    <div class="box-title">3 · Manca il numero per cui si fa tutto</div>
+    <p>
+      Il prompt classifica i trader per il rendimento <em>loro</em>. Ma chi copia non riceve
+      quello: riceve il lordo <strong>meno la commissione del trader</strong> (che su CopyFX
+      il trader stesso fissa, spesso 20–40% del profitto), meno lo slippage, meno la
+      differenza di spread.
+    </p>
+    <p>
+      Un trader con +100% lordo e commissione 40% rende <em>meno</em> di uno con +75% e
+      commissione 10%. <strong>La classifica per rendimento lordo può ordinarli al contrario.</strong>
+      Aggiunto un indicatore <em>Net Return to Copier</em> come metrica primaria.
+    </p>
+    <p>
+      Effetto collaterale ignorato dal prompt: le strategie ad altissima frequenza soffrono
+      la copiatura più di tutte. I numeri storici di uno scalper non sono riproducibili
+      in linea di principio.
+    </p>
+  </div>
+
+  <h4>Gli altri rilievi</h4>
+  <ul>
+    <li><strong>Firestore</strong> non sa fare <code>GROUP BY</code>, finestre mobili, join.
+        Ma tutta l'analitica richiesta <em>è</em> aggregazione. Proposta: SQLite come motore
+        di calcolo, vetrina in uscita.</li>
+    <li><strong>Score senza validazione = decorazione.</strong> Mancano tre cose: il
+        <em>survivorship bias</em> (la rating mostra solo i sopravvissuti), il taglio dei dati
+        al momento T, e la verifica che lo score preveda davvero qualcosa — correlazione di
+        rango fra score di oggi e rendimento futuro. Se ρ ≈ 0, la formula non serve, per
+        quanto elegante sia.</li>
+    <li><strong>Rate limiting: nel prompt non c'è una riga.</strong> In 26 sezioni si dice
+        di non aggirare l'anti-bot, ma non di moderare il ritmo normale delle richieste.</li>
+    <li><strong>Sharpe senza convenzioni non è un numero.</strong> Frequenza di
+        campionamento, tasso privo di rischio, fattore di annualizzazione. E un errore in
+        cui è facile cadere: calcolarlo sui P&amp;L delle singole operazioni, che non sono
+        osservazioni a intervalli regolari.</li>
+    <li><strong>Anomalie senza linea di base</strong> producono solo rumore. Servono mediana
+        mobile, deviazione in unità di MAD, e un periodo di silenzio: altrimenti lo stesso
+        avviso arriva ogni giorno e si smette di leggerlo.</li>
+    <li><strong>Telegram con voce e linguaggio naturale è un secondo prodotto</strong>,
+        circa metà del lavoro totale, ed è la parte meno legata al valore centrale.</li>
+    <li><strong>Nessun test definito.</strong> Proposta: salvare le risposte JSON della Fase 0
+        come <em>golden fixtures</em> e collaudare i parser offline.</li>
+    <li>Minori ma reali: fusi orari, valuta del conto, versionamento dello schema,
+        idempotenza del collector, disclaimer visibile in pagina.</li>
+  </ul>
+
+  <h4>L'aggiunta più preziosa: il database deve ricordare ciò che RoboForex dimentica</h4>
+  <p>
+    La piattaforma mostra i sopravvissuti. Chi ha bruciato il conto sparisce. Dal momento in
+    cui iniziamo a fare snapshot, abbiamo qualcosa che nessuno ha: <strong>la storia dei
+    trader spariti</strong>. Fra un anno si potrà rispondere a una domanda a cui la
+    piattaforma stessa non può rispondere — di quelli che erano in Top 50, quanti esistono ancora.
+  </p>
+
+  <div class="box danger">
+    <div class="box-title">Autocorrezione</div>
+    <p>
+      Nel Giro 0 avevo valutato la dashboard pubblica come questione di <em>privacy</em>,
+      concludendo che non fosse rischiosa perché i dati non sono le finanze di Hennadiy.
+      Angolo sbagliato: pubblicare in un repository aperto è <strong>ripubblicazione di un
+      insieme di dati altrui</strong>. Non è privacy, è diritto sui dati.
+    </p>
+  </div>
+
+  <h4>Codice consegnato in questo giro</h4>
+  <ul>
+    <li><code>config.yaml</code> esteso con tutte le convenzioni di calcolo mancanti.</li>
+    <li><code>analyze_recon.py</code>: trasforma la cattura in un referto a 14 punti.</li>
+    <li><code>tests/test_classify.py</code>: 20 test offline.</li>
+  </ul>
+
+  <div class="box danger">
+    <div class="box-title">I test hanno subito trovato due errori miei</div>
+    <ul>
+      <li>La parola <code>trader</code> compare in <em>ogni</em> URL del sito: tutto finiva
+          classificato come «lista trader».</li>
+      <li>Peggio: <code>traders</code> <strong>contiene</strong> <code>trade</code>, quindi la
+          lista dei trader veniva classificata come storico operazioni. Risolto decidendo
+          sull'ultimo segmento del path e con un lookahead negativo <code>trade(?!r)</code>.</li>
+    </ul>
+  </div>
+
+  <div class="tags">
+    <span class="tag bad">2 bug trovati dai test</span>
+    <span class="tag bad">1 autocorrezione</span>
+    <span class="tag ok">6 correzioni proposte</span>
+  </div>
+</article>
+
+
+<!-- ============================ GIRO 2 ============================ -->
+<h2 class="round">Giro 2 · Revisione incrociata</h2>
+
+<article class="entry deepseek">
+  <div class="entry-head"><span class="author">DeepSeek</span><span class="when">23 agosto 2026</span></div>
+  <h3>Accordo pieno, e quattro risposte</h3>
+  <p>Conferma tutte e sei le correzioni e risponde alle domande aperte:</p>
+  <ul>
+    <li><strong>Dashboard</strong> — repository privato o file locale. GitHub Pages pubblico
+        va tolto dal tavolo: anche solo gli aggregati sono derivati da strategie altrui.</li>
+    <li><strong>Database</strong> — si accetta l'ibrido. SQLite riceve i dati e fa tutti i
+        calcoli; verso l'esterno solo documenti già pronti. Vantaggio aggiuntivo: le risposte
+        grezze restano in locale.</li>
+    <li><strong>Telegram</strong> — d'accordo categoricamente sul rinvio. Potrà essere
+        aggiunto dopo senza toccare il nucleo, dato che leggerà lo stesso database.</li>
+    <li><strong>Se mancano le operazioni</strong> — si prosegue sull'analitica da equity.
+        Il piano B va messo nell'architettura fin dall'inizio, per non rifare parser e calcoli
+        a posteriori.</li>
+  </ul>
+  <div class="tags"><span class="tag ok">6/6 correzioni confermate</span></div>
+</article>
+
+<article class="entry gpt">
+  <div class="entry-head"><span class="author">GPT</span><span class="when">23 agosto 2026</span></div>
+  <h3>Accordo all'85%, e quattro rilievi fondati</h3>
+  <p class="quote">
+    «Il prompt originale è molto buono come specifica di prodotto; l'analisi di Claude lo
+    rende molto più solido come progetto quantitativo e ingegneristico. Su alcuni punti,
+    però, è troppo categorico.»
+  </p>
+
+  <h4>Tre livelli di disponibilità dati, al posto del verdetto binario</h4>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Livello</th><th>Dati</th><th>Cosa si può fare</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A</strong></td><td>tutte le singole operazioni</td><td>analisi completa: martingala, griglia, size, strumenti</td></tr>
+      <tr><td><strong>B</strong></td><td>serie equity + aggregati</td><td>drawdown, volatilità, Sharpe/Sortino/Calmar, consistenza</td></tr>
+      <tr><td><strong>C</strong></td><td>solo statistiche correnti</td><td>lo storico lo costruiamo noi, accumulando snapshot</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="quote">
+    «Cominciare oggi a raccogliere snapshot significa costruire noi stessi uno storico che
+    RoboForex potrebbe non fornire.»
+  </p>
+
+  <h4>Sviluppi delle idee di Claude</h4>
+  <ul>
+    <li><strong>Net Return to Copier</strong> — definito «probabilmente la migliore idea»,
+        e portato oltre: distinguere <em>stimato</em> da <em>osservato</em>, e introdurre la
+        <strong>Copy Efficiency</strong> = rendimento ottenuto ÷ rendimento della strategia.
+        Un trader con +160% lordo ed efficienza 67% e uno con +92% ed efficienza 91% arrivano
+        quasi allo stesso netto, ma sono investimenti diversissimi.</li>
+    <li><strong>Validazione dello score</strong> — non solo score → rendimento futuro:
+        Risk Score deve prevedere il <em>drawdown</em> futuro, Consistency Score la stabilità
+        futura. Validare il Risk Score sul rendimento sarebbe verificare la cosa sbagliata.</li>
+    <li><strong>Survivorship</strong> — campi <code>first_seen_at</code>, <code>last_seen_at</code>,
+        <code>disappeared_at</code>, <code>status</code>, e una metrica <em>Trader Survival Rate</em>.</li>
+    <li><strong>Alert come macchina a stati</strong> NORMAL → WARNING → HIGH_RISK → CRITICAL,
+        con messaggio solo al cambio di stato: non «drawdown 12,0%», «12,1%», «12,2%».</li>
+  </ul>
+
+  <h4>Otto aggiunte nuove</h4>
+  <ul>
+    <li><strong>Strategy Instance ID</strong> — se un trader chiude una strategia e ne apre
+        un'altra, i due storici non vanno fusi.</li>
+    <li><strong>Timestamp «as-of» ovunque</strong> — ogni classifica significa «con le
+        informazioni disponibili allora». Elimina il look-ahead bias.</li>
+    <li><strong>Qualità del campionamento</strong> — una curva giornaliera sottostima il
+        drawdown intraday: la metrica va chiamata <code>max_drawdown_daily_observed</code>,
+        non spacciata per il massimo vero.</li>
+    <li><strong>Requisiti minimi</strong> — chi ha fatto +80% in sette giorni non entra
+        automaticamente nella classifica principale.</li>
+    <li><strong>Versionamento delle formule</strong> — cambiando algoritmo non si riscrive
+        silenziosamente la storia.</li>
+    <li><strong>Analisi di portafoglio</strong> — cinque trader molto correlati non sono
+        cinque strategie: sono cinque volte lo stesso rischio.</li>
+    <li><strong>Sicurezza Telegram</strong> — whitelist degli id autorizzati.</li>
+    <li><strong>AI separata dalla matematica</strong> — le metriche le calcola un motore
+        deterministico; l'LLM le <em>interpreta</em>, non le reinventa.</li>
+  </ul>
+
+  <h4>Telegram: non eliminarlo dall'MVP, dividerlo</h4>
+  <p>
+    <em>Telegram Lite</em> (<code>/top</code>, <code>/trader</code>, <code>/risk</code>,
+    <code>/compare</code>) costa poco e arriva presto. L'assistente completo con voce,
+    memoria e ricerca web resta alla seconda fase.
+  </p>
+
+  <div class="box">
+    <div class="box-title">La regola che GPT mette sopra tutte</div>
+    <p>
+      «Prima raccogliamo i dati reali di RoboForex e costruiamo una <em>capability matrix</em>.
+      Solo dopo decidiamo quali analytics sono realmente possibili.»
+    </p>
+  </div>
+
+  <div class="tags"><span class="tag ok">85% di accordo</span><span class="tag bad">4 errori di Claude trovati</span><span class="tag ok">8 aggiunte nuove</span></div>
+</article>
+
+<article class="entry error">
+  <div class="entry-head"><span class="author">Claude — ritrattazioni</span><span class="when">23 agosto 2026</span></div>
+  <h3>Quattro affermazioni ritirate</h3>
+
+  <h4>1 · «Firestore è probabilmente la scelta sbagliata»</h4>
+  <p>
+    Formulazione più forte dell'argomento. Corretto: Firestore è pessimo come <em>motore
+    analitico</em> e ottimo come <em>vetrina</em>. Che è esattamente ciò che proponevo nel
+    corpo dell'analisi: il disaccordo era col mio titolo, non con la sostanza.
+  </p>
+
+  <h4>2 · «Collector locale, quindi database locale»</h4>
+  <p>
+    GPT ha ragione: sono due decisioni indipendenti. <code>PC → Firestore</code> funziona
+    senza problemi. Quel che resta valido, nella forma corretta: la base cloud non
+    <em>elimina</em> il passaggio locale, perché il browser autenticato serve comunque.
+    È un argomento sulla complessità marginale, non un vincolo. L'avevo presentato come vincolo.
+  </p>
+
+  <h4>3 · «GitHub Pages pubblico è incompatibile con l'accesso protetto»</h4>
+  <p>
+    Tecnicamente falso, e nella forma in cui l'ho scritto è sbagliato. Pages pubblico che
+    serve solo il frontend, con Firebase Authentication, Security Rules e whitelist degli
+    UID, è un'architettura corretta e standard: la chiave client pubblica di Firebase è
+    normale, non è una fuga di dati.
+  </p>
+  <p>
+    <strong>Quel che non avevo distinto:</strong> un repository pubblico che contiene
+    <em>codice</em> e uno che contiene <em>dati</em>. Il caso in discussione era il secondo.
+    L'obiezione si riduce a una frase: <strong>il codice può stare in chiaro, il dump dei
+    dati no.</strong> GitHub Pages torna fra le opzioni.
+  </p>
+
+  <h4>4 · «Leggeremo gli endpoint JSON interni della SPA»</h4>
+  <p>
+    Avevo scritto che la Fase 0 non era stata eseguita e nella stessa pagina davo per deciso
+    il canale di accesso. Anticipazione della conclusione. Le vie possibili sono più d'una:
+    API ufficiale, REST interno, GraphQL, WebSocket, dati incorporati nell'HTML, HTML puro.
+  </p>
+
+  <div class="box danger">
+    <div class="box-title">Questo quarto rilievo ha scoperto un difetto nel codice, non solo nel testo</div>
+    <p>
+      Il mio <code>recon.py</code> intercettava <strong>soltanto risposte JSON</strong>.
+      Se CopyFX servisse i dati via WebSocket o incorporati nell'HTML, la ricognizione
+      avrebbe restituito il vuoto — e ne avrei dedotto con sicurezza «nessuna API
+      disponibile». Un falso negativo che sarebbe sembrato un risultato attendibile.
+    </p>
+    <p><strong>Corretto:</strong> cattura dei frame WebSocket in entrambe le direzioni;
+      ricerca dello stato incorporato (<code>__NEXT_DATA__</code>, <code>__NUXT__</code>,
+      <code>__INITIAL_STATE__</code>, <code>__APOLLO_STATE__</code> e affini, più i blocchi
+      <code>&lt;script type="application/json"&gt;</code>); riconoscimento GraphQL; nuovo
+      referto «Canali di trasporto» con avvisi espliciti.
+    </p>
+  </div>
+</article>
+
+<article class="entry claude">
+  <div class="entry-head"><span class="author">Claude</span><span class="when">23 agosto 2026</span></div>
+  <h3>Accolto senza riserve, e una precisazione sull'ordine dei lavori</h3>
+  <p>
+    Accettati tutti i rilievi di GPT e tutte le otto aggiunte. Recepiti nel codice e nella
+    configurazione: livelli A/B/C automatici nel referto, catena di priorità per il metodo
+    di rendimento al posto del TWR dogmatico, annualizzazione dedotta dal calendario reale
+    invece del √252 fisso, macchina a stati degli alert con isteresi, Copy Efficiency,
+    versione dello score, istanze di strategia, whitelist Telegram.
+  </p>
+  <p>
+    Sul punto «AI separata dalla matematica»: è il più importante degli otto e l'avevo
+    sottovalutato. Se l'LLM ricalcola le metriche a modo suo a ogni domanda, lo Sharpe di un
+    trader non è più confrontabile con quello di un altro e crolla tutta la comparabilità.
+  </p>
+
+  <div class="box">
+    <div class="box-title">L'unica precisazione alla regola di GPT</div>
+    <p>
+      D'accordo sulla capability matrix prima di decidere le analytics. Ma
+      <strong>capability matrix e raccolta di snapshot non devono essere sequenziali.</strong>
+      Se al livello C tutto il valore sta nella storia accumulata, ogni giorno di attesa è un
+      giorno di storia perso per sempre. Appena la Fase 0 dimostra che la lista è
+      raggiungibile, la raccolta va avviata subito — prima ancora di aver progettato metriche,
+      score e dashboard. Gli snapshot costano poco e il loro valore dipende solo da quanto
+      presto si è cominciato.
+    </p>
+  </div>
+
+  <h4>Stato del consenso</h4>
+  <p><strong>Accettato da tutti e tre:</strong> disponibilità dati come precondizione ·
+    piano B su equity/snapshot · rendimento normalizzato · Net Return to Copier ·
+    conservazione dei trader spariti · validazione dello score · rate limiting ·
+    convenzioni matematiche fisse · linea di base per le anomalie · test su fixtures ·
+    correlazione fra trader · AI separata dalla matematica.</p>
+  <p><strong>Risolto in questo giro:</strong> Firestore è vetrina, non motore ·
+    GitHub Pages ammesso per il codice, non per i dati · Telegram diviso in Lite e completo.</p>
+  <div class="tags"><span class="tag ok">Consenso raggiunto</span><span class="tag open">1 decisione aperta</span></div>
+</article>
+
+
+<!-- ============================ APERTO ============================ -->
+<h2 class="round">Punto ancora aperto</h2>
+
+<article class="entry user">
+  <div class="entry-head"><span class="author">Da decidere</span></div>
+  <h3>Dashboard: locale o remota?</h3>
+  <p>I due revisori divergono, e hanno ragione entrambi perché rispondono a domande diverse.</p>
+  <ul>
+    <li><strong>DeepSeek</strong> — repository privato o file locale. Ottimizza il rischio.</li>
+    <li><strong>GPT</strong> — GitHub Pages pubblico va bene se i dati stanno dietro
+        Firebase Auth, Security Rules e whitelist UID. Ottimizza l'accesso remoto.</li>
+  </ul>
+  <p>
+    <strong>Raccomandazione di Claude:</strong> partire in locale, che funziona oggi senza
+    una riga di infrastruttura, ma isolare la sorgente dati dietro un solo modulo. Così
+    passare più avanti a Firestore con autenticazione sarà la sostituzione di un modulo,
+    non la riscrittura della dashboard. Locale non come scelta definitiva, ma come scelta
+    gratuita e reversibile finché non si conosce il volume reale dei dati.
+  </p>
+  <div class="tags"><span class="tag open">In attesa di decisione</span></div>
+</article>
+
+
+<!-- ============================ PROSSIMO ============================ -->
+<h2 class="round">Prossimo passo</h2>
+
+<article class="entry claude">
+  <div class="entry-head"><span class="author">Claude</span></div>
+  <h3>Eseguire la Fase 0</h3>
+  <p>
+    Tutto il resto è bloccato. Non per prudenza: lo impone la sezione 26 dello stesso prompt,
+    ed è corretto. Scrivere il collector delle operazioni contro un endpoint che potrebbe non
+    esistere è il modo sicuro di buttare via il lavoro.
+  </p>
+  <p>La ricognizione deve rispondere a queste domande, nell'ordine:</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Domanda</th><th>Perché decide qualcosa</th></tr></thead>
+    <tbody>
+      <tr><td>Per quale canale viaggiano i dati?</td><td>REST, GraphQL, WebSocket o HTML: cambia tutto il collector</td></tr>
+      <tr><td>Esiste lo storico delle singole operazioni?</td><td>Determina se siamo al livello A o B</td></tr>
+      <tr><td>Esiste la serie temporale dell'equity?</td><td>Senza, niente drawdown né coefficienti di rischio</td></tr>
+      <tr><td>La commissione del trader è esposta?</td><td>Serve per il rendimento netto di chi copia</td></tr>
+      <tr><td>Versamenti e prelievi sono distinguibili?</td><td>Serve per il time-weighted return</td></tr>
+      <tr><td>Quante pagine e quanti trader in totale?</td><td>Dimensiona il carico e la durata di un giro</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="tags"><span class="tag open">In attesa del via</span></div>
+</article>
+
+<footer>
+  <p><strong>Pagina aggiornata a ogni intervento</strong> — a ogni risposta di GPT o DeepSeek,
+     e a ogni modifica di Claude, questa cronologia viene riscritta e ripubblicata.</p>
+  <p>Nessun dato di trader e nessuna credenziale è contenuta in questa pagina o in questo
+     repository: solo il diario di lavoro del progetto.</p>
+  <p style="margin-top:16px">RoboForex CopyFX Analysis · 23 agosto 2026</p>
+</footer>
+
+</div>
+</body>
+</html>

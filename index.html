@@ -128,17 +128,27 @@
     border-top: 1px solid var(--border);
   }
   .round-head.first { margin-top: 6px; padding-top: 0; border-top: none; }
-  .round-n {
-    font-size: clamp(26px, 4.4vw, 36px);
+  .round-num {
+    font-size: clamp(46px, 9vw, 68px);
     font-weight: 750;
-    letter-spacing: -.025em;
-    line-height: 1.15;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin-bottom: 6px;
   }
-  .round-n .slash { color: var(--muted); font-weight: 400; margin: 0 .28em; }
-  .round-sub {
+  .round-n {
+    font-size: clamp(16px, 2.5vw, 20px);
+    font-weight: 650;
+    letter-spacing: .1em;
+    text-transform: uppercase;
     color: var(--muted);
-    font-size: 16.5px;
-    margin-top: 8px;
+    line-height: 1.3;
+  }
+  .round-n .slash { font-weight: 400; margin: 0 .3em; opacity: .6; }
+  .round-sub {
+    font-size: clamp(19px, 3vw, 24px);
+    font-weight: 650;
+    letter-spacing: -.015em;
+    margin-top: 12px;
   }
   .round-sub.solo {
     font-size: clamp(24px, 4vw, 32px);
@@ -276,7 +286,7 @@ uk: {
     { c: "var(--error)", l: "Фаза 0",           v: "ще не запущена" },
     { c: "var(--ok)",    l: "Тести",            v: "20 / 20" }
   ],
-  roundLabel: "Раунд %N%<span class='slash'>/</span>Ітерація",
+  roundLabel: "Раунд <span class='slash'>/</span> Ітерація",
   statusTitle: "Поточний стан",
   stats: [
     { k: "Поточна фаза", v: "0 — Розвідка", s: "Написана, перевірена тестами, жодного разу не запущена. Це вузьке місце: блокує все інше." },
@@ -620,7 +630,7 @@ ru: {
     { c: "var(--error)", l: "Фаза 0",             v: "ещё не запущена" },
     { c: "var(--ok)",    l: "Тесты",              v: "20 / 20" }
   ],
-  roundLabel: "Раунд %N%<span class='slash'>/</span>Итерация",
+  roundLabel: "Раунд <span class='slash'>/</span> Итерация",
   statusTitle: "Текущее состояние",
   stats: [
     { k: "Текущая фаза", v: "0 — Разведка", s: "Написана, покрыта тестами, ни разу не запущена. Это узкое место: блокирует всё остальное." },
@@ -964,7 +974,7 @@ it: {
     { c: "var(--error)", l: "Fase 0",             v: "non ancora eseguita" },
     { c: "var(--ok)",    l: "Test",               v: "20 / 20" }
   ],
-  roundLabel: "Round %N%<span class='slash'>/</span>Iterazione",
+  roundLabel: "Round <span class='slash'>/</span> Iterazione",
   statusTitle: "Stato attuale",
   stats: [
     { k: "Fase corrente", v: "0 — Ricognizione", s: "Scritta, coperta da test, mai lanciata. È il collo di bottiglia: blocca tutto il resto." },
@@ -1332,7 +1342,8 @@ function render(lang) {
   d.rounds.forEach(function (r, i) {
     h += '<div class="round-head' + (i === 0 ? ' first' : '') + '">';
     if (r.n) {
-      h += '<div class="round-n">' + d.roundLabel.replace("%N%", r.n) + '</div>';
+      h += '<div class="round-num">' + r.n + '</div>';
+      h += '<div class="round-n">' + d.roundLabel + '</div>';
       h += '<div class="round-sub">' + r.title + '</div>';
     } else {
       h += '<div class="round-sub solo">' + r.title + '</div>';

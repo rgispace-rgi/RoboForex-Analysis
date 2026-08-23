@@ -289,9 +289,9 @@ uk: {
   roundLabel: "Раунд <span class='slash'>/</span> Ітерація",
   statusTitle: "Поточний стан",
   stats: [
-    { k: "Поточна фаза", v: "0 — виконана", s: "Розвідка пройшла. Наступне — щоденний знімок рейтингу, не чекаючи схеми БД." },
+    { k: "Поточна фаза", v: "0A пройдена, 0B відкрита", s: "Канали й дані — так. Семантика period, повнота, відкриті позиції й умови — ще ні." },
     { k: "Питання, що вирішує долю проєкту", v: "Рівень A", s: "Історія окремих угод доступна. «План Б» не знадобиться." },
-    { k: "Кола рецензування", v: "4 завершені", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
+    { k: "Кола рецензування", v: "5 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
     { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
   ],
   legend: [
@@ -626,6 +626,55 @@ uk: {
       ]
     },
     {
+      n: 6, title: "Зауваження GPT перевірені на даних",
+      entries: [
+        {
+          c: "gpt", a: "GPT", w: "23 серпня 2026",
+          h: "Три перевірних зауваження і одна поступка, якої вимагає",
+          b: `<p>GPT помітив те, чого не побачив я: відношення індексів на першій і останній точці двох кривих однакове — близько 1.485. Тобто <code>period</code> не змінює метрику, а змінює <strong>знаменник</strong>.</p>
+              <ul>
+                <li><strong>«Рівень A попередній»</strong> — глибина історії не перевірена.</li>
+                <li><strong><code>volume: 1000</code> — одиниці невідомі.</strong> Без коефіцієнта перерахунку будь-який детектор нарощування позиції буде помилковим.</li>
+                <li><strong>Повнота кривої не доведена.</strong> API прийняв діапазон дат — це не означає, що віддав повний денний ряд без проріджування.</li>
+                <li><strong>Відкриті позиції — пріоритет.</strong> <code>orders/close</code> це лише закрите. Трейдер із історичною просадкою 11 % і мінус 18 % плаваючого збитку просто зараз має вигляд безпечного, але таким не є.</li>
+                <li><strong>Оффери треба фотографувати в часі:</strong> якщо сьогодні комісія 20 %, а за два місяці 50 %, застосувати 50 % до всієї історії не можна. Плюс схеми з high-water mark — це не просто «валове × (1 − комісія)».</li>
+                <li><strong>Патерни як імовірність, не як факт:</strong> «наявні патерни, сильно сумісні з мартингейлом», а не «трейдер використовує мартингейл».</li>
+              </ul>
+              <p>Окремо GPT перевірив зовнішні джерела: RoboForex документує <strong>ланцюгову формулу дохідності</strong>, яка нейтралізує поповнення й виведення. Отже платформному відсотку можна довіряти більше, ніж я припускав.</p>
+              <div class="box danger">
+                <div class="box-title">І одна вимога, з якою довелося погодитись</div>
+                <p>«Claude каже: щоденний знімок сьогодні ж — і в тому самому документі визнає, що умов використання не читав.» Суперечність в одному тексті.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "3 перевірних зауваження" }, { c: "bad", t: "Знайдено суперечність" }]
+        },
+        {
+          c: "claude", a: "Claude", w: "23 серпня 2026",
+          h: "Перевірено арифметикою — і знайдено пастку, гіршу за ту, про яку попереджав GPT",
+          b: `<p>Усі три зауваження перевірив розрахунком на 500 захоплених операціях і двох кривих. Мережу не чіпав.</p>
+              <h4>1 · Гіпотеза про <code>period</code> — підтверджена строго</h4>
+              <p>GPT порівняв дві точки. Я перевірив <strong>усі тридцять</strong>. Відсотки округлені до сотих, тому наївне порівняння відношень дає розкид і нічого не доводить — я спершу так і зробив, отримав «непостійно» і за надто суворим порогом відхилив би гіпотезу. Правильна перевірка інша: у кожної точки через округлення є <em>інтервал</em> допустимих відношень, і питання в тому, чи існує одна константа, що потрапляє в усі інтервали одразу.</p>
+              <p>Перетин тридцяти інтервалів: <code>k ∈ [1.484876 , 1.484989]</code> — <strong>не порожній</strong>. Одна константа пояснює всі точки. Гіпотеза GPT вірна.</p>
+              <h4>2 · <code>volume</code> — GPT мав рацію, що попередив</h4>
+              <p>XAUUSD, 1 лот = 100 унцій, <code>volume</code> у сотих частках лота. Перевірка на 14 операціях: <strong>середня похибка 0.03 %</strong>. Отже <code>1000 → 10.00 лота</code>.</p>
+              <div class="box danger">
+                <div class="box-title">3 · Небезпечніший не volume, а profit</div>
+                <p>Перевіряючи одиниці обсягу, натрапив на серйозніше: <strong><code>profit</code> виражений не в доларах, а у валюті рахунку</strong>. У досліджуваного трейдера <code>currency: "GLD"</code> — тобто його profit це <strong>унції золота</strong>. Гіпотеза «профіт у доларах» дає розходження в <strong>457 000 %</strong> — не похибку, а повну нісенітницю.</p>
+                <p>Додавати або порівнювати <code>profit</code> між трейдерами без конверсії за <code>currency</code> — гарантовано хибний результат. Поля з суфіксом <code>_usd</code> уже нормалізовані, сирий <code>profit</code> в операціях — ні.</p>
+              </div>
+              <div class="box">
+                <div class="box-title">4 · Рухи капіталу видно — TWR стає реальним</div>
+                <p><code>cmd</code> має три значення: <strong>0 (431), 1 (56), 6 (13)</strong>. Значення 6 — це <code>OP_BALANCE</code> у конвенції MT4: порожній символ, нульові ціни. Це не угоди, а рухи по рахунку — поповнення, виведення або нарахування комісії, яку трейдер отримав від копіювальників. За самими сумами розрізнити не можна, тому стверджувати не буду.</p>
+                <p>Але один відкритий пункт закривається: у звіті Фази 0 стояло «чи розрізняються поповнення і виведення — <em>невідомо</em>». <strong>Тепер відомо: так, і вони датовані.</strong> Time-weighted return можна рахувати по-справжньому.</p>
+                <p>Зворотний бік: просте підсумовування <code>profit</code> без фільтра за <code>cmd=6</code> завищило б результат на <strong>+7837 одиниць</strong> — поповнення зарахувалися б як прибуток.</p>
+              </div>
+              <h4>Поступка щодо умов використання</h4>
+              <p>GPT має рацію, і суперечність була в одному тексті. <strong>Знімаю формулювання «сьогодні ж».</strong> Аргумент «кожен незбережений день утрачено назавжди» лишається вірним, але черговості не скасовує: спершу умови CopyFX і Members Area, потім регулярний збір. Разова розвідка на власній сесії в темпі ручної навігації — одне; постійний автоматичний збір — інше рішення.</p>
+              <p><strong>Фаза 0A пройдена. Фаза 0B відкрита.</strong> Лишається перевірити: семантику <code>period</code>, повноту кривої, глибину історії, відкриті позиції, MT5, і <code>cmd</code> проти інтерфейсу.</p>`,
+          tags: [{ c: "ok", t: "3 з 3 перевірено" }, { c: "bad", t: "Пастка валюти profit" }, { c: "bad", t: "1 поступка" }, { c: "ok", t: "TWR став можливим" }]
+        }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -689,9 +738,9 @@ ru: {
   roundLabel: "Раунд <span class='slash'>/</span> Итерация",
   statusTitle: "Текущее состояние",
   stats: [
-    { k: "Текущая фаза", v: "0 — выполнена", s: "Разведка прошла. Дальше — ежедневный снимок рейтинга, не дожидаясь схемы БД." },
+    { k: "Текущая фаза", v: "0A пройдена, 0B открыта", s: "Каналы и данные — да. Семантика period, полнота, открытые позиции и условия — ещё нет." },
     { k: "Вопрос, решающий судьбу проекта", v: "Уровень A", s: "История отдельных сделок доступна. «План Б» не понадобится." },
-    { k: "Круги рецензирования", v: "4 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
+    { k: "Круги рецензирования", v: "5 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
     { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
   ],
   legend: [
@@ -1026,6 +1075,55 @@ ru: {
       ]
     },
     {
+      n: 6, title: "Замечания GPT проверены на данных",
+      entries: [
+        {
+          c: "gpt", a: "GPT", w: "23 августа 2026",
+          h: "Три проверяемых замечания и одна уступка, которой требует",
+          b: `<p>GPT заметил то, чего не увидел я: отношение индексов на первой и последней точке двух кривых одинаково — около 1.485. То есть <code>period</code> не меняет метрику, а меняет <strong>знаменатель</strong>.</p>
+              <ul>
+                <li><strong>«Уровень A предварительный»</strong> — глубина истории не проверена.</li>
+                <li><strong><code>volume: 1000</code> — единицы неизвестны.</strong> Без коэффициента пересчёта любой детектор наращивания позиции будет ошибочным.</li>
+                <li><strong>Полнота кривой не доказана.</strong> API принял диапазон дат — это не значит, что отдал полный дневной ряд без прореживания.</li>
+                <li><strong>Открытые позиции — приоритет.</strong> <code>orders/close</code> это только закрытое. Трейдер с исторической просадкой 11 % и минус 18 % плавающего убытка прямо сейчас выглядит безопасным, но таковым не является.</li>
+                <li><strong>Офферы надо фотографировать во времени:</strong> если сегодня комиссия 20 %, а через два месяца 50 %, применить 50 % ко всей истории нельзя. Плюс схемы с high-water mark — это не просто «валовое × (1 − комиссия)».</li>
+                <li><strong>Паттерны как вероятность, не как факт:</strong> «присутствуют паттерны, сильно совместимые с мартингейлом», а не «трейдер использует мартингейл».</li>
+              </ul>
+              <p>Отдельно GPT проверил внешние источники: RoboForex документирует <strong>цепную формулу доходности</strong>, нейтрализующую пополнения и выводы. Значит платформенному проценту можно доверять больше, чем я предполагал.</p>
+              <div class="box danger">
+                <div class="box-title">И одно требование, с которым пришлось согласиться</div>
+                <p>«Claude говорит: ежедневный снимок сегодня же — и в том же документе признаёт, что условий использования не читал.» Противоречие в одном тексте.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "3 проверяемых замечания" }, { c: "bad", t: "Найдено противоречие" }]
+        },
+        {
+          c: "claude", a: "Claude", w: "23 августа 2026",
+          h: "Проверено арифметикой — и найдена ловушка хуже той, о которой предупреждал GPT",
+          b: `<p>Все три замечания проверил расчётом на 500 захваченных операциях и двух кривых. Сеть не трогал.</p>
+              <h4>1 · Гипотеза о <code>period</code> — подтверждена строго</h4>
+              <p>GPT сравнил две точки. Я проверил <strong>все тридцать</strong>. Проценты округлены до сотых, поэтому наивное сравнение отношений даёт разброс и ничего не доказывает — я сначала так и сделал, получил «непостоянно» и по слишком строгому порогу отверг бы гипотезу. Правильная проверка другая: у каждой точки из-за округления есть <em>интервал</em> допустимых отношений, и вопрос в том, существует ли одна константа, попадающая во все интервалы сразу.</p>
+              <p>Пересечение тридцати интервалов: <code>k ∈ [1.484876 , 1.484989]</code> — <strong>не пусто</strong>. Одна константа объясняет все точки. Гипотеза GPT верна.</p>
+              <h4>2 · <code>volume</code> — GPT был прав, что предупредил</h4>
+              <p>XAUUSD, 1 лот = 100 унций, <code>volume</code> в сотых долях лота. Проверка на 14 операциях: <strong>средняя ошибка 0.03 %</strong>. Значит <code>1000 → 10.00 лота</code>.</p>
+              <div class="box danger">
+                <div class="box-title">3 · Опаснее не volume, а profit</div>
+                <p>Проверяя единицы объёма, наткнулся на серьёзнее: <strong><code>profit</code> выражен не в долларах, а в валюте счёта</strong>. У исследуемого трейдера <code>currency: "GLD"</code> — то есть его profit это <strong>унции золота</strong>. Гипотеза «профит в долларах» даёт расхождение в <strong>457 000 %</strong> — не ошибку, а полную бессмыслицу.</p>
+                <p>Складывать или сравнивать <code>profit</code> между трейдерами без конверсии по <code>currency</code> — гарантированно неверный результат. Поля с суффиксом <code>_usd</code> уже нормализованы, сырой <code>profit</code> в операциях — нет.</p>
+              </div>
+              <div class="box">
+                <div class="box-title">4 · Движения капитала видны — TWR становится реальным</div>
+                <p><code>cmd</code> имеет три значения: <strong>0 (431), 1 (56), 6 (13)</strong>. Значение 6 — это <code>OP_BALANCE</code> в конвенции MT4: пустой символ, нулевые цены. Это не сделки, а движения по счёту — пополнения, выводы либо начисления комиссии, полученной трейдером от копирующих. По одним суммам различить нельзя, поэтому утверждать не буду.</p>
+                <p>Но один открытый пункт закрывается: в отчёте Фазы 0 стояло «различимы ли пополнения и выводы — <em>неизвестно</em>». <strong>Теперь известно: да, и они датированы.</strong> Time-weighted return можно считать по-настоящему.</p>
+                <p>Обратная сторона: простое суммирование <code>profit</code> без фильтра по <code>cmd=6</code> завысило бы результат на <strong>+7837 единиц</strong> — пополнения засчитались бы как прибыль.</p>
+              </div>
+              <h4>Уступка по условиям использования</h4>
+              <p>GPT прав, и противоречие было в одном тексте. <strong>Снимаю формулировку «сегодня же».</strong> Довод «каждый несохранённый день потерян навсегда» остаётся верным, но очерёдности не отменяет: сначала условия CopyFX и Members Area, потом регулярный сбор. Разовая разведка на собственной сессии в темпе ручной навигации — одно; постоянный автоматический сбор — другое решение.</p>
+              <p><strong>Фаза 0A пройдена. Фаза 0B открыта.</strong> Осталось проверить: семантику <code>period</code>, полноту кривой, глубину истории, открытые позиции, MT5, и <code>cmd</code> против интерфейса.</p>`,
+          tags: [{ c: "ok", t: "3 из 3 проверено" }, { c: "bad", t: "Ловушка валюты profit" }, { c: "bad", t: "1 уступка" }, { c: "ok", t: "TWR стал возможен" }]
+        }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -1089,9 +1187,9 @@ it: {
   roundLabel: "Round <span class='slash'>/</span> Iterazione",
   statusTitle: "Stato attuale",
   stats: [
-    { k: "Fase corrente", v: "0 — eseguita", s: "La ricognizione è andata. Prossimo passo: snapshot giornaliero, senza aspettare lo schema del database." },
+    { k: "Fase corrente", v: "0A superata, 0B aperta", s: "Canali e dati sì. Semantica di period, completezza, posizioni aperte e condizioni d'uso ancora no." },
     { k: "Domanda che decide il progetto", v: "Livello A", s: "Lo storico delle singole operazioni c'è. Il «piano B» non servirà." },
-    { k: "Giri di revisione", v: "4 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
+    { k: "Giri di revisione", v: "5 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
     { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
   ],
   legend: [
@@ -1422,6 +1520,55 @@ it: {
                 <p><strong>La raccolta comincia prima della progettazione.</strong> Lo snapshot giornaliero della rating parte oggi stesso, senza aspettare schema del database, metriche e dashboard. Ogni giorno non registrato è perso per sempre. Su questo eravamo d'accordo tutti e tre.</p>
               </div>`,
           tags: [{ c: "ok", t: "Livello A" }, { c: "bad", t: "Trappola period trovata" }, { c: "ok", t: "3 rilievi confermati" }]
+        }
+      ]
+    },
+    {
+      n: 6, title: "I rilievi di GPT verificati sui dati",
+      entries: [
+        {
+          c: "gpt", a: "GPT", w: "23 agosto 2026",
+          h: "Tre rilievi verificabili e una concessione che pretende",
+          b: `<p>GPT ha notato ciò che io non avevo visto: il rapporto fra gli indici del primo e dell'ultimo punto delle due curve è identico, circa 1.485. Cioè <code>period</code> non cambia la metrica, cambia il <strong>denominatore</strong>.</p>
+              <ul>
+                <li><strong>«Livello A provvisorio»</strong> — la profondità dello storico non è stata verificata.</li>
+                <li><strong><code>volume: 1000</code> — unità ignote.</strong> Senza il fattore di conversione qualsiasi rilevatore di aumento della size sarebbe sbagliato.</li>
+                <li><strong>Completezza della curva non dimostrata.</strong> L'API ha accettato l'intervallo di date: non significa che abbia restituito la serie giornaliera intera senza campionamento ridotto.</li>
+                <li><strong>Posizioni aperte: priorità.</strong> <code>orders/close</code> è solo il chiuso. Un trader con drawdown storico 11 % e meno 18 % di perdita flottante adesso sembra sicuro e non lo è.</li>
+                <li><strong>Le offerte vanno fotografate nel tempo:</strong> se oggi la commissione è 20 % e fra due mesi 50 %, non si può applicare il 50 % a tutta la storia. E gli schemi con high-water mark non sono un semplice «lordo × (1 − commissione)».</li>
+                <li><strong>Pattern come probabilità, non come fatto:</strong> «sono presenti pattern fortemente compatibili con la martingala», non «questo trader usa la martingala».</li>
+              </ul>
+              <p>GPT ha inoltre verificato fonti esterne: RoboForex documenta una <strong>formula di rendimento a catena</strong> che neutralizza versamenti e prelievi. Quindi la percentuale della piattaforma è più affidabile di quanto supponessi.</p>
+              <div class="box danger">
+                <div class="box-title">E una richiesta che ho dovuto accettare</div>
+                <p>«Claude dice: snapshot giornaliero oggi stesso — e nello stesso documento ammette di non aver letto le condizioni d'uso.» Una contraddizione dentro un solo testo.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "3 rilievi verificabili" }, { c: "bad", t: "Contraddizione trovata" }]
+        },
+        {
+          c: "claude", a: "Claude", w: "23 agosto 2026",
+          h: "Verificato con l'aritmetica — e trovata una trappola peggiore di quella segnalata",
+          b: `<p>Tutti e tre i rilievi verificati per calcolo, sulle 500 operazioni catturate e sulle due curve. Rete non toccata.</p>
+              <h4>1 · L'ipotesi su <code>period</code> — confermata in modo rigoroso</h4>
+              <p>GPT ha confrontato due punti. Io li ho verificati <strong>tutti e trenta</strong>. Le percentuali sono arrotondate al centesimo, quindi il confronto ingenuo dei rapporti produce dispersione e non dimostra nulla — l'ho fatto per primo così, ho ottenuto «non costante» e per una soglia troppo severa avrei respinto l'ipotesi. La verifica corretta è un'altra: per l'arrotondamento ogni punto ammette un <em>intervallo</em> di rapporti, e la domanda è se esista una costante che cade dentro tutti gli intervalli insieme.</p>
+              <p>Intersezione dei trenta intervalli: <code>k ∈ [1.484876 , 1.484989]</code> — <strong>non vuota</strong>. Una sola costante spiega tutti i punti. L'ipotesi di GPT è corretta.</p>
+              <h4>2 · <code>volume</code> — GPT ha fatto bene ad avvertire</h4>
+              <p>XAUUSD, 1 lotto = 100 once, <code>volume</code> in centesimi di lotto. Verifica su 14 operazioni: <strong>errore medio 0.03 %</strong>. Quindi <code>1000 → 10.00 lotti</code>.</p>
+              <div class="box danger">
+                <div class="box-title">3 · Più pericoloso del volume è il profit</div>
+                <p>Verificando le unità del volume ne è emersa una più seria: <strong><code>profit</code> non è espresso in dollari ma nella valuta del conto</strong>. Il trader esaminato ha <code>currency: "GLD"</code> — i suoi profit sono <strong>once d'oro</strong>. L'ipotesi «profitto in dollari» produce uno scarto del <strong>457 000 %</strong>: non un errore, un'assurdità.</p>
+                <p>Sommare o confrontare <code>profit</code> fra trader senza conversione tramite <code>currency</code> dà un risultato garantito sbagliato. I campi con suffisso <code>_usd</code> sono già normalizzati, il <code>profit</code> grezzo delle operazioni no.</p>
+              </div>
+              <div class="box">
+                <div class="box-title">4 · I movimenti di capitale si vedono — il TWR diventa reale</div>
+                <p><code>cmd</code> ha tre valori: <strong>0 (431), 1 (56), 6 (13)</strong>. Il 6 è <code>OP_BALANCE</code> nella convenzione MT4: simbolo vuoto, prezzi a zero. Non sono operazioni ma movimenti di conto — versamenti, prelievi o accrediti della commissione che il trader incassa dai copiatori. Dai soli importi non è possibile distinguerli, quindi non lo affermo.</p>
+                <p>Ma un punto aperto si chiude: nel referto della Fase 0 avevo scritto «versamenti e prelievi distinguibili — <em>ignoto</em>». <strong>Ora si sa: sì, e sono datati.</strong> Il time-weighted return si può calcolare davvero.</p>
+                <p>Il rovescio: sommare i <code>profit</code> senza filtrare <code>cmd=6</code> gonfierebbe il risultato di <strong>+7837 unità</strong> — i versamenti verrebbero contati come guadagno.</p>
+              </div>
+              <h4>La concessione sulle condizioni d'uso</h4>
+              <p>GPT ha ragione, e la contraddizione stava dentro un solo testo. <strong>Ritiro il «oggi stesso».</strong> L'argomento «ogni giorno non registrato è perso per sempre» resta valido ma non annulla l'ordine: prima le condizioni di CopyFX e dell'area clienti, poi la raccolta regolare. Una ricognizione singola sulla propria sessione al ritmo di una navigazione manuale è una cosa; una raccolta automatica permanente è un'altra decisione.</p>
+              <p><strong>Fase 0A superata. Fase 0B aperta.</strong> Restano da verificare: semantica di <code>period</code>, completezza della curva, profondità dello storico, posizioni aperte, MT5, e <code>cmd</code> contro l'interfaccia.</p>`,
+          tags: [{ c: "ok", t: "3 su 3 verificati" }, { c: "bad", t: "Trappola valuta profit" }, { c: "bad", t: "1 concessione" }, { c: "ok", t: "TWR ora possibile" }]
         }
       ]
     },

@@ -283,15 +283,15 @@ uk: {
   pills: [
     { c: "var(--user)",  l: "Початок",          v: "23 серпня 2026" },
     { c: "var(--user)",  l: "Останнє оновлення", v: "23 серпня 2026" },
-    { c: "var(--error)", l: "Фаза 0",           v: "ще не запущена" },
+    { c: "var(--ok)",    l: "Фаза 0",           v: "виконана" },
     { c: "var(--ok)",    l: "Тести",            v: "20 / 20" }
   ],
   roundLabel: "Раунд <span class='slash'>/</span> Ітерація",
   statusTitle: "Поточний стан",
   stats: [
-    { k: "Поточна фаза", v: "0 — Розвідка", s: "Написана, перевірена тестами, жодного разу не запущена. Це вузьке місце: блокує все інше." },
-    { k: "Питання, що вирішує долю проєкту", v: "Чи є історія угод?", s: "Якщо CopyFX не віддає історію окремих угод, відпадає близько 40% специфікації." },
-    { k: "Кола рецензування", v: "3 завершені", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
+    { k: "Поточна фаза", v: "0 — виконана", s: "Розвідка пройшла. Наступне — щоденний знімок рейтингу, не чекаючи схеми БД." },
+    { k: "Питання, що вирішує долю проєкту", v: "Рівень A", s: "Історія окремих угод доступна. «План Б» не знадобиться." },
+    { k: "Кола рецензування", v: "4 завершені", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
     { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
   ],
   legend: [
@@ -570,6 +570,62 @@ uk: {
       ]
     },
     {
+      n: 5, title: "Фазу 0 виконано",
+      entries: [
+        {
+          c: "user", a: "Геннадій", w: "23 серпня 2026",
+          h: "«Vai con la fase 0»",
+          b: `<p>Дозвіл на запуск. Браузер відкрився, вхід виконано вручну, далі агент працював сам: перезавантажив рейтинг, прогорнув сторінку, зайшов у картку трейдера й відкрив вкладку історії.</p>
+              <p>Розвідка тривала близько пʼяти хвилин і коштувала приблизно 40 запитів — навантаження на рівні звичайної ручної навігації.</p>`
+        },
+        {
+          c: "claude", a: "Claude", w: "23 серпня 2026",
+          h: "Рівень A підтверджено — і знайдено пастку, яка зіпсувала б увесь проєкт",
+          b: `<p><strong>Історія окремих угод доступна.</strong> Чотири кола обговорення тримали напоготові «план Б» на випадок її відсутності — він не знадобиться.</p>
+              <div class="box danger">
+                <div class="box-title">Той самий трейдер, той самий день, різні значення параметра period</div>
+                <div class="scroll"><table>
+                  <thead><tr><th>Показник</th><th>period=3</th><th>period=0</th></tr></thead>
+                  <tbody>
+                    <tr><td>profit_percent</td><td class="yes">+34.8 %</td><td class="no">−9.22 %</td></tr>
+                    <tr><td>profit_usd</td><td class="yes">+70 153 $</td><td class="no">−30 416 $</td></tr>
+                    <tr><td>dd_max</td><td>−51.41 %</td><td>−53.39 %</td></tr>
+                  </tbody>
+                </table></div>
+                <p>Це не округлення і не інше вікно спостереження — <strong>це зміна знаку</strong>. Трейдер, який в одній видачі має вигляд «+35 %», в іншій є збитковим.</p>
+                <p>Якби рейтинг зібрали, не зафіксувавши <code>period</code>, усі рейтинги, усі score і вся валідація стояли б на числі, яке нічого не означає. <strong>Ніхто з трьох цього не передбачив.</strong> Це рівно той випадок, заради якого GPT наполягав на discovery до коду.</p>
+              </div>
+              <h4>Що доступно</h4>
+              <p>Канал — REST/JSON, внутрішні ендпоінти <code>copyfx2-api</code>. GraphQL немає, WebSocket не використовується. Тобто початкова гіпотеза підтвердилася — але розширений <code>recon.py</code> тепер це <em>доводить</em>, а не припускає.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Дані</th><th>Ендпоінт</th></tr></thead>
+                <tbody>
+                  <tr><td>Список трейдерів</td><td><code>getRating</code> — пагінація limit/offset</td></tr>
+                  <tr><td><strong>Історія угод</strong></td><td><code>history/mt4/orders/close</code> — до 500 на сторінку</td></tr>
+                  <tr><td>Крива дохідності</td><td><code>account/chart/profit_percent</code> — довільний діапазон дат</td></tr>
+                  <tr><td>Інструменти</td><td><code>account/chart/symbols</code> — з кількістю угод</td></tr>
+                  <tr><td>Умови копіювання</td><td><code>ratingCard/getOfferList</code> — комісія всередині</td></tr>
+                </tbody>
+              </table></div>
+              <p>Поля угоди: тікет, напрямок, обсяг, інструмент, обидві ціни, обидві дати, комісія, свопи, результат. <strong>Немає Stop Loss і Take Profit</strong> — отже, пункт «торгівля без Stop Loss» з розділу 7 промпта нездійсненний, поля просто не існує. Усе інше — мартингейл, сітка, нарощування обсягу, концентрація за інструментами — можливе.</p>
+              <h4>Що підтвердилося з нашої критики</h4>
+              <ul>
+                <li><strong>Комісія не дрібниця.</strong> Серед перших двадцяти: 5 %, 15 %, 20 %, 25 %, 30 % — і <strong>50 % у трьох</strong>. Половина прибутку. Ранжування за валовою дохідністю розставило б їх завідомо неправильно.</li>
+                <li><strong>Приклад із промпта виявився реальним.</strong> Трейдер <code>TrollsGoldTr</code>: <strong>+1122 %</strong> при просадці <strong>−72 %</strong>.</li>
+                <li><strong>Strategy Instance ID потрібен.</strong> <code>QuantumBull</code> трапляється у видачі двічі — різні рахунки, дохідність 15.01 % і 29.09 %, комісія 50 % і 25 %. Зауваження GPT підтвердилося на першій же сторінці.</li>
+                <li><strong>Валюта рахунку не завжди долар:</strong> у першого ж трейдера <code>currency: "GLD"</code>.</li>
+              </ul>
+              <h4>Чого ми поки не знаємо</h4>
+              <p>Скільки трейдерів усього (на offset 120 відповідь усе ще <code>more: true</code>, бачили 143 унікальних) · перелік і зміст значень <code>period</code> · глибину історії угод · умови використання платформи, які я обіцяв прочитати.</p>
+              <div class="box">
+                <div class="box-title">Порядок робіт змінюється в один бік</div>
+                <p><strong>Збір починається раніше проєктування.</strong> Щоденний знімок рейтингу запускається сьогодні ж, не чекаючи схеми БД, метрик і дашборда. Кожен незбережений день — втрачений назавжди. На цьому ми зійшлися втрьох.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "Рівень A" }, { c: "bad", t: "Пастку period знайдено" }, { c: "ok", t: "3 зауваження підтвердились" }]
+        }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -627,15 +683,15 @@ ru: {
   pills: [
     { c: "var(--user)",  l: "Начало",             v: "23 августа 2026" },
     { c: "var(--user)",  l: "Последнее обновление", v: "23 августа 2026" },
-    { c: "var(--error)", l: "Фаза 0",             v: "ещё не запущена" },
+    { c: "var(--ok)",    l: "Фаза 0",             v: "выполнена" },
     { c: "var(--ok)",    l: "Тесты",              v: "20 / 20" }
   ],
   roundLabel: "Раунд <span class='slash'>/</span> Итерация",
   statusTitle: "Текущее состояние",
   stats: [
-    { k: "Текущая фаза", v: "0 — Разведка", s: "Написана, покрыта тестами, ни разу не запущена. Это узкое место: блокирует всё остальное." },
-    { k: "Вопрос, решающий судьбу проекта", v: "Есть ли история сделок?", s: "Если CopyFX не отдаёт историю отдельных сделок, отпадает около 40% спецификации." },
-    { k: "Круги рецензирования", v: "3 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
+    { k: "Текущая фаза", v: "0 — выполнена", s: "Разведка прошла. Дальше — ежедневный снимок рейтинга, не дожидаясь схемы БД." },
+    { k: "Вопрос, решающий судьбу проекта", v: "Уровень A", s: "История отдельных сделок доступна. «План Б» не понадобится." },
+    { k: "Круги рецензирования", v: "4 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
     { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
   ],
   legend: [
@@ -914,6 +970,62 @@ ru: {
       ]
     },
     {
+      n: 5, title: "Фаза 0 выполнена",
+      entries: [
+        {
+          c: "user", a: "Геннадий", w: "23 августа 2026",
+          h: "«Vai con la fase 0»",
+          b: `<p>Разрешение на запуск. Браузер открылся, вход выполнен вручную, дальше агент работал сам: перезагрузил рейтинг, прокрутил страницу, зашёл в карточку трейдера и открыл вкладку истории.</p>
+              <p>Разведка заняла около пяти минут и стоила примерно 40 запросов — нагрузка на уровне обычной ручной навигации.</p>`
+        },
+        {
+          c: "claude", a: "Claude", w: "23 августа 2026",
+          h: "Уровень A подтверждён — и найдена ловушка, которая испортила бы весь проект",
+          b: `<p><strong>История отдельных сделок доступна.</strong> Четыре круга обсуждения держали наготове «план Б» на случай её отсутствия — он не понадобится.</p>
+              <div class="box danger">
+                <div class="box-title">Тот же трейдер, тот же день, разные значения параметра period</div>
+                <div class="scroll"><table>
+                  <thead><tr><th>Показатель</th><th>period=3</th><th>period=0</th></tr></thead>
+                  <tbody>
+                    <tr><td>profit_percent</td><td class="yes">+34.8 %</td><td class="no">−9.22 %</td></tr>
+                    <tr><td>profit_usd</td><td class="yes">+70 153 $</td><td class="no">−30 416 $</td></tr>
+                    <tr><td>dd_max</td><td>−51.41 %</td><td>−53.39 %</td></tr>
+                  </tbody>
+                </table></div>
+                <p>Это не округление и не другое окно наблюдения — <strong>это смена знака</strong>. Трейдер, который в одной выдаче выглядит как «+35 %», в другой является убыточным.</p>
+                <p>Если бы рейтинг собрали, не зафиксировав <code>period</code>, все рейтинги, все score и вся валидация стояли бы на числе, которое ничего не значит. <strong>Никто из троих этого не предвидел.</strong> Это ровно тот случай, ради которого GPT настаивал на discovery до кода.</p>
+              </div>
+              <h4>Что доступно</h4>
+              <p>Канал — REST/JSON, внутренние эндпоинты <code>copyfx2-api</code>. GraphQL нет, WebSocket не используется. То есть исходная гипотеза подтвердилась — но расширенный <code>recon.py</code> теперь это <em>доказывает</em>, а не предполагает.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Данные</th><th>Эндпоинт</th></tr></thead>
+                <tbody>
+                  <tr><td>Список трейдеров</td><td><code>getRating</code> — пагинация limit/offset</td></tr>
+                  <tr><td><strong>История сделок</strong></td><td><code>history/mt4/orders/close</code> — до 500 на страницу</td></tr>
+                  <tr><td>Кривая доходности</td><td><code>account/chart/profit_percent</code> — произвольный диапазон дат</td></tr>
+                  <tr><td>Инструменты</td><td><code>account/chart/symbols</code> — с количеством сделок</td></tr>
+                  <tr><td>Условия копирования</td><td><code>ratingCard/getOfferList</code> — комиссия внутри</td></tr>
+                </tbody>
+              </table></div>
+              <p>Поля сделки: тикет, направление, объём, инструмент, обе цены, обе даты, комиссия, свопы, результат. <strong>Нет Stop Loss и Take Profit</strong> — значит, пункт «торговля без Stop Loss» из раздела 7 промпта неосуществим, поля просто не существует. Всё остальное — мартингейл, сетка, наращивание объёма, концентрация по инструментам — возможно.</p>
+              <h4>Что подтвердилось из нашей критики</h4>
+              <ul>
+                <li><strong>Комиссия не мелочь.</strong> Среди первых двадцати: 5 %, 15 %, 20 %, 25 %, 30 % — и <strong>50 % у троих</strong>. Половина прибыли. Ранжирование по валовой доходности расставило бы их заведомо неверно.</li>
+                <li><strong>Пример из промпта оказался реальным.</strong> Трейдер <code>TrollsGoldTr</code>: <strong>+1122 %</strong> при просадке <strong>−72 %</strong>.</li>
+                <li><strong>Strategy Instance ID нужен.</strong> <code>QuantumBull</code> встречается в выдаче дважды — разные счета, доходность 15.01 % и 29.09 %, комиссия 50 % и 25 %. Замечание GPT подтвердилось на первой же странице.</li>
+                <li><strong>Валюта счёта не всегда доллар:</strong> у первого же трейдера <code>currency: "GLD"</code>.</li>
+              </ul>
+              <h4>Чего мы пока не знаем</h4>
+              <p>Сколько трейдеров всего (на offset 120 ответ всё ещё <code>more: true</code>, видели 143 уникальных) · перечень и смысл значений <code>period</code> · глубину истории сделок · условия использования платформы, которые я обещал прочитать.</p>
+              <div class="box">
+                <div class="box-title">Порядок работ меняется в одну сторону</div>
+                <p><strong>Сбор начинается раньше проектирования.</strong> Ежедневный снимок рейтинга запускается сегодня же, не дожидаясь схемы БД, метрик и дашборда. Каждый несохранённый день — потерян навсегда. На этом мы сошлись втроём.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "Уровень A" }, { c: "bad", t: "Ловушка period найдена" }, { c: "ok", t: "3 замечания подтвердились" }]
+        }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -971,15 +1083,15 @@ it: {
   pills: [
     { c: "var(--user)",  l: "Inizio",             v: "23 agosto 2026" },
     { c: "var(--user)",  l: "Ultimo aggiornamento", v: "23 agosto 2026" },
-    { c: "var(--error)", l: "Fase 0",             v: "non ancora eseguita" },
+    { c: "var(--ok)",    l: "Fase 0",             v: "eseguita" },
     { c: "var(--ok)",    l: "Test",               v: "20 / 20" }
   ],
   roundLabel: "Round <span class='slash'>/</span> Iterazione",
   statusTitle: "Stato attuale",
   stats: [
-    { k: "Fase corrente", v: "0 — Ricognizione", s: "Scritta, coperta da test, mai lanciata. È il collo di bottiglia: blocca tutto il resto." },
-    { k: "Domanda che decide il progetto", v: "Ci sono le operazioni?", s: "Se CopyFX non espone lo storico dei singoli trade, cade circa il 40% della specifica." },
-    { k: "Giri di revisione", v: "3 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
+    { k: "Fase corrente", v: "0 — eseguita", s: "La ricognizione è andata. Prossimo passo: snapshot giornaliero, senza aspettare lo schema del database." },
+    { k: "Domanda che decide il progetto", v: "Livello A", s: "Lo storico delle singole operazioni c'è. Il «piano B» non servirà." },
+    { k: "Giri di revisione", v: "4 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
     { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
   ],
   legend: [
@@ -1254,6 +1366,62 @@ it: {
               <h4>Il giro teorico è chiuso</h4>
               <p>D'accordo con entrambi: ogni ulteriore precisazione sarebbe sempre meno fondata, perché tutti e tre stiamo ragionando su dati che nessuno ha visto.</p>`,
           tags: [{ c: "ok", t: "5 aggiunte recepite" }, { c: "ok", t: "Codice in revisione" }, { c: "open", t: "Discussione chiusa" }]
+        }
+      ]
+    },
+    {
+      n: 5, title: "Fase 0 eseguita",
+      entries: [
+        {
+          c: "user", a: "Hennadiy", w: "23 agosto 2026",
+          h: "«Vai con la fase 0»",
+          b: `<p>Il via libera. Il browser si è aperto, il login è stato fatto a mano, poi l'agente ha lavorato da solo: ha ricaricato la rating, scorso la pagina, aperto la scheda di un trader e il tab dello storico.</p>
+              <p>La ricognizione è durata circa cinque minuti ed è costata una quarantina di richieste — un carico paragonabile a quello di una persona che naviga il sito.</p>`
+        },
+        {
+          c: "claude", a: "Claude", w: "23 agosto 2026",
+          h: "Livello A confermato — e trovata una trappola che avrebbe rovinato tutto il progetto",
+          b: `<p><strong>Lo storico delle singole operazioni è disponibile.</strong> Quattro giri di discussione tenevano pronto un «piano B» nel caso mancasse: non servirà.</p>
+              <div class="box danger">
+                <div class="box-title">Stesso trader, stesso giorno, valori diversi del parametro period</div>
+                <div class="scroll"><table>
+                  <thead><tr><th>Indicatore</th><th>period=3</th><th>period=0</th></tr></thead>
+                  <tbody>
+                    <tr><td>profit_percent</td><td class="yes">+34.8 %</td><td class="no">−9.22 %</td></tr>
+                    <tr><td>profit_usd</td><td class="yes">+70 153 $</td><td class="no">−30 416 $</td></tr>
+                    <tr><td>dd_max</td><td>−51.41 %</td><td>−53.39 %</td></tr>
+                  </tbody>
+                </table></div>
+                <p>Non è un arrotondamento né una finestra di osservazione diversa: <strong>è un cambio di segno</strong>. Un trader che in una vista sembra «+35 %», in un'altra è in perdita.</p>
+                <p>Se avessimo costruito la rating senza fissare <code>period</code>, tutte le classifiche, tutti gli score e l'intera validazione poggerebbero su un numero che non significa nulla. <strong>Nessuno dei tre l'aveva previsto.</strong> È esattamente il caso per cui GPT insisteva sul discovery prima del codice.</p>
+              </div>
+              <h4>Cosa è disponibile</h4>
+              <p>Il canale è REST/JSON, endpoint interni <code>copyfx2-api</code>. Nessun GraphQL, WebSocket non usato. L'ipotesi iniziale era giusta — ma il <code>recon.py</code> esteso ora lo <em>dimostra</em>, non lo presume.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Dato</th><th>Endpoint</th></tr></thead>
+                <tbody>
+                  <tr><td>Lista trader</td><td><code>getRating</code> — paginazione limit/offset</td></tr>
+                  <tr><td><strong>Storico operazioni</strong></td><td><code>history/mt4/orders/close</code> — fino a 500 per pagina</td></tr>
+                  <tr><td>Curva di rendimento</td><td><code>account/chart/profit_percent</code> — intervallo di date libero</td></tr>
+                  <tr><td>Strumenti</td><td><code>account/chart/symbols</code> — col numero di operazioni</td></tr>
+                  <tr><td>Condizioni di copia</td><td><code>ratingCard/getOfferList</code> — commissione inclusa</td></tr>
+                </tbody>
+              </table></div>
+              <p>Campi di un'operazione: ticket, direzione, volume, strumento, entrambi i prezzi, entrambe le date, commissione, swap, risultato. <strong>Mancano Stop Loss e Take Profit</strong> — quindi il punto «trading sistematico senza Stop Loss» della sezione 7 del prompt è irrealizzabile: il campo non esiste. Tutto il resto — martingala, griglia, aumento dei volumi, concentrazione per strumento — è possibile.</p>
+              <h4>Cosa si è confermato della nostra critica</h4>
+              <ul>
+                <li><strong>La commissione non è un dettaglio.</strong> Fra i primi venti: 5 %, 15 %, 20 %, 25 %, 30 % — e <strong>50 % in tre casi</strong>. Metà del profitto. Una classifica per rendimento lordo li ordinerebbe in modo dimostrabilmente sbagliato.</li>
+                <li><strong>L'esempio del prompt esisteva davvero.</strong> Il trader <code>TrollsGoldTr</code>: <strong>+1122 %</strong> con drawdown <strong>−72 %</strong>.</li>
+                <li><strong>Lo Strategy Instance ID serve.</strong> <code>QuantumBull</code> compare due volte — conti diversi, rendimento 15.01 % e 29.09 %, commissione 50 % e 25 %. Il rilievo di GPT si è confermato già in prima pagina.</li>
+                <li><strong>La valuta del conto non è sempre il dollaro:</strong> il primo trader ha <code>currency: "GLD"</code>.</li>
+              </ul>
+              <h4>Cosa non sappiamo ancora</h4>
+              <p>Quanti trader in totale (a offset 120 la risposta è ancora <code>more: true</code>, ne abbiamo visti 143 distinti) · l'elenco e il significato dei valori di <code>period</code> · la profondità dello storico operazioni · le condizioni d'uso della piattaforma, che avevo promesso di leggere.</p>
+              <div class="box">
+                <div class="box-title">L'ordine dei lavori cambia, in una sola direzione</div>
+                <p><strong>La raccolta comincia prima della progettazione.</strong> Lo snapshot giornaliero della rating parte oggi stesso, senza aspettare schema del database, metriche e dashboard. Ogni giorno non registrato è perso per sempre. Su questo eravamo d'accordo tutti e tre.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "Livello A" }, { c: "bad", t: "Trappola period trovata" }, { c: "ok", t: "3 rilievi confermati" }]
         }
       ]
     },

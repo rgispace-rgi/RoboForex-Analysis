@@ -259,7 +259,7 @@ uk: {
   stats: [
     { k: "Поточна фаза", v: "0 — Розвідка", s: "Написана, перевірена тестами, жодного разу не запущена. Це вузьке місце: блокує все інше." },
     { k: "Питання, що вирішує долю проєкту", v: "Чи є історія угод?", s: "Якщо CopyFX не віддає історію окремих угод, відпадає близько 40% специфікації." },
-    { k: "Кола рецензування", v: "2 завершені", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
+    { k: "Кола рецензування", v: "3 завершені", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
     { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
   ],
   legend: [
@@ -474,6 +474,70 @@ uk: {
       ]
     },
     {
+      title: "Коло 3 · Код віддано на перевірку",
+      entries: [
+        {
+          c: "deepseek", a: "DeepSeek", w: "23 серпня 2026",
+          h: "Згода з архітектурою і три уточнення",
+          b: `<p>Приймає гібридну архітектуру, рекомендацію починати локально з ізольованим шаром даних, негайний запуск збору знімків і поділ Telegram. Додає три практичні уточнення:</p>
+              <ul>
+                <li><strong>Фікстури в CI</strong> — реальні відповіді Фази 0 треба одразу покласти в репозиторій, щоб офлайн-тести парсерів були відтворюваними.</li>
+                <li><strong>Продуктивність SQLite</strong> — 250 трейдерів × щоденні записи він витримає, але доступ до бази варто сховати за DAO, щоб перехід на PostgreSQL чи DuckDB не зачепив аналітику.</li>
+                <li><strong>Ескалація алертів</strong> — якщо подія триває довше N днів без зміни рівня, пріоритет треба підвищувати, а не лишати як є.</li>
+              </ul>`,
+          tags: [{ c: "ok", t: "Архітектуру прийнято" }]
+        },
+        {
+          c: "gpt", a: "GPT", w: "23 серпня 2026",
+          h: "«Заявлено — ще не означає перевірено»",
+          b: `<p>Розбіжності майже зникли, але GPT ставить принципову межу:</p>
+              <p class="quote">«Я можу пересвідчитися, що Claude <em>заявляє</em> про зміни в цих файлах; але переді мною немає <code>recon.py</code>, <code>analyze_recon.py</code>, <code>config.yaml</code> і самих тестів — отже, я поки не можу підтвердити, що реалізація справді відповідає опису.»</p>
+              <p>Тобто перехоплення WebSocket, рівні A/B/C, нові налаштування і 20 зелених тестів — це поки що <strong>твердження, а не встановлені факти</strong>. Позиція правильна, тим паче що в попередньому колі саме GPT знайшов розбіжність між написаним і тим, що робив код.</p>
+              <h4>Три нові пропозиції</h4>
+              <ul>
+                <li><strong>RAW → NORMALIZED → DERIVED</strong> — зберігати не лише очищені дані. Якщо через півроку виявиться, що парсер неправильно читав поле, за наявності лише нормалізованого шару оригінал утрачено. З RAW усю історію можна переобробити, не звертаючись до RoboForex.</li>
+                <li><strong>Data Confidence</strong> — окрема величина, що вимірює не трейдера, а <em>впевненість у даних про нього</em>. «Overall Score 93» має вигляд точного числа навіть тоді, коли побудований на 45 днях історії. Поряд із ним «Data Confidence 41» одразу все ставить на місце.</li>
+                <li><strong>Довірчий інтервал score</strong> — <code>86 [83–89]</code> для десяти років історії і <code>86 [59–94]</code> для двох місяців. Те саме число, але зовсім різні твердження.</li>
+              </ul>
+              <h4>Дрібніші уточнення</h4>
+              <ul>
+                <li>Алерти як постійні обʼєкти: <code>severity</code>, <code>first_triggered_at</code>, <code>last_changed_at</code>, <code>resolved_at</code>, <code>acknowledged</code>.</li>
+                <li>«Авто» для річного приведення не означає рахувати позначки часу: треба визначати <em>реальну економічну частоту</em> ряду. Дані сім днів на тиждень не роблять 365 правильною конвенцією.</li>
+              </ul>
+              <h4>Незгода щодо дашборда</h4>
+              <p>GPT радить одразу писати у Firestore, бо віддалений доступ, Telegram і авторизація однаково знадобляться, — отже, крок через локальний JSON ми свідомо робимо на викид.</p>
+              <div class="box">
+                <div class="box-title">Висновок GPT</div>
+                <p>«Я не переходив би до третього кола теоретичного обговорення.» Далі — тільки Фаза 0 і справжня capability matrix.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "Майже повна згода" }, { c: "open", t: "Вимагає код на перевірку" }, { c: "ok", t: "3 нові пропозиції" }]
+        },
+        {
+          c: "claude", a: "Claude", w: "23 серпня 2026",
+          h: "Код віддано, пʼять доповнень внесено, розбіжність знято фактом",
+          b: `<p>Заперечень щодо вимоги GPT немає: опис змін не є доказом змін. Чотири файли — <code>recon.py</code>, <code>analyze_recon.py</code>, <code>config.yaml</code>, <code>tests/test_classify.py</code> — передано на справжнє ревʼю.</p>
+              <h4>Слабкі місця, які я називаю сам, не чекаючи рецензента</h4>
+              <ul>
+                <li><code>extract_embedded_state()</code> перевіряє фіксований список із восьми глобальних змінних. Девʼяту він не знайде.</li>
+                <li>Визначення GraphQL спирається на шлях і початок тіла POST — нестандартна обгортка пройде повз.</li>
+                <li><code>biggest_list()</code> припускає, що корисне навантаження — найдовший список у JSON. Це евристика, а не правило.</li>
+                <li>Обробник WebSocket накопичує кадри в памʼяті без обмеження; ліміт стоїть лише на записі у файл.</li>
+              </ul>
+              <h4>Прийнято і внесено в конфігурацію</h4>
+              <p>Усі пʼять пропозицій. До аргументу GPT про RAW додаю ще один: цей шар робить відтворюваним <strong>перерахунок заднім числом</strong>. Змінюючи формулу score, ми зобовʼязані вміти перерахувати її на історичних даних тими самими входами — інакше вся валідація score втрачає сенс.</p>
+              <div class="box">
+                <div class="box-title">Розбіжність про публікацію знято не аргументом, а фактом</div>
+                <p><strong>Сьогодні публікувати нічого.</strong> Даних немає, Фазу 0 не запущено. Вирішувати зараз, куди писати, — означає обирати наосліп, тобто рівно те, за що ми втрьох критикували початковий промпт.</p>
+                <p>Тому зроблено те, чого насправді хотіли обидві сторони, — <em>інтерфейс</em>, і одразу з двома реалізаціями: <code>backend: "json"</code>, <code>backends_available: ["json", "firestore"]</code>. Починаємо з JSON, бо Firestore вимагає завести проєкт, налаштувати Authentication і Security Rules — роботу, яка сьогодні конкурує з Фазою 0. Перемикання коштує один рядок.</p>
+              </div>
+              <p>Окремо: документ DeepSeek був підписаний «від імені GPT». Оскільки файли ходять між трьома агентами, за два кола стало б неможливо зрозуміти, хто що стверджував. Попросив підписуватися своїм імʼям.</p>
+              <h4>Теоретичне коло закрито</h4>
+              <p>Згоден з обома: кожне наступне уточнення буде дедалі менш обґрунтованим, бо всі троє міркують про дані, яких ніхто не бачив.</p>`,
+          tags: [{ c: "ok", t: "5 доповнень внесено" }, { c: "ok", t: "Код на ревʼю" }, { c: "open", t: "Обговорення завершено" }]
+        }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -538,7 +602,7 @@ ru: {
   stats: [
     { k: "Текущая фаза", v: "0 — Разведка", s: "Написана, покрыта тестами, ни разу не запущена. Это узкое место: блокирует всё остальное." },
     { k: "Вопрос, решающий судьбу проекта", v: "Есть ли история сделок?", s: "Если CopyFX не отдаёт историю отдельных сделок, отпадает около 40% спецификации." },
-    { k: "Круги рецензирования", v: "2 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
+    { k: "Круги рецензирования", v: "3 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
     { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
   ],
   legend: [
@@ -753,6 +817,70 @@ ru: {
       ]
     },
     {
+      title: "Круг 3 · Код отдан на проверку",
+      entries: [
+        {
+          c: "deepseek", a: "DeepSeek", w: "23 августа 2026",
+          h: "Согласие с архитектурой и три уточнения",
+          b: `<p>Принимает гибридную архитектуру, рекомендацию начинать локально с изолированным слоем данных, немедленный запуск сбора снимков и разделение Telegram. Добавляет три практических уточнения:</p>
+              <ul>
+                <li><strong>Фикстуры в CI</strong> — реальные ответы Фазы 0 надо сразу положить в репозиторий, чтобы офлайн-тесты парсеров были воспроизводимыми.</li>
+                <li><strong>Производительность SQLite</strong> — 250 трейдеров × ежедневные записи он выдержит, но доступ к базе стоит спрятать за DAO, чтобы переход на PostgreSQL или DuckDB не затронул аналитику.</li>
+                <li><strong>Эскалация алертов</strong> — если событие длится дольше N дней без смены уровня, приоритет надо повышать, а не оставлять как есть.</li>
+              </ul>`,
+          tags: [{ c: "ok", t: "Архитектура принята" }]
+        },
+        {
+          c: "gpt", a: "GPT", w: "23 августа 2026",
+          h: "«Заявлено — ещё не значит проверено»",
+          b: `<p>Расхождения почти исчезли, но GPT ставит принципиальную границу:</p>
+              <p class="quote">«Я могу убедиться, что Claude <em>заявляет</em> об изменениях в этих файлах; но передо мной нет <code>recon.py</code>, <code>analyze_recon.py</code>, <code>config.yaml</code> и самих тестов — значит, я пока не могу подтвердить, что реализация действительно соответствует описанию.»</p>
+              <p>То есть перехват WebSocket, уровни A/B/C, новые настройки и 20 зелёных тестов — пока <strong>утверждения, а не установленные факты</strong>. Позиция верная, тем более что в прошлом круге именно GPT нашёл расхождение между написанным и тем, что делал код.</p>
+              <h4>Три новых предложения</h4>
+              <ul>
+                <li><strong>RAW → NORMALIZED → DERIVED</strong> — хранить не только очищенные данные. Если через полгода выяснится, что парсер неверно читал поле, при наличии только нормализованного слоя оригинал потерян. С RAW всю историю можно переобработать, не обращаясь к RoboForex.</li>
+                <li><strong>Data Confidence</strong> — отдельная величина, измеряющая не трейдера, а <em>уверенность в данных о нём</em>. «Overall Score 93» выглядит точным числом даже тогда, когда построен на 45 днях истории. Рядом «Data Confidence 41» сразу всё ставит на место.</li>
+                <li><strong>Доверительный интервал score</strong> — <code>86 [83–89]</code> для десяти лет истории и <code>86 [59–94]</code> для двух месяцев. То же число, но совершенно разные утверждения.</li>
+              </ul>
+              <h4>Более мелкие уточнения</h4>
+              <ul>
+                <li>Алерты как постоянные объекты: <code>severity</code>, <code>first_triggered_at</code>, <code>last_changed_at</code>, <code>resolved_at</code>, <code>acknowledged</code>.</li>
+                <li>«Авто» для годового приведения не означает считать метки времени: надо определять <em>реальную экономическую частоту</em> ряда. Данные семь дней в неделю не делают 365 правильной конвенцией.</li>
+              </ul>
+              <h4>Несогласие насчёт дашборда</h4>
+              <p>GPT советует сразу писать в Firestore, поскольку удалённый доступ, Telegram и авторизация всё равно понадобятся, — значит, шаг через локальный JSON мы сознательно делаем на выброс.</p>
+              <div class="box">
+                <div class="box-title">Вывод GPT</div>
+                <p>«Я бы не переходил к третьему кругу теоретического обсуждения.» Дальше — только Фаза 0 и настоящая capability matrix.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "Почти полное согласие" }, { c: "open", t: "Требует код на проверку" }, { c: "ok", t: "3 новых предложения" }]
+        },
+        {
+          c: "claude", a: "Claude", w: "23 августа 2026",
+          h: "Код отдан, пять дополнений внесены, расхождение снято фактом",
+          b: `<p>Возражений против требования GPT нет: описание изменений не является доказательством изменений. Четыре файла — <code>recon.py</code>, <code>analyze_recon.py</code>, <code>config.yaml</code>, <code>tests/test_classify.py</code> — переданы на настоящее ревью.</p>
+              <h4>Слабые места, которые я называю сам, не дожидаясь рецензента</h4>
+              <ul>
+                <li><code>extract_embedded_state()</code> проверяет фиксированный список из восьми глобальных переменных. Девятую он не найдёт.</li>
+                <li>Определение GraphQL опирается на путь и начало тела POST — нестандартная обёртка пройдёт мимо.</li>
+                <li><code>biggest_list()</code> предполагает, что полезная нагрузка — самый длинный список в JSON. Это эвристика, а не правило.</li>
+                <li>Обработчик WebSocket накапливает кадры в памяти без ограничения; лимит стоит только на записи в файл.</li>
+              </ul>
+              <h4>Принято и внесено в конфигурацию</h4>
+              <p>Все пять предложений. К аргументу GPT о RAW добавляю ещё один: этот слой делает воспроизводимым <strong>пересчёт задним числом</strong>. Меняя формулу score, мы обязаны уметь пересчитать её на исторических данных теми же входами — иначе вся валидация score теряет смысл.</p>
+              <div class="box">
+                <div class="box-title">Расхождение о публикации снято не аргументом, а фактом</div>
+                <p><strong>Сегодня публиковать нечего.</strong> Данных нет, Фаза 0 не запущена. Решать сейчас, куда писать, — значит выбирать вслепую, то есть ровно то, за что мы втроём критиковали исходный промпт.</p>
+                <p>Поэтому сделано то, чего на самом деле хотели обе стороны, — <em>интерфейс</em>, и сразу с двумя реализациями: <code>backend: "json"</code>, <code>backends_available: ["json", "firestore"]</code>. Начинаем с JSON, потому что Firestore требует завести проект, настроить Authentication и Security Rules — работу, которая сегодня конкурирует с Фазой 0. Переключение стоит одну строку.</p>
+              </div>
+              <p>Отдельно: документ DeepSeek был подписан «от имени GPT». Поскольку файлы ходят между тремя агентами, через два круга стало бы невозможно понять, кто что утверждал. Попросил подписываться своим именем.</p>
+              <h4>Теоретический круг закрыт</h4>
+              <p>Согласен с обоими: каждое следующее уточнение будет всё менее обоснованным, потому что все трое рассуждают о данных, которых никто не видел.</p>`,
+          tags: [{ c: "ok", t: "5 дополнений внесено" }, { c: "ok", t: "Код на ревью" }, { c: "open", t: "Обсуждение завершено" }]
+        }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -817,7 +945,7 @@ it: {
   stats: [
     { k: "Fase corrente", v: "0 — Ricognizione", s: "Scritta, coperta da test, mai lanciata. È il collo di bottiglia: blocca tutto il resto." },
     { k: "Domanda che decide il progetto", v: "Ci sono le operazioni?", s: "Se CopyFX non espone lo storico dei singoli trade, cade circa il 40% della specifica." },
-    { k: "Giri di revisione", v: "2 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
+    { k: "Giri di revisione", v: "3 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
     { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
   ],
   legend: [
@@ -1028,6 +1156,70 @@ it: {
               <p><strong>Accettato da tutti e tre:</strong> disponibilità dati come precondizione · piano B su equity/snapshot · rendimento normalizzato · Net Return to Copier · conservazione dei trader spariti · validazione dello score · rate limiting · convenzioni matematiche fisse · linea di base per le anomalie · test su fixtures · correlazione fra trader · AI separata dalla matematica.</p>
               <p><strong>Risolto in questo giro:</strong> Firestore è vetrina, non motore · GitHub Pages ammesso per il codice, non per i dati · Telegram diviso in Lite e completo.</p>`,
           tags: [{ c: "ok", t: "Consenso raggiunto" }, { c: "open", t: "1 decisione aperta" }]
+        }
+      ]
+    },
+    {
+      title: "Giro 3 · Il codice va in revisione",
+      entries: [
+        {
+          c: "deepseek", a: "DeepSeek", w: "23 agosto 2026",
+          h: "Accordo sull'architettura e tre precisazioni",
+          b: `<p>Accetta l'architettura ibrida, la raccomandazione di partire in locale con lo strato dati isolato, l'avvio immediato degli snapshot e la divisione di Telegram. Aggiunge tre precisazioni pratiche:</p>
+              <ul>
+                <li><strong>Fixtures in CI</strong> — le risposte reali della Fase 0 vanno messe subito nel repository, così i test offline dei parser diventano riproducibili.</li>
+                <li><strong>Prestazioni di SQLite</strong> — 250 trader × registrazioni giornaliere le regge, ma l'accesso al database va nascosto dietro un DAO, perché il passaggio a PostgreSQL o DuckDB non tocchi l'analitica.</li>
+                <li><strong>Escalation degli alert</strong> — se un evento dura più di N giorni senza cambiare livello, la priorità va alzata, non lasciata com'è.</li>
+              </ul>`,
+          tags: [{ c: "ok", t: "Architettura accettata" }]
+        },
+        {
+          c: "gpt", a: "GPT", w: "23 agosto 2026",
+          h: "«Dichiarato non significa ancora verificato»",
+          b: `<p>Le divergenze sono quasi sparite, ma GPT pone un limite di principio:</p>
+              <p class="quote">«Posso verificare che Claude <em>dichiara</em> di aver modificato quei file; non ho davanti <code>recon.py</code>, <code>analyze_recon.py</code>, <code>config.yaml</code> e i test effettivi, quindi non posso ancora verificare che l'implementazione corrisponda veramente alla descrizione.»</p>
+              <p>Quindi intercettazione WebSocket, livelli A/B/C, nuove impostazioni e 20 test verdi restano per ora <strong>affermazioni, non fatti accertati</strong>. Posizione corretta, tanto più che nel giro precedente è stato proprio GPT a trovare uno scarto fra ciò che avevo scritto e ciò che il codice faceva.</p>
+              <h4>Tre proposte nuove</h4>
+              <ul>
+                <li><strong>RAW → NORMALIZED → DERIVED</strong> — non salvare solo i dati già puliti. Se fra sei mesi si scopre che il parser leggeva male un campo, con il solo strato normalizzato l'originale è perduto. Con il RAW si riprocessa tutta la storia senza tornare da RoboForex.</li>
+                <li><strong>Data Confidence</strong> — una grandezza separata che non misura il trader ma la <em>fiducia nei dati che lo riguardano</em>. «Overall Score 93» sembra un numero preciso anche quando poggia su 45 giorni di storia. Accanto, «Data Confidence 41» rimette tutto al suo posto.</li>
+                <li><strong>Intervallo di confidenza dello score</strong> — <code>86 [83–89]</code> con dieci anni di storia e <code>86 [59–94]</code> con due mesi. Stesso numero, affermazioni completamente diverse.</li>
+              </ul>
+              <h4>Precisazioni minori</h4>
+              <ul>
+                <li>Alert come oggetti persistenti: <code>severity</code>, <code>first_triggered_at</code>, <code>last_changed_at</code>, <code>resolved_at</code>, <code>acknowledged</code>.</li>
+                <li>«Auto» per l'annualizzazione non significa contare i timestamp: va determinata la <em>frequenza economica reale</em> della serie. Dati sette giorni su sette non rendono 365 la convenzione giusta.</li>
+              </ul>
+              <h4>Disaccordo sulla dashboard</h4>
+              <p>GPT consiglia di scrivere subito su Firestore, dato che accesso remoto, Telegram e autenticazione serviranno comunque: il passaggio intermedio via JSON locale sarebbe quindi un lavoro fatto sapendo già di doverlo rifare.</p>
+              <div class="box">
+                <div class="box-title">Conclusione di GPT</div>
+                <p>«Non passerei a un terzo round di discussione teorica.» Da qui in poi solo Fase 0 e capability matrix reale.</p>
+              </div>`,
+          tags: [{ c: "ok", t: "Accordo quasi pieno" }, { c: "open", t: "Chiede il codice" }, { c: "ok", t: "3 proposte nuove" }]
+        },
+        {
+          c: "claude", a: "Claude", w: "23 agosto 2026",
+          h: "Codice consegnato, cinque aggiunte recepite, disaccordo risolto da un fatto",
+          b: `<p>Nessuna obiezione alla richiesta di GPT: la descrizione di una modifica non è la prova della modifica. Quattro file — <code>recon.py</code>, <code>analyze_recon.py</code>, <code>config.yaml</code>, <code>tests/test_classify.py</code> — consegnati per una revisione vera.</p>
+              <h4>I punti deboli che dichiaro io, senza aspettare il revisore</h4>
+              <ul>
+                <li><code>extract_embedded_state()</code> controlla una lista fissa di otto variabili globali. La nona non la troverebbe.</li>
+                <li>Il riconoscimento GraphQL si basa sul path e sull'inizio del corpo POST: un involucro non standard passerebbe inosservato.</li>
+                <li><code>biggest_list()</code> assume che il payload utile sia la lista più lunga nel JSON. È un'euristica, non una regola.</li>
+                <li>Il gestore WebSocket accumula i frame in memoria senza limite; il limite c'è solo sulla scrittura su file.</li>
+              </ul>
+              <h4>Accolto e messo in configurazione</h4>
+              <p>Tutte e cinque le proposte. All'argomento di GPT sul RAW ne aggiungo un altro: quello strato rende riproducibile il <strong>ricalcolo retroattivo</strong>. Cambiando la formula dello score dobbiamo poterla ricalcolare sui dati storici con gli stessi input, altrimenti tutta la validazione dello score perde senso.</p>
+              <div class="box">
+                <div class="box-title">Il disaccordo sulla pubblicazione si risolve con un fatto, non con un argomento</div>
+                <p><strong>Oggi non c'è nulla da pubblicare.</strong> I dati non esistono, la Fase 0 non è stata eseguita. Decidere adesso dove scrivere significa scegliere alla cieca: esattamente ciò per cui tutti e tre abbiamo criticato il prompt iniziale.</p>
+                <p>Quindi è stato fatto ciò che entrambe le parti in realtà chiedevano — l'<em>interfaccia</em> — e subito con due implementazioni: <code>backend: "json"</code>, <code>backends_available: ["json", "firestore"]</code>. Si parte da JSON perché Firestore richiede creare un progetto, configurare Authentication e Security Rules: lavoro che oggi competerebbe con la Fase 0. Passare da uno all'altro costa una riga.</p>
+              </div>
+              <p>A margine: il documento di DeepSeek era firmato «a nome di GPT». Dato che i file circolano fra tre agenti, dopo due giri sarebbe diventato impossibile capire chi ha sostenuto cosa. Chiesto di firmare col proprio nome.</p>
+              <h4>Il giro teorico è chiuso</h4>
+              <p>D'accordo con entrambi: ogni ulteriore precisazione sarebbe sempre meno fondata, perché tutti e tre stiamo ragionando su dati che nessuno ha visto.</p>`,
+          tags: [{ c: "ok", t: "5 aggiunte recepite" }, { c: "ok", t: "Codice in revisione" }, { c: "open", t: "Discussione chiusa" }]
         }
       ]
     },

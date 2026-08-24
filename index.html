@@ -291,7 +291,7 @@ uk: {
   stats: [
     { k: "Поточна фаза", v: "0A пройдена, 0B відкрита", s: "Канали й дані — так. Семантика period, повнота, відкриті позиції й умови — ще ні." },
     { k: "Питання, що вирішує долю проєкту", v: "Рівень A", s: "Історія окремих угод доступна. «План Б» не знадобиться." },
-    { k: "Кола рецензування", v: "8 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
+    { k: "Кола рецензування", v: "9 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
     { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
   ],
   legend: [
@@ -782,6 +782,28 @@ uk: {
       ]
     },
     {
+      n: 10, title: "Три мови і простий режим",
+      entries: [
+        { c: "claude", a: "Claude", w: "24 серпня 2026", h: "Ті самі дані, дві мови розповіді",
+          b: `<p>Дашборд отримав перемикач мов — українська, російська, італійська — і другий перемикач: <strong>Pro</strong> і <strong>Simple</strong>.</p>
+              <p>Простий режим нічого не приховує. Він змінює порядок і мову: спершу висновок одним реченням, потім чотири великі числа, потім <strong>написаний текст про те, що це за трейдер</strong>.</p>
+              <div class="box">
+                <div class="box-title">Головний прийом: відсотки перекладені в гроші</div>
+                <p>«Просадка 30%» не означає нічого для того, хто не в темі. «Якби ви вклали 1000 €, у той день ви побачили б 700 €» розуміє кожен.</p>
+                <p>Те саме з комісією: не «net return 1136%», а «1000 € перетворилися б на 12 357 €, а не на 13 619 €, як показує сама платформа».</p>
+              </div>
+              <h4>Що пише текст</h4>
+              <p>Чотири абзаци: хто це і як довго працює · скільки заробив і скільки з цього дісталося б вам · чим ви ризикуєте · наскільки стабільно. Плюс попередження простою мовою, і висновок одним рядком.</p>
+              <p>Для ValeriiS — того самого, що раніше очолював головний показник — тепер написано прямо: <em>«Цифри виглядають добре, але не описують реальність. Не орієнтуйтеся на них»</em>, і поруч пояснення, що рахунок був обнулений.</p>
+              <div class="box danger">
+                <div class="box-title">Текст пише не мовна модель</div>
+                <p>Абзаци збираються з метрик за детермінованими правилами. Жодна модель не вигадує числа — вона їх навіть не бачить. Це те саме правило «AI інтерпретує, а не рахує», на якому наполягав GPT, доведене до кінця.</p>
+              </div>
+              <h4>Дрібниця, яка видає халтуру</h4>
+              <p>Перша версія писала «6 роки». Українська та російська змінюють іменник за числом: 1 рік, 2 роки, 5 років. Виправлено для років, місяців і днів у обох мовах — разом із скороченнями тривалості, які лишалися англійськими («15mo») саме в режимі для тих, хто англійської не знає.</p>`, tags: [{ c: "ok", t: "3 мови" }, { c: "ok", t: "2 режими" }, { c: "ok", t: "Текстовий висновок" }] }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -847,7 +869,7 @@ ru: {
   stats: [
     { k: "Текущая фаза", v: "0A пройдена, 0B открыта", s: "Каналы и данные — да. Семантика period, полнота, открытые позиции и условия — ещё нет." },
     { k: "Вопрос, решающий судьбу проекта", v: "Уровень A", s: "История отдельных сделок доступна. «План Б» не понадобится." },
-    { k: "Круги рецензирования", v: "8 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
+    { k: "Круги рецензирования", v: "9 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
     { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
   ],
   legend: [
@@ -1338,6 +1360,28 @@ ru: {
       ]
     },
     {
+      n: 10, title: "Три языка и простой режим",
+      entries: [
+        { c: "claude", a: "Claude", w: "24 августа 2026", h: "Те же данные, два языка рассказа",
+          b: `<p>Дашборд получил переключатель языков — украинский, русский, итальянский — и второй переключатель: <strong>Pro</strong> и <strong>Simple</strong>.</p>
+              <p>Простой режим ничего не прячет. Он меняет порядок и язык: сначала вывод одним предложением, потом четыре крупных числа, потом <strong>написанный текст о том, что это за трейдер</strong>.</p>
+              <div class="box">
+                <div class="box-title">Главный приём: проценты переведены в деньги</div>
+                <p>«Просадка 30%» не значит ничего для того, кто не в теме. «Если бы вы вложили 1000 €, в тот день вы увидели бы 700 €» понимает каждый.</p>
+                <p>То же с комиссией: не «net return 1136%», а «1000 € превратились бы в 12 357 €, а не в 13 619 €, как показывает сама платформа».</p>
+              </div>
+              <h4>Что пишет текст</h4>
+              <p>Четыре абзаца: кто это и как долго работает · сколько заработал и сколько из этого досталось бы вам · чем вы рискуете · насколько стабильно. Плюс предупреждения простым языком и вывод одной строкой.</p>
+              <p>Для ValeriiS — того самого, что раньше возглавлял главный показатель — теперь написано прямо: <em>«Цифры выглядят хорошо, но не описывают реальность. Не ориентируйтесь на них»</em>, и рядом объяснение, что счёт был обнулён.</p>
+              <div class="box danger">
+                <div class="box-title">Текст пишет не языковая модель</div>
+                <p>Абзацы собираются из метрик по детерминированным правилам. Никакая модель не выдумывает числа — она их даже не видит. Это то самое правило «AI интерпретирует, а не считает», на котором настаивал GPT, доведённое до конца.</p>
+              </div>
+              <h4>Мелочь, которая выдаёт халтуру</h4>
+              <p>Первая версия писала «6 роки». Украинский и русский меняют существительное по числу: 1 рік, 2 роки, 5 років. Исправлено для лет, месяцев и дней в обоих языках — вместе с сокращениями длительности, которые оставались английскими («15mo») именно в режиме для тех, кто английского не знает.</p>`, tags: [{ c: "ok", t: "3 языка" }, { c: "ok", t: "2 режима" }, { c: "ok", t: "Текстовый вывод" }] }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -1403,7 +1447,7 @@ it: {
   stats: [
     { k: "Fase corrente", v: "0A superata, 0B aperta", s: "Canali e dati sì. Semantica di period, completezza, posizioni aperte e condizioni d'uso ancora no." },
     { k: "Domanda che decide il progetto", v: "Livello A", s: "Lo storico delle singole operazioni c'è. Il «piano B» non servirà." },
-    { k: "Giri di revisione", v: "8 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
+    { k: "Giri di revisione", v: "9 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
     { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
   ],
   legend: [
@@ -1891,6 +1935,28 @@ it: {
               <p><strong>Prima:</strong> il migliore era ValeriiS, +12.642% con DD −100%. <strong>Adesso:</strong> xxxAlexanderxxx, +1136% netto, DD −10,6%, Sharpe 2,17, 460 giorni di storia. Il secondo numero è più piccolo e molto più vero.</p>
               <h4>Verificato, non a occhio</h4>
               <p>14 larghezze da 360 a 2560 px: <strong>zero overflow orizzontale</strong>. Trovato misurando il DOM — due elementi spingevano la pagina a 537 px dentro una finestra da 390.</p>`, tags: [{ c: "ok", t: "Dashboard funzionante" }, { c: "bad", t: "2 KPI non hanno retto" }, { c: "ok", t: "33 strategie segnalate" }] }
+      ]
+    },
+    {
+      n: 10, title: "Tre lingue e modalità semplice",
+      entries: [
+        { c: "claude", a: "Claude", w: "24 agosto 2026", h: "Gli stessi dati, due modi di raccontarli",
+          b: `<p>La dashboard ha ora un selettore di lingua — ucraino, russo, italiano — e un secondo interruttore: <strong>Pro</strong> e <strong>Simple</strong>.</p>
+              <p>La modalità semplice non nasconde niente. Cambia l\'ordine e il linguaggio: prima il verdetto in una frase, poi quattro numeri grandi, poi <strong>un testo scritto che spiega che trader è</strong>.</p>
+              <div class="box">
+                <div class="box-title">L\'espediente centrale: le percentuali diventano soldi</div>
+                <p>«Drawdown 30%» non dice nulla a chi non è del mestiere. «Se avessi messo 1000 €, quel giorno ne avresti visti 700 €» lo capisce chiunque.</p>
+                <p>Lo stesso per la commissione: non «net return 1136%», ma «1000 € sarebbero diventati 12 357 €, non 13 619 € come mostra la piattaforma».</p>
+              </div>
+              <h4>Cosa dice il testo</h4>
+              <p>Quattro paragrafi: chi è e da quanto lavora · quanto ha guadagnato e quanto ne resterebbe a te · cosa rischi · quanto è costante. Più gli avvertimenti in parole normali e un verdetto di una riga.</p>
+              <p>Per ValeriiS — quello che prima guidava il KPI principale — ora c\'è scritto senza giri di parole: <em>«I numeri sembrano buoni ma non descrivono la realtà. Non farci affidamento»</em>, con accanto la spiegazione che il conto è stato azzerato.</p>
+              <div class="box danger">
+                <div class="box-title">Il testo non lo scrive un modello linguistico</div>
+                <p>I paragrafi si compongono dalle metriche con regole deterministiche. Nessun modello inventa i numeri: non li vede nemmeno. È la regola «l\'AI interpreta, non calcola» su cui insisteva GPT, portata fino in fondo.</p>
+              </div>
+              <h4>Il dettaglio che tradisce il lavoro fatto male</h4>
+              <p>La prima versione scriveva «6 роки». Ucraino e russo cambiano il sostantivo in base al numero: 1 рік, 2 роки, 5 років. Corretto per anni, mesi e giorni in entrambe le lingue — insieme alle abbreviazioni di durata, rimaste in inglese («15mo») proprio nella modalità pensata per chi l\'inglese non lo mastica.</p>`, tags: [{ c: "ok", t: "3 lingue" }, { c: "ok", t: "2 modalità" }, { c: "ok", t: "Riassunto scritto" }] }
       ]
     },
     {

@@ -291,7 +291,7 @@ uk: {
   stats: [
     { k: "Поточна фаза", v: "0A пройдена, 0B відкрита", s: "Канали й дані — так. Семантика period, повнота, відкриті позиції й умови — ще ні." },
     { k: "Питання, що вирішує долю проєкту", v: "Рівень A", s: "Історія окремих угод доступна. «План Б» не знадобиться." },
-    { k: "Кола рецензування", v: "7 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
+    { k: "Кола рецензування", v: "8 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
     { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
   ],
   legend: [
@@ -753,6 +753,35 @@ uk: {
       ]
     },
     {
+      n: 9, title: "Дашборд",
+      entries: [
+        { c: "claude", a: "Claude", w: "24 серпня 2026", h: "Інтерфейс одразу показав те, чого я не бачив",
+          b: `<p>Побудовано за фазами, як вимагав промпт: спершу інвентаризація даних, потім дизайн-система, оболонка, головна сторінка, картка трейдера. Модульний код, статична збірка, жодної зовнішньої бібліотеки.</p>
+              <p>Експорт віддає готові числа: <strong>браузер не рахує жодної метрики</strong>. Індекс — 699 КБ, криві та операції завантажуються лише коли потрібні.</p>
+              <div class="box danger">
+                <div class="box-title">І ось навіщо потрібен був інтерфейс</div>
+                <p>Щойно головна сторінка ожила, у вітрині опинилися два числа, яким я не повірив: <strong>Sharpe 15,39 при просадці 0,0%</strong> і кілька трейдерів із <strong>DD −100%</strong>.</p>
+                <p>Жодне з них не було помилкою обчислення — і це гірше.</p>
+                <p><strong>GENBOXX:</strong> крива піднімається з 0,14% до 555% за 259 днів <em>без жодного негативного дня</em>. Просадка справді нульова. Але крива без жодного спуску при 14&nbsp;942 операціях — це підпис того, хто не закриває збиткові позиції: equity показує лише реалізоване, плаваючий збиток не видно.</p>
+                <p><strong>ValeriiS:</strong> крива справді торкається −100% і потім піднімається до +17&nbsp;318%. Рахунок був обнулений і рекапіталізований. Мій головний показник виставляв у вітрину обнулений рахунок.</p>
+              </div>
+              <h4>Додано перевірки правдоподібності</h4>
+              <p>Вони не виправляють числа: вони кажуть, коли правильне число вводить в оману.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Ознака</th><th>Знайдено</th><th>Що означає</th></tr></thead>
+                <tbody>
+                  <tr><td><code>ZERO</code></td><td>19</td><td>крива торкалася −95% або гірше</td></tr>
+                  <tr><td><code>SR!</code></td><td>11</td><td>Sharpe понад 8 — у реальній торгівлі не трапляється</td></tr>
+                  <tr><td><code>NO-DD</code></td><td>7</td><td>жодного негативного дня за всю історію</td></tr>
+                </tbody>
+              </table></div>
+              <p>33 стратегії з 500 позначено, їхній бал знижено, а довіра до даних зменшена вдвічі. Головні показники тепер підпорядковані тим самим фільтрам, що й рейтинг.</p>
+              <p><strong>Було:</strong> найкращий — ValeriiS, +12&nbsp;642% при DD −100%. <strong>Стало:</strong> xxxAlexanderxxx, +1136% чистими, DD −10,6%, Sharpe 2,17, 460 днів історії. Друге число менше і набагато правдивіше.</p>
+              <h4>Перевірено, а не на око</h4>
+              <p>14 значень ширини від 360 до 2560 px — <strong>нуль горизонтального переповнення</strong>. Знайдено вимірюванням DOM: два елементи розтягували сторінку до 537 px у вікні 390.</p>`, tags: [{ c: "ok", t: "Дашборд працює" }, { c: "bad", t: "2 показники не витримали перевірки" }, { c: "ok", t: "33 стратегії позначено" }] }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -818,7 +847,7 @@ ru: {
   stats: [
     { k: "Текущая фаза", v: "0A пройдена, 0B открыта", s: "Каналы и данные — да. Семантика period, полнота, открытые позиции и условия — ещё нет." },
     { k: "Вопрос, решающий судьбу проекта", v: "Уровень A", s: "История отдельных сделок доступна. «План Б» не понадобится." },
-    { k: "Круги рецензирования", v: "7 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
+    { k: "Круги рецензирования", v: "8 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
     { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
   ],
   legend: [
@@ -1280,6 +1309,35 @@ ru: {
       ]
     },
     {
+      n: 9, title: "Дашборд",
+      entries: [
+        { c: "claude", a: "Claude", w: "24 августа 2026", h: "Интерфейс сразу показал то, чего я не видел",
+          b: `<p>Построено по фазам, как требовал промпт: сначала инвентаризация данных, затем дизайн-система, оболочка, главная страница, карточка трейдера. Модульный код, статическая сборка, ни одной внешней библиотеки.</p>
+              <p>Экспорт отдаёт готовые числа: <strong>браузер не считает ни одной метрики</strong>. Индекс — 699 КБ, кривые и операции загружаются только когда нужны.</p>
+              <div class="box danger">
+                <div class="box-title">И вот зачем был нужен интерфейс</div>
+                <p>Как только главная страница ожила, в витрине оказались два числа, которым я не поверил: <strong>Sharpe 15,39 при просадке 0,0%</strong> и несколько трейдеров с <strong>DD −100%</strong>.</p>
+                <p>Ни одно из них не было ошибкой вычисления — и это хуже.</p>
+                <p><strong>GENBOXX:</strong> кривая поднимается с 0,14% до 555% за 259 дней <em>без единого отрицательного дня</em>. Просадка действительно нулевая. Но кривая без единого спуска при 14&nbsp;942 операциях — это подпись того, кто не закрывает убыточные позиции: equity показывает только реализованное, плавающий убыток не виден.</p>
+                <p><strong>ValeriiS:</strong> кривая действительно касается −100% и затем поднимается до +17&nbsp;318%. Счёт был обнулён и рекапитализирован. Мой главный показатель выставлял в витрину обнулённый счёт.</p>
+              </div>
+              <h4>Добавлены проверки правдоподобия</h4>
+              <p>Они не исправляют числа: они говорят, когда правильное число вводит в заблуждение.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Признак</th><th>Найдено</th><th>Что означает</th></tr></thead>
+                <tbody>
+                  <tr><td><code>ZERO</code></td><td>19</td><td>кривая касалась −95% или хуже</td></tr>
+                  <tr><td><code>SR!</code></td><td>11</td><td>Sharpe выше 8 — в реальной торговле не встречается</td></tr>
+                  <tr><td><code>NO-DD</code></td><td>7</td><td>ни одного отрицательного дня за всю историю</td></tr>
+                </tbody>
+              </table></div>
+              <p>33 стратегии из 500 помечены, их балл снижен, а доверие к данным уменьшено вдвое. Главные показатели теперь подчинены тем же фильтрам, что и рейтинг.</p>
+              <p><strong>Было:</strong> лучший — ValeriiS, +12&nbsp;642% при DD −100%. <strong>Стало:</strong> xxxAlexanderxxx, +1136% чистыми, DD −10,6%, Sharpe 2,17, 460 дней истории. Второе число меньше и намного правдивее.</p>
+              <h4>Проверено, а не на глаз</h4>
+              <p>14 значений ширины от 360 до 2560 px — <strong>ноль горизонтального переполнения</strong>. Найдено измерением DOM: два элемента растягивали страницу до 537 px в окне 390.</p>`, tags: [{ c: "ok", t: "Дашборд работает" }, { c: "bad", t: "2 показателя не выдержали проверки" }, { c: "ok", t: "33 стратегии помечены" }] }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -1345,7 +1403,7 @@ it: {
   stats: [
     { k: "Fase corrente", v: "0A superata, 0B aperta", s: "Canali e dati sì. Semantica di period, completezza, posizioni aperte e condizioni d'uso ancora no." },
     { k: "Domanda che decide il progetto", v: "Livello A", s: "Lo storico delle singole operazioni c'è. Il «piano B» non servirà." },
-    { k: "Giri di revisione", v: "7 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
+    { k: "Giri di revisione", v: "8 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
     { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
   ],
   legend: [
@@ -1804,6 +1862,35 @@ it: {
               </table></div>
               <p>Quasi metà dei primi della rating ha drawdown peggiore del 50%, più della metà esiste da meno di sei mesi. La sezione 25 del prompt avvertiva esattamente di questo: ora è misurato.</p>`,
           tags: [{ c: "ok", t: "TWR confermato (1,28%)" }, { c: "bad", t: "3 numeri corretti" }, { c: "bad", t: "4 su 500 passano" }] }
+      ]
+    },
+    {
+      n: 9, title: "La dashboard",
+      entries: [
+        { c: "claude", a: "Claude", w: "24 agosto 2026", h: "L\'interfaccia ha mostrato subito ciò che non vedevo",
+          b: `<p>Costruita per fasi, come chiedeva il prompt: prima l\'inventario dei dati, poi design system, shell, homepage, scheda trader. Codice modulare, build statica, nessuna libreria esterna.</p>
+              <p>L\'export consegna numeri già pronti: <strong>il browser non calcola nessuna metrica</strong>. L\'indice pesa 699 KB, curve e operazioni si caricano solo quando servono.</p>
+              <div class="box danger">
+                <div class="box-title">Ed ecco a cosa serviva l\'interfaccia</div>
+                <p>Appena la homepage si è accesa, in vetrina sono finiti due numeri a cui non ho creduto: <strong>Sharpe 15,39 con drawdown 0,0%</strong> e diversi trader con <strong>DD −100%</strong>.</p>
+                <p>Nessuno dei due era un errore di calcolo — ed è peggio così.</p>
+                <p><strong>GENBOXX:</strong> la curva sale da 0,14% a 555% in 259 giorni <em>senza un solo giorno negativo</em>. Il drawdown è davvero zero. Ma una curva che non scende mai con 14.942 operazioni è la firma di chi non chiude le posizioni in perdita: l\'equity mostra solo il realizzato, il flottante non compare.</p>
+                <p><strong>ValeriiS:</strong> la curva tocca davvero −100% e poi risale a +17.318%. Il conto è stato azzerato e ricapitalizzato. Il mio KPI principale stava mettendo in vetrina un conto azzerato.</p>
+              </div>
+              <h4>Aggiunti i controlli di plausibilità</h4>
+              <p>Non correggono i numeri: dicono quando un numero corretto è fuorviante.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Segnale</th><th>Trovati</th><th>Cosa significa</th></tr></thead>
+                <tbody>
+                  <tr><td><code>ZERO</code></td><td>19</td><td>la curva ha toccato −95% o peggio</td></tr>
+                  <tr><td><code>SR!</code></td><td>11</td><td>Sharpe oltre 8: non si osserva nel trading reale</td></tr>
+                  <tr><td><code>NO-DD</code></td><td>7</td><td>nessun giorno negativo in tutta la storia</td></tr>
+                </tbody>
+              </table></div>
+              <p>33 strategie su 500 segnalate, punteggio abbassato, fiducia nei dati dimezzata. I KPI di testa ora rispettano gli stessi filtri della classifica.</p>
+              <p><strong>Prima:</strong> il migliore era ValeriiS, +12.642% con DD −100%. <strong>Adesso:</strong> xxxAlexanderxxx, +1136% netto, DD −10,6%, Sharpe 2,17, 460 giorni di storia. Il secondo numero è più piccolo e molto più vero.</p>
+              <h4>Verificato, non a occhio</h4>
+              <p>14 larghezze da 360 a 2560 px: <strong>zero overflow orizzontale</strong>. Trovato misurando il DOM — due elementi spingevano la pagina a 537 px dentro una finestra da 390.</p>`, tags: [{ c: "ok", t: "Dashboard funzionante" }, { c: "bad", t: "2 KPI non hanno retto" }, { c: "ok", t: "33 strategie segnalate" }] }
       ]
     },
     {

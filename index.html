@@ -283,7 +283,7 @@ uk: {
   pills: [
     { c: "var(--user)",  l: "Початок",          v: "23 серпня 2026" },
     { c: "var(--user)",  l: "Останнє оновлення", v: "23 серпня 2026" },
-    { c: "var(--ok)",    l: "Фаза 0",           v: "виконана" },
+    { c: "var(--ok)",    l: "База",             v: "1,45 млн операцій" },
     { c: "var(--ok)",    l: "Тести",            v: "20 / 20" }
   ],
   roundLabel: "Раунд <span class='slash'>/</span> Ітерація",
@@ -291,7 +291,7 @@ uk: {
   stats: [
     { k: "Поточна фаза", v: "0A пройдена, 0B відкрита", s: "Канали й дані — так. Семантика period, повнота, відкриті позиції й умови — ще ні." },
     { k: "Питання, що вирішує долю проєкту", v: "Рівень A", s: "Історія окремих угод доступна. «План Б» не знадобиться." },
-    { k: "Кола рецензування", v: "5 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
+    { k: "Кола рецензування", v: "6 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
     { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
   ],
   legend: [
@@ -675,6 +675,47 @@ uk: {
       ]
     },
     {
+      n: 7, title: "Дані зібрано, перший аналіз",
+      entries: [
+        {
+          c: "claude", a: "Claude", w: "24 серпня 2026",
+          h: "1,45 мільйона операцій за 7,9 години — і комісія одразу міняє перше місце",
+          b: `<p>Збір завершено о 03:45: <strong>494 трейдери, жодної помилки, 6671 запит</strong>. Темп навмисно повільний — самі запити тривають хвилини, решта це паузи.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>У базі</th><th>Кількість</th></tr></thead>
+                <tbody>
+                  <tr><td>Трейдери в рейтингу</td><td>1117 (з них 500 поглиблено)</td></tr>
+                  <tr><td>Ринкові операції</td><td><strong>1 454 445</strong></td></tr>
+                  <tr><td>Рухи капіталу</td><td>34 223</td></tr>
+                  <tr><td>Точки кривих</td><td>173 229</td></tr>
+                  <tr><td>Умови копіювання</td><td>791</td></tr>
+                  <tr><td>Найдавніша операція</td><td>07.05.2018 — вісім років історії</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Комісія міняє порядок, як і передбачалося</h4>
+              <div class="scroll"><table>
+                <thead><tr><th>Трейдер</th><th>Валовий</th><th>Чистий</th><th>Комісія</th><th>Позиція</th></tr></thead>
+                <tbody>
+                  <tr><td>Goldwave</td><td>17695%</td><td>10617%</td><td>40%</td><td class="no">1 → 2</td></tr>
+                  <tr><td>FelixFisher</td><td>16083%</td><td>11258%</td><td>30%</td><td class="yes">2 → 1</td></tr>
+                  <tr><td>KAPTENTRADER</td><td>4844%</td><td>3149%</td><td>35%</td><td class="no">5 → 6</td></tr>
+                  <tr><td>WRXSti</td><td>4621%</td><td>3928%</td><td>15%</td><td class="yes">6 → 5</td></tr>
+                </tbody>
+              </table></div>
+              <p>Goldwave із 40% комісії поступається місцем FelixFisher, у якого валовий результат менший, а комісія 30%. <strong>Рейтинг за валовою дохідністю справді розставляє їх навпаки.</strong></p>
+              <div class="box danger">
+                <div class="box-title">Але найважливіше — інше</div>
+                <p>Мінімальний фільтр: вік рахунку від 180 днів, просадка не гірша за 40%, щонайменше 100 операцій.</p>
+                <p><strong>Із 300 трейдерів проходять 29.</strong> Дев\'ять із десяти лідерів рейтингу — це молоді рахунки з катастрофічними просадками. Саме про це попереджав розділ 25 промпта, і тепер це видно на даних, а не в теорії.</p>
+              </div>
+              <h4>Обслуговування</h4>
+              <p>Шар RAW стиснено: <strong>1239 МБ → 686 МБ</strong>. Додано читання стиснених відповідей — інакше стиснення просто зробило б цей шар непридатним.</p>
+              <p>Масштаб обсягу виведено для <strong>453 рахунків, 1416 комбінацій</strong> рахунок/інструмент; у 781 з них розкид менший за 1%.</p>`,
+          tags: [{ c: "ok", t: "1,45 млн операцій" }, { c: "ok", t: "0 помилок" }, { c: "bad", t: "29 із 300 проходять фільтр" }]
+        }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -732,7 +773,7 @@ ru: {
   pills: [
     { c: "var(--user)",  l: "Начало",             v: "23 августа 2026" },
     { c: "var(--user)",  l: "Последнее обновление", v: "23 августа 2026" },
-    { c: "var(--ok)",    l: "Фаза 0",             v: "выполнена" },
+    { c: "var(--ok)",    l: "База",             v: "1,45 млн операций" },
     { c: "var(--ok)",    l: "Тесты",              v: "20 / 20" }
   ],
   roundLabel: "Раунд <span class='slash'>/</span> Итерация",
@@ -740,7 +781,7 @@ ru: {
   stats: [
     { k: "Текущая фаза", v: "0A пройдена, 0B открыта", s: "Каналы и данные — да. Семантика period, полнота, открытые позиции и условия — ещё нет." },
     { k: "Вопрос, решающий судьбу проекта", v: "Уровень A", s: "История отдельных сделок доступна. «План Б» не понадобится." },
-    { k: "Круги рецензирования", v: "5 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
+    { k: "Круги рецензирования", v: "6 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
     { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
   ],
   legend: [
@@ -1124,6 +1165,47 @@ ru: {
       ]
     },
     {
+      n: 7, title: "Данные собраны, первый анализ",
+      entries: [
+        {
+          c: "claude", a: "Claude", w: "24 августа 2026",
+          h: "1,45 миллиона операций за 7,9 часа — и комиссия сразу меняет первое место",
+          b: `<p>Сбор завершён в 03:45: <strong>494 трейдера, ни одной ошибки, 6671 запрос</strong>. Темп намеренно медленный — сами запросы занимают минуты, остальное паузы.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>В базе</th><th>Количество</th></tr></thead>
+                <tbody>
+                  <tr><td>Трейдеры в рейтинге</td><td>1117 (из них 500 углублённо)</td></tr>
+                  <tr><td>Рыночные операции</td><td><strong>1 454 445</strong></td></tr>
+                  <tr><td>Движения капитала</td><td>34 223</td></tr>
+                  <tr><td>Точки кривых</td><td>173 229</td></tr>
+                  <tr><td>Условия копирования</td><td>791</td></tr>
+                  <tr><td>Самая давняя операция</td><td>07.05.2018 — восемь лет истории</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Комиссия меняет порядок, как и предполагалось</h4>
+              <div class="scroll"><table>
+                <thead><tr><th>Трейдер</th><th>Валовой</th><th>Чистый</th><th>Комиссия</th><th>Позиция</th></tr></thead>
+                <tbody>
+                  <tr><td>Goldwave</td><td>17695%</td><td>10617%</td><td>40%</td><td class="no">1 → 2</td></tr>
+                  <tr><td>FelixFisher</td><td>16083%</td><td>11258%</td><td>30%</td><td class="yes">2 → 1</td></tr>
+                  <tr><td>KAPTENTRADER</td><td>4844%</td><td>3149%</td><td>35%</td><td class="no">5 → 6</td></tr>
+                  <tr><td>WRXSti</td><td>4621%</td><td>3928%</td><td>15%</td><td class="yes">6 → 5</td></tr>
+                </tbody>
+              </table></div>
+              <p>Goldwave с комиссией 40% уступает место FelixFisher, у которого валовый результат меньше, а комиссия 30%. <strong>Рейтинг по валовой доходности действительно расставляет их наоборот.</strong></p>
+              <div class="box danger">
+                <div class="box-title">Но главное — другое</div>
+                <p>Минимальный фильтр: возраст счёта от 180 дней, просадка не хуже 40%, не менее 100 операций.</p>
+                <p><strong>Из 300 трейдеров проходят 29.</strong> Девять из десяти лидеров рейтинга — молодые счета с катастрофическими просадками. Именно об этом предупреждал раздел 25 промпта, и теперь это видно на данных, а не в теории.</p>
+              </div>
+              <h4>Обслуживание</h4>
+              <p>Слой RAW сжат: <strong>1239 МБ → 686 МБ</strong>. Добавлено чтение сжатых ответов — иначе сжатие просто сделало бы этот слой непригодным.</p>
+              <p>Масштаб объёма выведен для <strong>453 счетов, 1416 комбинаций</strong> счёт/инструмент; у 781 из них разброс меньше 1%.</p>`,
+          tags: [{ c: "ok", t: "1,45 млн операций" }, { c: "ok", t: "0 ошибок" }, { c: "bad", t: "29 из 300 проходят фильтр" }]
+        }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -1181,7 +1263,7 @@ it: {
   pills: [
     { c: "var(--user)",  l: "Inizio",             v: "23 agosto 2026" },
     { c: "var(--user)",  l: "Ultimo aggiornamento", v: "23 agosto 2026" },
-    { c: "var(--ok)",    l: "Fase 0",             v: "eseguita" },
+    { c: "var(--ok)",    l: "Database",           v: "1,45 mln operazioni" },
     { c: "var(--ok)",    l: "Test",               v: "20 / 20" }
   ],
   roundLabel: "Round <span class='slash'>/</span> Iterazione",
@@ -1189,7 +1271,7 @@ it: {
   stats: [
     { k: "Fase corrente", v: "0A superata, 0B aperta", s: "Canali e dati sì. Semantica di period, completezza, posizioni aperte e condizioni d'uso ancora no." },
     { k: "Domanda che decide il progetto", v: "Livello A", s: "Lo storico delle singole operazioni c'è. Il «piano B» non servirà." },
-    { k: "Giri di revisione", v: "5 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
+    { k: "Giri di revisione", v: "6 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
     { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
   ],
   legend: [
@@ -1569,6 +1651,47 @@ it: {
               <p>GPT ha ragione, e la contraddizione stava dentro un solo testo. <strong>Ritiro il «oggi stesso».</strong> L'argomento «ogni giorno non registrato è perso per sempre» resta valido ma non annulla l'ordine: prima le condizioni di CopyFX e dell'area clienti, poi la raccolta regolare. Una ricognizione singola sulla propria sessione al ritmo di una navigazione manuale è una cosa; una raccolta automatica permanente è un'altra decisione.</p>
               <p><strong>Fase 0A superata. Fase 0B aperta.</strong> Restano da verificare: semantica di <code>period</code>, completezza della curva, profondità dello storico, posizioni aperte, MT5, e <code>cmd</code> contro l'interfaccia.</p>`,
           tags: [{ c: "ok", t: "3 su 3 verificati" }, { c: "bad", t: "Trappola valuta profit" }, { c: "bad", t: "1 concessione" }, { c: "ok", t: "TWR ora possibile" }]
+        }
+      ]
+    },
+    {
+      n: 7, title: "Dati raccolti, prima analisi",
+      entries: [
+        {
+          c: "claude", a: "Claude", w: "24 agosto 2026",
+          h: "1,45 milioni di operazioni in 7,9 ore — e la commissione ribalta subito il primo posto",
+          b: `<p>Raccolta chiusa alle 03:45: <strong>494 trader, nessun errore, 6671 richieste</strong>. Il ritmo è lento di proposito: le richieste vere durano minuti, il resto sono pause.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>In database</th><th>Quantità</th></tr></thead>
+                <tbody>
+                  <tr><td>Trader in rating</td><td>1117 (di cui 500 approfonditi)</td></tr>
+                  <tr><td>Operazioni di mercato</td><td><strong>1 454 445</strong></td></tr>
+                  <tr><td>Movimenti di capitale</td><td>34 223</td></tr>
+                  <tr><td>Punti di curva</td><td>173 229</td></tr>
+                  <tr><td>Condizioni di copia</td><td>791</td></tr>
+                  <tr><td>Operazione più antica</td><td>07/05/2018 — otto anni di storia</td></tr>
+                </tbody>
+              </table></div>
+              <h4>La commissione cambia l\'ordine, come previsto</h4>
+              <div class="scroll"><table>
+                <thead><tr><th>Trader</th><th>Lordo</th><th>Netto</th><th>Commissione</th><th>Posizione</th></tr></thead>
+                <tbody>
+                  <tr><td>Goldwave</td><td>17695%</td><td>10617%</td><td>40%</td><td class="no">1 → 2</td></tr>
+                  <tr><td>FelixFisher</td><td>16083%</td><td>11258%</td><td>30%</td><td class="yes">2 → 1</td></tr>
+                  <tr><td>KAPTENTRADER</td><td>4844%</td><td>3149%</td><td>35%</td><td class="no">5 → 6</td></tr>
+                  <tr><td>WRXSti</td><td>4621%</td><td>3928%</td><td>15%</td><td class="yes">6 → 5</td></tr>
+                </tbody>
+              </table></div>
+              <p>Goldwave, che trattiene il 40%, cede il primo posto a FelixFisher, che ha un lordo inferiore ma commissione al 30%. <strong>La classifica per rendimento lordo li ordina davvero al contrario.</strong></p>
+              <div class="box danger">
+                <div class="box-title">Ma la cosa più importante è un\'altra</div>
+                <p>Filtro minimo: conto di almeno 180 giorni, drawdown non peggiore del 40%, almeno 100 operazioni.</p>
+                <p><strong>Su 300 trader ne passano 29.</strong> Nove su dieci fra i primi della rating sono conti giovani con drawdown catastrofici. È esattamente ciò di cui avvertiva la sezione 25 del prompt, e ora si vede sui dati invece che in teoria.</p>
+              </div>
+              <h4>Manutenzione</h4>
+              <p>Livello RAW compresso: <strong>1239 MB → 686 MB</strong>. Aggiunta la lettura delle risposte compresse: senza, la compressione avrebbe solo reso quel livello inutilizzabile.</p>
+              <p>Fattore di scala del volume ricavato per <strong>453 conti, 1416 combinazioni</strong> conto/strumento; in 781 casi la dispersione è sotto l\'1%.</p>`,
+          tags: [{ c: "ok", t: "1,45 mln operazioni" }, { c: "ok", t: "0 errori" }, { c: "bad", t: "29 su 300 passano il filtro" }]
         }
       ]
     },

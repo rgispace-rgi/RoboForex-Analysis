@@ -1,16 +1,15 @@
 # RoboForex Analysis
 
-Хронологія проєкту **RoboForex CopyFX Analysis** — системи збору, аналізу та моніторингу
-трейдерів для копітрейдингу.
+Cronologia del progetto **RoboForex CopyFX Analysis**: sistema di raccolta, analisi e
+monitoraggio dei trader disponibili per il copy trading.
 
-Сторінка фіксує кожен крок роботи: запити, аналіз, перехресні рецензії трьох асистентів
-(Claude, GPT, DeepSeek), знайдені помилки та виправлення. Оновлюється після кожного кроку.
+La pagina registra ogni passo del lavoro — richieste, analisi, revisioni incrociate fra
+tre assistenti (Claude, GPT, DeepSeek), errori trovati e correzioni — e viene aggiornata
+a ogni intervento.
 
-**→ [Відкрити хронологію](https://rgispace-rgi.github.io/RoboForex-Analysis/)**
-
-Мови: українська (типово) · російська · італійська.
+**→ [Apri la cronologia](https://rgispace-rgi.github.io/RoboForex-Analysis/)**
 
 ---
 
-Репозиторій містить **лише робочий щоденник**. Жодних даних трейдерів,
-жодних облікових даних, жодного коду збирача.
+Questo repository contiene **solo il diario di lavoro**. Nessun dato di trader,
+nessuna credenziale, nessun codice del collector.

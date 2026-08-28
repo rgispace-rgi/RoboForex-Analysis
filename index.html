@@ -1041,6 +1041,186 @@ Ramaz           DD 18,3%   +136,7% → −13,1%</pre>
       ]
     },
     {
+      n: 18, title: "Три твердження, перевірені на даних",
+      entries: [
+        { c: "user", a: "Геннадій", w: "27 серпня 2026",
+          h: "«Проаналізуй цей промпт. Усе має бути дуже реальним»",
+          b: `<p>Починається обговорення втрьох: Claude, ChatGPT і DeepSeek обговорюють критерії відбору трейдерів. Кожна пропозиція має витримати перевірку даними, а не міркуванням.</p>` },
+        { c: "claude", a: "Claude", w: "27 серпня 2026",
+          h: "Три перевірні твердження. Одне було моїм, і хибним",
+          b: `<p>З обговорення вийшли три твердження, які можна виміряти. Виміряв усі три.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Твердження</th><th>Чиє</th><th>Результат</th></tr></thead>
+                <tbody>
+                  <tr><td>«просадка не передбачила нічого»</td><td>Claude</td><td class="no">завелике</td></tr>
+                  <tr><td>«Source DD уже містить флоат»</td><td>GPT</td><td class="yes">підтверджено</td></tr>
+                  <tr><td>«DDR відрізняє тих, хто впаде»</td><td>DeepSeek</td><td class="no">навпаки</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Моє було найбільш хибним</h4>
+              <p>Я написав, що історична просадка не передбачає нічого. Виміряно: просадка <strong>сама по собі</strong> зупиняє <strong>8 із 35</strong> колапсів — 23%. Це найдієвіший окремий фільтр, але сам він ловить менше чверті.</p>
+              <div class="box">
+                <div class="box-title">Source DD містить плаваючий збиток</div>
+                <p>На 540 рахунках їхнє число гірше у <strong>68% випадків</strong>, медіанне співвідношення <strong>1,20&times;</strong>. Воно враховує те, чого ми не бачимо: відкриті збиткові позиції.</p>
+              </div>
+              <div class="box danger">
+                <div class="box-title">DDR розділяє, але не в той бік</div>
+                <p>У тих, хто обвалився, DDR <strong>0,67</strong>; у тих, хто лишився, <strong>1,22</strong>. Протилежно до передбачення: в обвалених збитки вже реалізовані.</p>
+              </div>`,
+          tags: [{ c: "bad", t: "Моя помилка" }, { c: "ok", t: "68% на користь GPT" }, { c: "bad", t: "DDR навпаки" }] }
+      ]
+    },
+    {
+      n: 19, title: "Ми бачимо, що вони гинуть, а не від чого",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 серпня 2026",
+          h: "Число, яке змінило весь проєкт",
+          b: `<p>Я шукав точний день кожного колапсу. Натрапив на стіну.</p>
+              <div class="box danger">
+                <div class="box-title">35 із 59 обвалених не закрили ЖОДНОЇ угоди</div>
+                <p>У дні, коли їхня дохідність упала: жодної закритої угоди. А ті, хто закривав, часто мали прибуток.</p>
+                <div class="scroll"><table>
+                  <thead><tr><th>падіння дохідності</th><th>P/L закритих угод</th></tr></thead>
+                  <tbody>
+                    <tr><td class="no"><strong>&minus;4 906,8 %</strong></td><td class="yes"><strong>+210</strong></td></tr>
+                    <tr><td>&minus;1 294,5 %</td><td>+732</td></tr>
+                    <tr><td>&minus;505,0 %</td><td>+401</td></tr>
+                  </tbody>
+                </table></div>
+                <p>Перший утратив майже пʼять тисяч пунктів дохідності, а його закриті угоди дали <strong>плюс 210</strong>.</p>
+              </div>
+              <p>Колапс відбувається у <strong>плаваючому збитку</strong> — у відкритих позиціях, яких наша база не містить. Ми бачимо, <strong>що</strong> трейдер помер, а не <strong>від чого</strong>.</p>
+              <h4>І гинуть майже всі на одному інструменті</h4>
+              <div class="scroll"><table>
+                <thead><tr><th>родина</th><th>трейдерів</th></tr></thead>
+                <tbody>
+                  <tr><td class="no"><strong>золото</strong></td><td class="no"><strong>21 (88 %)</strong></td></tr>
+                  <tr><td>крипто</td><td>2</td></tr>
+                  <tr><td>інше</td><td>1</td></tr>
+                </tbody>
+              </table></div>
+              <p>Валют — нуль. Індексів — нуль. Будь-яка модель на цих колапсах вивчить, як помирає золотий грід, і нічого більше.</p>`,
+          tags: [{ c: "bad", t: "35 із 59 невидимі" }, { c: "bad", t: "88% золото" }] }
+      ]
+    },
+    {
+      n: 20, title: "Вони існують, але не для нас",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 серпня 2026",
+          h: "Контрольний дослід і чітка відповідь",
+          b: `<p>Якщо катастрофа стається у відкритих позиціях, питання лишається одне: чи віддає їх RoboForex?</p>
+              <p>Я не просто перебирав імовірні шляхи. Три <strong>вигадав навмисно</strong> — щоб знати, чим сервер відповідає на те, чого не існує.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>шлях</th><th>відповідь</th></tr></thead>
+                <tbody>
+                  <tr><td><code>/orders/qwertyuiop</code> (вигаданий)</td><td>404</td></tr>
+                  <tr><td><code>/цього/не/існує</code> (вигаданий)</td><td>404</td></tr>
+                  <tr><td>ще 16 кандидатів</td><td>404</td></tr>
+                  <tr><td class="no"><strong><code>/history/mt4/orders/open</code></strong></td><td class="no"><strong>403</strong></td></tr>
+                  <tr><td class="no"><strong><code>/history/mt5/positions</code></strong></td><td class="no"><strong>403</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Сервер розрізняє: <strong>немає &rarr; 404, є але не для вас &rarr; 403</strong>. І 403 дали рівно ті два шляхи, які підказувала логіка іменування.</p>
+              <p>Після кожного 403 програма перевіряла сесію відомим робочим викликом: жива обидва рази. <strong>Відкриті позиції існують. Вони не для нас.</strong></p>
+              <h4>І моя хибна тривога</h4>
+              <p>Перша перевірка написала «equity доступний». Це було поле <code>min_equity_usd</code> — <strong>мінімум для копіювання</strong>, не капітал трейдера. Автоматична перевірка шукала слово і знайшла його не там.</p>`,
+          tags: [{ c: "ok", t: "404 проти 403" }, { c: "bad", t: "Заборонено, не відсутнє" }] }
+      ]
+    },
+    {
+      n: 21, title: "Що ми взагалі називаємо колапсом",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 серпня 2026",
+          h: "Усі числа проєкту стояли на порозі, обраному навмання",
+          b: `<p>Я визначив колапс як «дохідність падає на 20 пунктів між двома знімками». Число обране на око. Від нього залежать 59, 80, 29 — усі цифри пʼяти кіл обговорення.</p>
+              <div class="box danger">
+                <div class="box-title">Визначення в пунктах карає за успіх</div>
+                <p>З 1 037 вимірних рахунків падають на 20+ пунктів <strong>129</strong>. Але <strong>45 із них утратили менше 10%</strong> того, що мали:</p>
+                <pre>HappyMoney      13 344,0 &rarr; 12 823,2   &minus;520,9 пунктів   але лише &minus;3,9%
+KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктів   але лише &minus;1,5%</pre>
+                <p>Це не катастрофи, а звичайні коливання рахунків, що стоять дуже високо.</p>
+              </div>
+              <h4>Але число 59 витримує</h4>
+              <p>Серед <strong>зниклих</strong> обидва визначення майже збігаються: 59 у пунктах, 56 відносно, і <strong>нуль хибних</strong>. Бо вони падали з +200% до &minus;100%, де різниці немає.</p>
+              <p>Визначення було правильним для тієї популяції, до якої я його застосував, але <strong>не узагальнюється</strong>: на всьому рейтингу дає 35% хибних подій.</p>`,
+          tags: [{ c: "bad", t: "45 хибних зі 129" }, { c: "ok", t: "59 витримують" }] }
+      ]
+    },
+    {
+      n: 22, title: "Сигнал, що кричить надто пізно",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 серпня 2026",
+          h: "97% відгуку, 3% точності",
+          b: `<p>З обговорення народилась елегантна ідея: якщо дохідність падає, <em>а</em> закриті угоди цього не пояснюють, значить є прихований збиток у флоаті.</p>
+              <p>На 59 колапсах працює чудово: <strong>57 із 59</strong>, тобто 97%.</p>
+              <p>Далі я зробив те, чого не зробив ніхто: порахував, скільки <strong>здорових</strong> трейдерів дають той самий сигнал.</p>
+              <div class="box danger">
+                <div class="box-title">183 тривоги, 5 справжніх</div>
+                <div class="scroll"><table>
+                  <tbody>
+                    <tr><td>рахунків із дохідністю, що падає</td><td>235</td></tr>
+                    <tr><td>сигнал спрацьовує на</td><td>183</td></tr>
+                    <tr><td class="no">з них справді втратили &gt;50%</td><td class="no"><strong>5</strong></td></tr>
+                  </tbody>
+                </table></div>
+                <p><strong>178 хибних тривог зі 183.</strong> Причина очевидна заднім числом: «не закрив угод за три дні» описує більшість нормальних трейдерів, а не лише тих, хто гине.</p>
+              </div>
+              <h4>І розумна частина виявилась зайвою</h4>
+              <p>Порівнявши сигнал з умовою про закриті угоди й без неї, різниця — <strong>4–6 пунктів точності</strong>. Уся сила у <strong>величині падіння</strong>, а не у витонченій ідеї.</p>`,
+          tags: [{ c: "bad", t: "97% хибних" }, { c: "ok", t: "Відкинуто вчасно" }] }
+      ]
+    },
+    {
+      n: 23, title: "Живе число",
+      entries: [
+        { c: "claude", a: "Claude", w: "28 серпня 2026",
+          h: "Як часто RoboForex справді оновлює свої числа?",
+          b: `<p>Від цієї відповіді залежало все інше. Я знімав рейтинг кожні десять хвилин протягом тринадцяти годин.</p>
+              <p>Перші два знімки випали з різницею <strong>14 секунд</strong>, і цього вистачило: <strong>17 рахунків зі 100 уже мали інше значення</strong>.</p>
+              <pre>402,42 &rarr; 401,32   за 14 секунд
+832,08 &rarr; 831,65
+142,16 &rarr; 141,75</pre>
+              <div class="scroll"><table>
+                <thead><tr><th>поле</th><th>рухається</th><th>значень на добу</th></tr></thead>
+                <tbody>
+                  <tr><td class="yes"><strong>дохідність</strong></td><td class="yes"><strong>86 %</strong></td><td class="yes"><strong>73,2</strong></td></tr>
+                  <tr><td>баланс</td><td>60 %</td><td>2,8</td></tr>
+                  <tr><td class="no"><strong>максимальна просадка</strong></td><td class="no"><strong>0 %</strong></td><td class="no"><strong>1,0</strong></td></tr>
+                </tbody>
+              </table></div>
+              <div class="box">
+                <div class="box-title">Максимальна просадка не зрушила жодного разу</div>
+                <p>За тринадцять годин на 88 рахунках — <strong>нуль змін</strong>. Перевірив, що це не дефект: 112 різних значень <em>між</em> рахунками, але одне-єдине на рахунок за 73 знімки. Це добовий показник, а не індикатор для спостереження протягом дня.</p>
+              </div>
+              <p>Дохідність натомість рухається <strong>цілодобово</strong>, і вночі теж. Це живий результат капіталу: позицій ми не бачимо, але бачимо їхній вплив майже в реальному часі.</p>
+              <h4>Помилка, знайдена через надто чистий результат</h4>
+              <p>Міряючи, яка частка руху спільна для всіх, я отримав <strong>0,0% тричі поспіль</strong> і мало не опублікував це. Але віднімання константи не змінює дисперсію: нуль був у моїй формулі, не в даних. Переміряв за напрямком: <strong>69% узгодженості</strong> проти 50% випадкових. Висновок протилежний.</p>`,
+          tags: [{ c: "ok", t: "Дохідність жива" }, { c: "bad", t: "Просадка стоїть" }, { c: "ok", t: "Помилку знайдено" }] }
+      ]
+    },
+    {
+      n: 24, title: "Ми переставали дивитися саме тоді, коли треба",
+      entries: [
+        { c: "claude", a: "Claude", w: "28 серпня 2026",
+          h: "Найдорожчий дефект був не в жодному показнику",
+          b: `<p>Я хотів перевірити, чи попереджає порівняння зі схожими трейдерами раніше за саме падіння. З 23 колапсів із достатньою історією <strong>17 не мали жодних даних після дня зникнення</strong>.</p>
+              <div class="box danger">
+                <div class="box-title">Збір ішов за рейтингом</div>
+                <p>Трейдер випадав із наших даних <strong>саме тоді, коли ставав цікавим</strong>. Ми мали передісторію 59 катастроф і жодного дня самої катастрофи.</p>
+              </div>
+              <p>Вирішальне питання було одне: чи <strong>відповідає ще</strong> рахунок, що зник із рейтингу, якщо спитати його на імʼя?</p>
+              <div class="box">
+                <div class="box-title">743 із 743. Сто відсотків</div>
+                <p>Не мовчав жоден. І кожна відповідь несла криву: <strong>6 900 повернутих точок</strong>, до сьогодні, з тих самих днів, які здавалися втраченими назавжди.</p>
+              </div>
+              <p>Зникнення з рейтингу не забирає доступу до рахунку. Дані переставали надходити не тому, що з трейдером щось сталося, а <strong>тому, що ми перестали питати</strong>.</p>
+              <h4>А потім я мало не повторив помилку</h4>
+              <p>Нова програма давала пріоритет рахункам, «уже проаналізованим глибоко». Але обвалені мають криву й <strong>не мають</strong> глибокого аналізу, бо ми не встигли.</p>
+              <p><strong>Я побудував порятунок і виключив із нього саме потерпілих.</strong> Помітив, бо перероблений тест дав результат, ідентичний попередньому: надто чисто, щоб бути правдою. Критерій виправлено, під наглядом із 743 до <strong>1 486</strong>.</p>`,
+          tags: [{ c: "ok", t: "743 із 743" }, { c: "ok", t: "6 900 точок" }, { c: "bad", t: "Хибний фільтр" }] }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -1826,6 +2006,186 @@ Ramaz           DD 18,3%   +136,7% → −13,1%</pre>
       ]
     },
     {
+      n: 18, title: "Три утверждения, проверенные на данных",
+      entries: [
+        { c: "user", a: "Геннадий", w: "27 августа 2026",
+          h: "«Проанализируй этот промпт. Всё должно быть очень реальным»",
+          b: `<p>Начинается обсуждение втроём: Claude, ChatGPT и DeepSeek обсуждают критерии отбора трейдеров. Каждое предложение должно выдержать проверку данными, а не рассуждением.</p>` },
+        { c: "claude", a: "Claude", w: "27 августа 2026",
+          h: "Три проверяемых утверждения. Одно было моим, и ошибочным",
+          b: `<p>Из обсуждения вышли три утверждения, которые можно измерить. Измерил все три.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Утверждение</th><th>Чьё</th><th>Итог</th></tr></thead>
+                <tbody>
+                  <tr><td>«просадка не предсказала ничего»</td><td>Claude</td><td class="no">слишком сильно</td></tr>
+                  <tr><td>«Source DD уже включает флоат»</td><td>GPT</td><td class="yes">подтверждено</td></tr>
+                  <tr><td>«DDR отличает тех, кто рухнет»</td><td>DeepSeek</td><td class="no">наоборот</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Моё было самым ошибочным</h4>
+              <p>Я написал, что историческая просадка не предсказывает ничего. Измерено: просадка <strong>сама по себе</strong> останавливает <strong>8 из 35</strong> обвалов — 23%. Это самый действенный отдельный фильтр, но один он ловит меньше четверти.</p>
+              <div class="box">
+                <div class="box-title">Source DD содержит плавающий убыток</div>
+                <p>На 540 счетах их число хуже в <strong>68% случаев</strong>, медианное соотношение <strong>1,20&times;</strong>. Оно учитывает то, чего мы не видим: открытые убыточные позиции.</p>
+              </div>
+              <div class="box danger">
+                <div class="box-title">DDR разделяет, но не в ту сторону</div>
+                <p>У обвалившихся DDR <strong>0,67</strong>; у оставшихся — <strong>1,22</strong>. Противоположно предсказанию: у обвалившихся убытки уже реализованы.</p>
+              </div>`,
+          tags: [{ c: "bad", t: "Моя ошибка" }, { c: "ok", t: "68% в пользу GPT" }, { c: "bad", t: "DDR наоборот" }] }
+      ]
+    },
+    {
+      n: 19, title: "Мы видим, что они гибнут, а не от чего",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 августа 2026",
+          h: "Число, изменившее весь проект",
+          b: `<p>Я искал точный день каждого обвала. Наткнулся на стену.</p>
+              <div class="box danger">
+                <div class="box-title">35 из 59 обвалившихся не закрыли НИ ОДНОЙ сделки</div>
+                <p>В дни, когда их доходность рухнула: ни одной закрытой сделки. А те, кто закрывал, часто были в плюсе.</p>
+                <div class="scroll"><table>
+                  <thead><tr><th>падение доходности</th><th>P/L закрытых сделок</th></tr></thead>
+                  <tbody>
+                    <tr><td class="no"><strong>&minus;4 906,8 %</strong></td><td class="yes"><strong>+210</strong></td></tr>
+                    <tr><td>&minus;1 294,5 %</td><td>+732</td></tr>
+                    <tr><td>&minus;505,0 %</td><td>+401</td></tr>
+                  </tbody>
+                </table></div>
+                <p>Первый потерял почти пять тысяч пунктов доходности, а его закрытые сделки дали <strong>плюс 210</strong>.</p>
+              </div>
+              <p>Обвал происходит в <strong>плавающем убытке</strong> — в открытых позициях, которых наша база не содержит. Мы видим, <strong>что</strong> трейдер умер, а не <strong>от чего</strong>.</p>
+              <h4>И гибнут почти все на одном инструменте</h4>
+              <div class="scroll"><table>
+                <thead><tr><th>семейство</th><th>трейдеров</th></tr></thead>
+                <tbody>
+                  <tr><td class="no"><strong>золото</strong></td><td class="no"><strong>21 (88 %)</strong></td></tr>
+                  <tr><td>крипто</td><td>2</td></tr>
+                  <tr><td>прочее</td><td>1</td></tr>
+                </tbody>
+              </table></div>
+              <p>Валют — ноль. Индексов — ноль. Любая модель на этих обвалах выучит, как умирает золотой грид, и ничего больше.</p>`,
+          tags: [{ c: "bad", t: "35 из 59 невидимы" }, { c: "bad", t: "88% золото" }] }
+      ]
+    },
+    {
+      n: 20, title: "Они существуют, но не для нас",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 августа 2026",
+          h: "Контрольный опыт и чёткий ответ",
+          b: `<p>Если катастрофа происходит в открытых позициях, вопрос остаётся один: отдаёт ли их RoboForex?</p>
+              <p>Я не просто перебирал вероятные пути. Три <strong>придумал нарочно</strong> — чтобы знать, чем сервер отвечает на то, чего не существует.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>путь</th><th>ответ</th></tr></thead>
+                <tbody>
+                  <tr><td><code>/orders/qwertyuiop</code> (выдуманный)</td><td>404</td></tr>
+                  <tr><td><code>/этого/не/существует</code> (выдуманный)</td><td>404</td></tr>
+                  <tr><td>ещё 16 кандидатов</td><td>404</td></tr>
+                  <tr><td class="no"><strong><code>/history/mt4/orders/open</code></strong></td><td class="no"><strong>403</strong></td></tr>
+                  <tr><td class="no"><strong><code>/history/mt5/positions</code></strong></td><td class="no"><strong>403</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Сервер различает: <strong>нет &rarr; 404, есть, но не для вас &rarr; 403</strong>. И 403 пришёл ровно на те два пути, которые подсказывала логика имён.</p>
+              <p>После каждого 403 программа перепроверяла сессию заведомо рабочим вызовом: жива оба раза. <strong>Открытые позиции существуют. Они не для нас.</strong></p>
+              <h4>И моя ложная тревога</h4>
+              <p>Первая проверка написала «equity доступен». Это было поле <code>min_equity_usd</code> — <strong>минимум для копирования</strong>, а не капитал трейдера. Автоматическая проверка искала слово и нашла его не там.</p>`,
+          tags: [{ c: "ok", t: "404 против 403" }, { c: "bad", t: "Запрещено, не отсутствует" }] }
+      ]
+    },
+    {
+      n: 21, title: "Что мы вообще называем обвалом",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 августа 2026",
+          h: "Все числа проекта стояли на пороге, выбранном наугад",
+          b: `<p>Я определил обвал как «доходность падает на 20 пунктов между двумя снимками». Число выбрано на глаз. От него зависят 59, 80, 29 — все цифры пяти кругов обсуждения.</p>
+              <div class="box danger">
+                <div class="box-title">Определение в пунктах наказывает за успех</div>
+                <p>Из 1 037 измеримых счетов падают на 20+ пунктов <strong>129</strong>. Но <strong>45 из них потеряли меньше 10%</strong> того, что имели:</p>
+                <pre>HappyMoney      13 344,0 &rarr; 12 823,2   &minus;520,9 пунктов   но лишь &minus;3,9%
+KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктов   но лишь &minus;1,5%</pre>
+                <p>Это не катастрофы, а обычные колебания счетов, стоящих очень высоко.</p>
+              </div>
+              <h4>Но число 59 выдерживает</h4>
+              <p>Среди <strong>исчезнувших</strong> оба определения почти совпадают: 59 в пунктах, 56 относительно, и <strong>ноль ложных</strong>. Потому что они падали с +200% до &minus;100%, где разницы нет.</p>
+              <p>Определение было верным для той популяции, к которой я его применил, но <strong>не обобщается</strong>: на всём рейтинге даёт 35% ложных событий.</p>`,
+          tags: [{ c: "bad", t: "45 ложных из 129" }, { c: "ok", t: "59 выдерживают" }] }
+      ]
+    },
+    {
+      n: 22, title: "Сигнал, который кричит слишком поздно",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 августа 2026",
+          h: "97% отклика, 3% точности",
+          b: `<p>Из обсуждения родилась изящная идея: если доходность падает, <em>а</em> закрытые сделки этого не объясняют, значит есть скрытый убыток во флоате.</p>
+              <p>На 59 обвалах работает прекрасно: <strong>57 из 59</strong>, то есть 97%.</p>
+              <p>Дальше я сделал то, чего не сделал никто: посчитал, сколько <strong>здоровых</strong> трейдеров дают тот же сигнал.</p>
+              <div class="box danger">
+                <div class="box-title">183 тревоги, 5 настоящих</div>
+                <div class="scroll"><table>
+                  <tbody>
+                    <tr><td>счетов с падающей доходностью</td><td>235</td></tr>
+                    <tr><td>сигнал срабатывает на</td><td>183</td></tr>
+                    <tr><td class="no">из них реально потеряли &gt;50%</td><td class="no"><strong>5</strong></td></tr>
+                  </tbody>
+                </table></div>
+                <p><strong>178 ложных тревог из 183.</strong> Причина очевидна задним числом: «не закрыл сделок за три дня» описывает большинство нормальных трейдеров, а не только гибнущих.</p>
+              </div>
+              <h4>И умная часть оказалась лишней</h4>
+              <p>Сравнив сигнал с условием о закрытых сделках и без него, разница — <strong>4–6 пунктов точности</strong>. Вся сила в <strong>величине падения</strong>, а не в изящной идее.</p>`,
+          tags: [{ c: "bad", t: "97% ложных" }, { c: "ok", t: "Отброшено вовремя" }] }
+      ]
+    },
+    {
+      n: 23, title: "Живое число",
+      entries: [
+        { c: "claude", a: "Claude", w: "28 августа 2026",
+          h: "Как часто RoboForex на самом деле обновляет свои числа?",
+          b: `<p>От этого ответа зависело всё остальное. Я снимал рейтинг каждые десять минут в течение тринадцати часов.</p>
+              <p>Первые два снимка вышли с разницей в <strong>14 секунд</strong>, и этого хватило: <strong>17 счетов из 100 уже имели другое значение</strong>.</p>
+              <pre>402,42 &rarr; 401,32   за 14 секунд
+832,08 &rarr; 831,65
+142,16 &rarr; 141,75</pre>
+              <div class="scroll"><table>
+                <thead><tr><th>поле</th><th>движется</th><th>значений в сутки</th></tr></thead>
+                <tbody>
+                  <tr><td class="yes"><strong>доходность</strong></td><td class="yes"><strong>86 %</strong></td><td class="yes"><strong>73,2</strong></td></tr>
+                  <tr><td>баланс</td><td>60 %</td><td>2,8</td></tr>
+                  <tr><td class="no"><strong>максимальная просадка</strong></td><td class="no"><strong>0 %</strong></td><td class="no"><strong>1,0</strong></td></tr>
+                </tbody>
+              </table></div>
+              <div class="box">
+                <div class="box-title">Максимальная просадка не сдвинулась ни разу</div>
+                <p>За тринадцать часов на 88 счетах — <strong>ноль изменений</strong>. Проверил, что это не дефект: 112 разных значений <em>между</em> счетами, но одно-единственное на счёт за 73 снимка. Это суточный показатель, а не индикатор для наблюдения в течение дня.</p>
+              </div>
+              <p>Доходность же движется <strong>круглосуточно</strong>, и ночью тоже. Это живой результат капитала: позиций мы не видим, но видим их влияние почти в реальном времени.</p>
+              <h4>Ошибка, найденная из-за слишком чистого результата</h4>
+              <p>Измеряя, какая доля движения общая для всех, я получил <strong>0,0% трижды подряд</strong> и чуть не опубликовал это. Но вычитание константы не меняет дисперсию: ноль был в моей формуле, а не в данных. Перемерил по направлению: <strong>69% согласованности</strong> против 50% случайных. Вывод противоположный.</p>`,
+          tags: [{ c: "ok", t: "Доходность живая" }, { c: "bad", t: "Просадка стоит" }, { c: "ok", t: "Ошибка найдена" }] }
+      ]
+    },
+    {
+      n: 24, title: "Мы переставали смотреть именно тогда, когда нужно",
+      entries: [
+        { c: "claude", a: "Claude", w: "28 августа 2026",
+          h: "Самый дорогой дефект был не в показателях",
+          b: `<p>Я хотел проверить, предупреждает ли сравнение с похожими трейдерами раньше самого падения. Из 23 обвалов с достаточной историей <strong>17 не имели никаких данных после дня исчезновения</strong>.</p>
+              <div class="box danger">
+                <div class="box-title">Сбор шёл за рейтингом</div>
+                <p>Трейдер выпадал из наших данных <strong>ровно тогда, когда становился интересным</strong>. У нас была предыстория 59 катастроф и ни одного дня самой катастрофы.</p>
+              </div>
+              <p>Решающий вопрос был один: <strong>отвечает ли ещё</strong> счёт, исчезнувший из рейтинга, если спросить его по имени?</p>
+              <div class="box">
+                <div class="box-title">743 из 743. Сто процентов</div>
+                <p>Не смолчал ни один. И каждый ответ нёс кривую: <strong>6 900 возвращённых точек</strong>, до сегодня, из тех самых дней, что казались потерянными навсегда.</p>
+              </div>
+              <p>Исчезновение из рейтинга не отнимает доступ к счёту. Данные переставали приходить не потому, что с трейдером что-то случилось, а <strong>потому, что мы перестали спрашивать</strong>.</p>
+              <h4>А потом я чуть не повторил ошибку</h4>
+              <p>Новая программа отдавала приоритет счетам, «уже проанализированным глубоко». Но обвалившиеся имеют кривую и <strong>не имеют</strong> глубокого анализа, потому что мы не успели.</p>
+              <p><strong>Я построил спасение и исключил из него самих пострадавших.</strong> Заметил, потому что переделанный тест дал результат, идентичный прежнему: слишком чисто, чтобы быть правдой. Критерий исправлен, под наблюдением с 743 до <strong>1 486</strong>.</p>`,
+          tags: [{ c: "ok", t: "743 из 743" }, { c: "ok", t: "6 900 точек" }, { c: "bad", t: "Ошибочный фильтр" }] }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -2608,6 +2968,186 @@ Ramaz           DD 18,3%   +136,7% → −13,1%</pre>
                 <li><strong>Un TOP-5 su 15,8% dell'universo, cosa significa?</strong> O si dichiara il limite, o si scaricano le altre 4.251.</li>
               </ol>`,
           tags: [{ c: "ok", t: "77/80 scartati" }, { c: "bad", t: "29 con DD basso crollati" }, { c: "open", t: "Dibattito aperto" }] }
+      ]
+    },
+    {
+      n: 18, title: "Tre affermazioni messe alla prova",
+      entries: [
+        { c: "user", a: "Hennadiy", w: "27 agosto 2026",
+          h: "«Analizza questo prompt. Deve essere tutto molto reale»",
+          b: `<p>Comincia un confronto a tre: Claude, ChatGPT e DeepSeek discutono i criteri con cui scegliere i trader. Ogni proposta deve reggere alla prova dei dati, non del ragionamento.</p>` },
+        { c: "claude", a: "Claude", w: "27 agosto 2026",
+          h: "Tre affermazioni verificabili. Una era mia, ed era sbagliata",
+          b: `<p>Dal confronto sono uscite tre affermazioni che si potevano misurare. Le ho misurate tutte e tre.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>Affermazione</th><th>Di chi</th><th>Esito</th></tr></thead>
+                <tbody>
+                  <tr><td>«la perdita massima non ha previsto niente»</td><td>Claude</td><td class="no">troppo forte</td></tr>
+                  <tr><td>«il Source DD include gia' il flottante»</td><td>GPT</td><td class="yes">confermata</td></tr>
+                  <tr><td>«il DDR separa chi crolla»</td><td>DeepSeek</td><td class="no">separa al contrario</td></tr>
+                </tbody>
+              </table></div>
+              <h4>La mia era la piu' sbagliata</h4>
+              <p>Avevo scritto che il drawdown storico non prevede niente. Misurato: la perdita massima <strong>da sola</strong> ferma <strong>8 crolli su 35</strong>, il 23%. E' il singolo filtro piu' efficace, ma da solo intercetta meno di un quarto. Ne' «non prevede niente» (mio) ne' «96% di richiamo» (suo).</p>
+              <div class="box">
+                <div class="box-title">Il Source DD di RoboForex contiene il flottante</div>
+                <p>Su 540 conti con entrambe le misure, il loro numero e' piu' grave nel <strong>68% dei casi</strong>, con rapporto mediano <strong>1,20&times;</strong>. Comprende qualcosa che noi non vediamo: le posizioni aperte in perdita.</p>
+              </div>
+              <div class="box danger">
+                <div class="box-title">Il DDR separa, ma dalla parte sbagliata</div>
+                <p>Chi e' crollato aveva DDR <strong>0,67</strong>; chi e' rimasto, <strong>1,22</strong>. L'opposto della previsione: nei crollati le perdite sono gia' realizzate, il disastro e' consumato.</p>
+              </div>`,
+          tags: [{ c: "bad", t: "Mio errore corretto" }, { c: "ok", t: "68% conferma GPT" }, { c: "bad", t: "DDR al contrario" }] }
+      ]
+    },
+    {
+      n: 19, title: "Vediamo che muoiono, non di cosa",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 agosto 2026",
+          h: "Il numero che ha cambiato tutto il progetto",
+          b: `<p>Cercavo il giorno esatto in cui ciascun crollo e' avvenuto. Ho trovato un muro.</p>
+              <div class="box danger">
+                <div class="box-title">35 dei 59 crollati non hanno chiuso NESSUNA operazione</div>
+                <p>Nei giorni in cui il loro rendimento e' precipitato: nessuna operazione chiusa. E chi ne aveva chiuse mostrava spesso un utile.</p>
+                <div class="scroll"><table>
+                  <thead><tr><th>caduta del rendimento</th><th>P/L delle operazioni chiuse</th></tr></thead>
+                  <tbody>
+                    <tr><td class="no"><strong>&minus;4.906,8 %</strong></td><td class="yes"><strong>+210</strong></td></tr>
+                    <tr><td>&minus;1.294,5 %</td><td>+732</td></tr>
+                    <tr><td>&minus;505,0 %</td><td>+401</td></tr>
+                  </tbody>
+                </table></div>
+                <p>Il primo ha perso quasi cinquemila punti di rendimento mentre le sue operazioni chiuse davano <strong>piu' 210</strong>.</p>
+              </div>
+              <p>Il crollo avviene nel <strong>flottante</strong>: nelle posizioni aperte, che la nostra base non contiene. Vediamo <strong>che</strong> il trader e' morto, non <strong>di cosa</strong>.</p>
+              <h4>E muoiono quasi tutti sullo stesso strumento</h4>
+              <div class="scroll"><table>
+                <thead><tr><th>famiglia</th><th>trader</th></tr></thead>
+                <tbody>
+                  <tr><td class="no"><strong>oro</strong></td><td class="no"><strong>21 (88 %)</strong></td></tr>
+                  <tr><td>cripto</td><td>2</td></tr>
+                  <tr><td>altro</td><td>1</td></tr>
+                </tbody>
+              </table></div>
+              <p>Valute: zero. Indici: zero. Qualsiasi modello addestrato su questi crolli imparerebbe come muore una griglia sull'oro, e nient'altro.</p>`,
+          tags: [{ c: "bad", t: "35 su 59 invisibili" }, { c: "bad", t: "88% oro" }] }
+      ]
+    },
+    {
+      n: 20, title: "Esistono, ma non per noi",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 agosto 2026",
+          h: "Un esperimento di controllo, e una risposta netta",
+          b: `<p>Se il disastro avviene nelle posizioni aperte, la domanda diventa una sola: RoboForex le espone?</p>
+              <p>Non ho solo provato i percorsi plausibili. Ne ho inventati tre <strong>di proposito</strong>, per sapere che cosa risponde il server a qualcosa che non esiste.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>percorso</th><th>risposta</th></tr></thead>
+                <tbody>
+                  <tr><td><code>/orders/qwertyuiop</code> (inventato)</td><td>404</td></tr>
+                  <tr><td><code>/questo/non/esiste</code> (inventato)</td><td>404</td></tr>
+                  <tr><td>altri 16 candidati</td><td>404</td></tr>
+                  <tr><td class="no"><strong><code>/history/mt4/orders/open</code></strong></td><td class="no"><strong>403</strong></td></tr>
+                  <tr><td class="no"><strong><code>/history/mt5/positions</code></strong></td><td class="no"><strong>403</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Il server distingue: <strong>non esiste &rarr; 404, esiste ma non per voi &rarr; 403</strong>. E il 403 e' arrivato esattamente sui due percorsi che la logica dei nomi suggeriva.</p>
+              <p>Dopo ogni 403 il programma ha ricontrollato la sessione con una chiamata che funziona: viva entrambe le volte. <strong>Le posizioni aperte esistono. Non sono per noi.</strong></p>
+              <h4>E un mio falso allarme</h4>
+              <p>Il primo controllo aveva scritto «equity disponibile». Era il campo <code>min_equity_usd</code>: il <strong>minimo per copiare</strong>, non il capitale del trader. La verifica automatica cercava una parola e l'aveva trovata nel posto sbagliato.</p>`,
+          tags: [{ c: "ok", t: "404 contro 403" }, { c: "bad", t: "Vietato, non assente" }] }
+      ]
+    },
+    {
+      n: 21, title: "Che cosa chiamiamo davvero un crollo",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 agosto 2026",
+          h: "Tutti i numeri del progetto poggiavano su una soglia scelta a intuito",
+          b: `<p>Avevo definito il crollo come «il rendimento cala di 20 punti fra due fotografie». Numero scelto a occhio. Da li' dipendono 59, 80, 29: tutte le cifre scambiate in cinque giri di discussione.</p>
+              <div class="box danger">
+                <div class="box-title">La definizione in punti punisce il successo</div>
+                <p>Su 1.037 conti misurabili, cadono di 20+ punti in <strong>129</strong>. Ma <strong>45 di questi hanno perso meno del 10%</strong> di quello che avevano:</p>
+                <pre>HappyMoney      13.344,0 &rarr; 12.823,2   &minus;520,9 punti   ma solo &minus;3,9%
+KalinkaCapital  13.886,0 &rarr; 13.679,8   &minus;206,2 punti   ma solo &minus;1,5%</pre>
+                <p>Non sono catastrofi: sono oscillazioni normali di conti molto in alto.</p>
+              </div>
+              <h4>Ma il numero 59 regge</h4>
+              <p>Fra gli <strong>spariti</strong> le due definizioni quasi coincidono: 59 in punti, 56 in proporzione, e <strong>zero falsi</strong>. Perche' quelli cadevano da +200% a &minus;100%, dove la differenza non esiste.</p>
+              <p>La definizione era giusta per la popolazione a cui l'ho applicata, ma <strong>non si generalizza</strong>: sull'intera classifica produce il 35% di eventi falsi. Per il futuro si usa la perdita <strong>relativa</strong> dal picco.</p>`,
+          tags: [{ c: "bad", t: "45 falsi su 129" }, { c: "ok", t: "I 59 reggono" }] }
+      ]
+    },
+    {
+      n: 22, title: "Il segnale che urla troppo tardi",
+      entries: [
+        { c: "claude", a: "Claude", w: "27 agosto 2026",
+          h: "97% di richiamo, 3% di precisione",
+          b: `<p>Dal confronto era nata un'idea elegante: se il rendimento cala <em>e</em> le operazioni chiuse non lo spiegano, allora c'e' una perdita nascosta nel flottante.</p>
+              <p>Sui 59 crolli funziona benissimo: <strong>57 su 59</strong>, il 97%.</p>
+              <p>Poi ho fatto quello che nessuno aveva fatto: ho contato quanti trader <strong>sani</strong> danno lo stesso segnale.</p>
+              <div class="box danger">
+                <div class="box-title">183 allarmi, 5 veri</div>
+                <div class="scroll"><table>
+                  <tbody>
+                    <tr><td>conti con rendimento in calo</td><td>235</td></tr>
+                    <tr><td>il segnale scatta su</td><td>183</td></tr>
+                    <tr><td class="no">di cui hanno perso davvero &gt;50%</td><td class="no"><strong>5</strong></td></tr>
+                  </tbody>
+                </table></div>
+                <p><strong>178 falsi allarmi su 183.</strong> Il motivo, ovvio col senno di poi: «non ha chiuso operazioni in tre giorni» descrive la maggioranza dei trader normali, non solo chi sta morendo.</p>
+              </div>
+              <h4>E la parte intelligente non serviva</h4>
+              <p>Confrontando il segnale con e senza la condizione sulle operazioni chiuse, la differenza e' di <strong>4-6 punti di precisione</strong>. Tutta la forza sta nella <strong>dimensione della caduta</strong>, non nell'idea raffinata.</p>`,
+          tags: [{ c: "bad", t: "97% falsi allarmi" }, { c: "ok", t: "Scartato in tempo" }] }
+      ]
+    },
+    {
+      n: 23, title: "Il numero vivo",
+      entries: [
+        { c: "claude", a: "Claude", w: "28 agosto 2026",
+          h: "Quanto spesso RoboForex aggiorna davvero i suoi numeri?",
+          b: `<p>Da questa risposta dipendeva tutto il resto. Ho preso una fotografia della classifica ogni dieci minuti, per tredici ore.</p>
+              <p>I primi due scatti sono usciti a <strong>14 secondi</strong> di distanza, e sono bastati: <strong>17 conti su 100 avevano gia' un valore diverso</strong>.</p>
+              <pre>402,42 &rarr; 401,32   in 14 secondi
+832,08 &rarr; 831,65
+142,16 &rarr; 141,75</pre>
+              <div class="scroll"><table>
+                <thead><tr><th>campo</th><th>si muove</th><th>valori al giorno</th></tr></thead>
+                <tbody>
+                  <tr><td class="yes"><strong>rendimento</strong></td><td class="yes"><strong>86 %</strong></td><td class="yes"><strong>73,2</strong></td></tr>
+                  <tr><td>saldo</td><td>60 %</td><td>2,8</td></tr>
+                  <tr><td class="no"><strong>perdita massima</strong></td><td class="no"><strong>0 %</strong></td><td class="no"><strong>1,0</strong></td></tr>
+                </tbody>
+              </table></div>
+              <div class="box">
+                <div class="box-title">La perdita massima non si e' mossa nemmeno una volta</div>
+                <p>In tredici ore, su 88 conti, <strong>zero cambiamenti</strong>. Verificato che non fosse un difetto: 112 valori diversi <em>fra</em> i conti, ma uno solo per conto su 73 scatti. E' un dato giornaliero, non un indicatore da guardare durante il giorno.</p>
+              </div>
+              <p>Il rendimento invece si muove <strong>a tutte le ore</strong>, notte compresa. E' il risultato vivo del capitale: non vediamo le posizioni, ma ne vediamo l'effetto quasi in tempo reale.</p>
+              <h4>Un errore trovato perche' il risultato era troppo pulito</h4>
+              <p>Provando a misurare quanto del movimento fosse comune a tutti, ho ottenuto <strong>0,0% tre volte di fila</strong> e stavo per pubblicarlo. Ma sottrarre una costante non cambia la varianza: lo zero era nella mia formula, non nei dati. Rimisurato per direzione: <strong>69% di concordanza</strong> contro il 50% del caso. Conclusione opposta.</p>`,
+          tags: [{ c: "ok", t: "Rendimento vivo" }, { c: "bad", t: "Perdita max ferma" }, { c: "ok", t: "Errore trovato" }] }
+      ]
+    },
+    {
+      n: 24, title: "Smettevamo di guardare proprio quando contava",
+      entries: [
+        { c: "claude", a: "Claude", w: "28 agosto 2026",
+          h: "Il difetto piu' costoso non era in nessun indicatore",
+          b: `<p>Volevo verificare se il confronto con i trader simili avvisasse prima della caduta. Su 23 crolli con storia sufficiente, <strong>17 non avevano nessun dato dopo il giorno della sparizione</strong>.</p>
+              <div class="box danger">
+                <div class="box-title">La raccolta seguiva la classifica</div>
+                <p>Un trader usciva dai nostri dati <strong>esattamente nel momento in cui diventava interessante</strong>. Avevamo la storia di 59 catastrofi e nessun giorno della catastrofe stessa.</p>
+              </div>
+              <p>La domanda decisiva era una sola: un conto sparito dalla classifica <strong>risponde ancora</strong> se lo si chiede per nome?</p>
+              <div class="box">
+                <div class="box-title">743 su 743. Il cento per cento</div>
+                <p>Nessuno taceva. E ogni risposta portava con se' la curva: <strong>6.900 punti recuperati</strong>, fino a oggi, dagli stessi giorni che sembravano persi per sempre.</p>
+              </div>
+              <p>La sparizione dalla classifica non toglie l'accesso al conto. I dati smettevano di arrivare non perche' fosse successo qualcosa al trader, ma <strong>perche' avevamo smesso di chiedere</strong>.</p>
+              <h4>E poi ho quasi ripetuto l'errore</h4>
+              <p>Il nuovo programma dava priorita' ai conti «gia' analizzati a fondo». Ma i crollati hanno la curva e <strong>non</strong> l'analisi a fondo, perche' non abbiamo fatto in tempo.</p>
+              <p><strong>Avevo costruito il salvataggio e ne avevo escluso proprio i naufraghi.</strong> Me ne sono accorto perche' il test rifatto dava un risultato identico al precedente: troppo pulito per essere vero. Criterio corretto, sorvegliati da 743 a <strong>1.486</strong>.</p>`,
+          tags: [{ c: "ok", t: "743 su 743" }, { c: "ok", t: "6.900 punti" }, { c: "bad", t: "Filtro sbagliato" }] }
       ]
     },
     {

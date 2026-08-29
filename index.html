@@ -289,10 +289,10 @@ uk: {
   roundLabel: "Раунд <span class='slash'>/</span> Ітерація",
   statusTitle: "Поточний стан",
   stats: [
-    { k: "Поточна фаза", v: "0A пройдена, 0B відкрита", s: "Канали й дані — так. Семантика period, повнота, відкриті позиції й умови — ще ні." },
-    { k: "Питання, що вирішує долю проєкту", v: "Рівень A", s: "Історія окремих угод доступна. «План Б» не знадобиться." },
-    { k: "Кола рецензування", v: "9 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Згоди досягнуто в усьому, крім одного рішення." },
-    { k: "Відкрите рішення", v: "Дашборд", s: "Локально чи віддалено з автентифікацією. Єдиний пункт, що лишився невирішеним." }
+    { k: "Поточна фаза", v: "Збір щохвилини", s: "Фаза 0B закрита: відкриті позиції існують, але заборонені. Модель — ще ні." },
+    { k: "Межа спостережуваності", v: "Дохідність — так, позиції — ні", s: "Дохідність оновлюється за секунди. Напрямок і кошик — за 403, назавжди недоступні через відомі нам шляхи." },
+    { k: "Кола рецензування", v: "24 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Майже все запропоноване було відкинуто перевіркою на даних." },
+    { k: "Відкрите питання", v: "Чи попереджає група", s: "Чи ламаються схожі трейдери раніше за самого трейдера. Чекає на перший колапс, знятий із десятихвилинною роздільністю." }
   ],
   legend: [
     { c: "user",     t: "Геннадій — замовник" },
@@ -1224,15 +1224,13 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктів   але 
       title: "Що лишається відкритим",
       entries: [
         {
-          c: "user", a: "Потрібне рішення", w: "",
-          h: "Дашборд: локально чи віддалено?",
-          b: `<p>Рецензенти розійшлися, і обидва мають рацію, бо відповідають на різні питання.</p>
-              <ul>
-                <li><strong>DeepSeek</strong> — приватний репозиторій або локальний файл. Оптимізує ризик.</li>
-                <li><strong>GPT</strong> — публічний GitHub Pages годиться, якщо дані закриті Firebase Auth, Security Rules і білим списком UID. Оптимізує віддалений доступ.</li>
-              </ul>
-              <p><strong>Рекомендація Claude:</strong> почати локально, бо це працює вже сьогодні й не потребує жодного рядка інфраструктури, але ізолювати джерело даних за одним модулем. Тоді перехід на Firestore з автентифікацією буде заміною модуля, а не переписуванням дашборда. Локально — не назавжди, а як безкоштовний і зворотний вибір, доки невідомий реальний обсяг даних.</p>`,
-          tags: [{ c: "open", t: "Очікує рішення" }]
+          c: "claude", a: "Відкрите питання", w: "",
+          h: "Чи ламаються схожі трейдери раніше за самого трейдера?",
+          b: `<p>Питання, до якого дійшли після двадцяти чотирьох кіл, і на яке поки нема чим відповісти.</p>
+              <p>Ідея проста: якщо трейдери, чиї криві три місяці рухалися разом, починають валитися <strong>раніше</strong>, ніж падає сам трейдер, — це попередження, яке передує його власній просадці.</p>
+              <p>Перевірити на добових даних неможливо. З 23 вимірних випадків residual спрацював раніше лише в трьох, а в чотирнадцятьох — того самого дня. Але «того самого дня» на добовій сітці означає будь-що від двадцяти трьох годин раніше до п’яти хвилин пізніше.</p>
+              <p><strong>Потрібен перший колапс, знятий кожні десять хвилин.</strong> Збір іде; за виміряним темпом це питання днів.</p>`,
+          tags: [{ c: "open", t: "Чекає на дані" }]
         }
       ]
     },
@@ -1241,21 +1239,19 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктів   але 
       entries: [
         {
           c: "claude", a: "Claude", w: "",
-          h: "Виконати Фазу 0",
-          b: `<p>Усе інше заблоковано. Не з обережності: цього вимагає розділ 26 того самого промпта, і це правильно. Писати збирач угод під ендпоінт, якого може не існувати, — надійний спосіб викинути роботу.</p>
-              <p>Розвідка має відповісти на ці питання, у такому порядку:</p>
+          h: "Накопичувати, не ускладнювати",
+          b: `<p>Після двадцяти чотирьох кіл робоча система виглядає скромніше, ніж на початку — і це головний результат, а не розчарування.</p>
               <div class="scroll"><table>
-                <thead><tr><th>Питання</th><th>Що воно вирішує</th></tr></thead>
+                <thead><tr><th>Що робимо</th><th>Чому саме це</th></tr></thead>
                 <tbody>
-                  <tr><td>Яким каналом ідуть дані?</td><td>REST, GraphQL, WebSocket чи HTML: змінює весь збирач</td></tr>
-                  <tr><td>Чи є історія окремих угод?</td><td>Визначає, рівень A чи B</td></tr>
-                  <tr><td>Чи є часовий ряд equity?</td><td>Без нього немає ні просадок, ні коефіцієнтів ризику</td></tr>
-                  <tr><td>Чи відкрита комісія трейдера?</td><td>Потрібна для чистої дохідності того, хто копіює</td></tr>
-                  <tr><td>Чи розрізняються поповнення і виведення?</td><td>Потрібно для time-weighted return</td></tr>
-                  <tr><td>Скільки сторінок і трейдерів усього?</td><td>Визначає навантаження й тривалість повного кола</td></tr>
+                  <tr><td>Знімки кожні десять хвилин</td><td>Дохідність жива: 86% рахунків рухаються протягом доби</td></tr>
+                  <tr><td>Спостереження за тими, хто випав</td><td>743 із 743 відповідають після зникнення. Раніше ми просто не питали</td></tr>
+                  <tr><td>Заморозити простий детектор</td><td>Відносна просадка від піка, швидкість, прискорення. Без навчання</td></tr>
+                  <tr><td>Не будувати модель</td><td>Доки не буде подій із різних ринкових епізодів, а не лише золотих</td></tr>
                 </tbody>
-              </table></div>`,
-          tags: [{ c: "open", t: "Очікує команди" }]
+              </table></div>
+              <p>Кожен день без збору коштує близько п’ятнадцяти подій, які потім не відновити. Це найдорожча з усіх затримок — дорожча за будь-яку формулу, яку ми обговорювали двадцять чотири кола.</p>`,
+          tags: [{ c: "ok", t: "Збір іде" }]
         }
       ]
     }
@@ -1263,7 +1259,7 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктів   але 
   footer: [
     "<strong>Сторінка оновлюється після кожного кроку</strong> — після кожної відповіді GPT або DeepSeek і після кожної зміни Claude ця хронологія переписується й перепубліковується.",
     "У цій сторінці та в цьому репозиторії немає жодних даних трейдерів і жодних облікових даних: лише робочий щоденник проєкту.",
-    "RoboForex CopyFX Analysis · 23 серпня 2026"
+    "RoboForex CopyFX Analysis · 29 серпня 2026"
   ]
 },
 
@@ -1284,10 +1280,10 @@ ru: {
   roundLabel: "Раунд <span class='slash'>/</span> Итерация",
   statusTitle: "Текущее состояние",
   stats: [
-    { k: "Текущая фаза", v: "0A пройдена, 0B открыта", s: "Каналы и данные — да. Семантика period, полнота, открытые позиции и условия — ещё нет." },
-    { k: "Вопрос, решающий судьбу проекта", v: "Уровень A", s: "История отдельных сделок доступна. «План Б» не понадобится." },
-    { k: "Круги рецензирования", v: "9 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Согласие достигнуто по всему, кроме одного решения." },
-    { k: "Открытое решение", v: "Дашборд", s: "Локально или удалённо с аутентификацией. Единственный нерешённый пункт." }
+    { k: "Текущая фаза", v: "Сбор ежеминутно", s: "Фаза 0B закрыта: открытые позиции существуют, но запрещены. Модель — ещё нет." },
+    { k: "Граница наблюдаемости", v: "Доходность — да, позиции — нет", s: "Доходность обновляется за секунды. Направление и корзина — за 403, недоступны через известные нам пути." },
+    { k: "Круги рецензирования", v: "24 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Почти всё предложенное было отброшено проверкой на данных." },
+    { k: "Открытый вопрос", v: "Предупреждает ли группа", s: "Ломаются ли похожие трейдеры раньше самого трейдера. Ждёт первого обвала, снятого с десятиминутным разрешением." }
   ],
   legend: [
     { c: "user",     t: "Геннадий — заказчик" },
@@ -2189,15 +2185,13 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктов   но л
       title: "Что остаётся открытым",
       entries: [
         {
-          c: "user", a: "Требуется решение", w: "",
-          h: "Дашборд: локально или удалённо?",
-          b: `<p>Рецензенты разошлись, и оба правы, потому что отвечают на разные вопросы.</p>
-              <ul>
-                <li><strong>DeepSeek</strong> — приватный репозиторий или локальный файл. Оптимизирует риск.</li>
-                <li><strong>GPT</strong> — публичный GitHub Pages годится, если данные закрыты Firebase Auth, Security Rules и белым списком UID. Оптимизирует удалённый доступ.</li>
-              </ul>
-              <p><strong>Рекомендация Claude:</strong> начать локально, поскольку это работает уже сегодня и не требует ни строчки инфраструктуры, но изолировать источник данных за одним модулем. Тогда переход на Firestore с аутентификацией будет заменой модуля, а не переписыванием дашборда. Локально — не навсегда, а как бесплатный и обратимый выбор, пока неизвестен реальный объём данных.</p>`,
-          tags: [{ c: "open", t: "Ожидает решения" }]
+          c: "claude", a: "Открытый вопрос", w: "",
+          h: "Ломаются ли похожие трейдеры раньше самого трейдера?",
+          b: `<p>Вопрос, до которого дошли после двадцати четырёх кругов, и на который пока нечем ответить.</p>
+              <p>Идея проста: если трейдеры, чьи кривые три месяца двигались вместе, начинают рушиться <strong>раньше</strong>, чем падает сам трейдер, — это предупреждение, предшествующее его собственной просадке.</p>
+              <p>Проверить на суточных данных невозможно. Из 23 измеримых случаев residual сработал раньше лишь в трёх, а в четырнадцати — в тот же день. Но «в тот же день» на суточной сетке означает что угодно от двадцати трёх часов раньше до пяти минут позже.</p>
+              <p><strong>Нужен первый обвал, снятый каждые десять минут.</strong> Сбор идёт; по измеренному темпу это вопрос дней.</p>`,
+          tags: [{ c: "open", t: "Ждёт данных" }]
         }
       ]
     },
@@ -2206,21 +2200,19 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктов   но л
       entries: [
         {
           c: "claude", a: "Claude", w: "",
-          h: "Выполнить Фазу 0",
-          b: `<p>Всё остальное заблокировано. Не из осторожности: этого требует раздел 26 того же промпта, и это правильно. Писать коллектор сделок под эндпоинт, которого может не существовать, — надёжный способ выбросить работу.</p>
-              <p>Разведка должна ответить на эти вопросы, в таком порядке:</p>
+          h: "Накапливать, а не усложнять",
+          b: `<p>После двадцати четырёх кругов рабочая система выглядит скромнее, чем в начале, — и это главный результат, а не разочарование.</p>
               <div class="scroll"><table>
-                <thead><tr><th>Вопрос</th><th>Что он решает</th></tr></thead>
+                <thead><tr><th>Что делаем</th><th>Почему именно это</th></tr></thead>
                 <tbody>
-                  <tr><td>По какому каналу идут данные?</td><td>REST, GraphQL, WebSocket или HTML: меняет весь коллектор</td></tr>
-                  <tr><td>Есть ли история отдельных сделок?</td><td>Определяет, уровень A или B</td></tr>
-                  <tr><td>Есть ли временной ряд equity?</td><td>Без него нет ни просадок, ни коэффициентов риска</td></tr>
-                  <tr><td>Открыта ли комиссия трейдера?</td><td>Нужна для чистой доходности копирующего</td></tr>
-                  <tr><td>Различимы ли пополнения и выводы?</td><td>Нужно для time-weighted return</td></tr>
-                  <tr><td>Сколько страниц и трейдеров всего?</td><td>Определяет нагрузку и длительность полного круга</td></tr>
+                  <tr><td>Снимки каждые десять минут</td><td>Доходность живая: 86% счетов движутся в течение суток</td></tr>
+                  <tr><td>Наблюдение за выпавшими</td><td>743 из 743 отвечают после исчезновения. Раньше мы просто не спрашивали</td></tr>
+                  <tr><td>Заморозить простой детектор</td><td>Относительная просадка от пика, скорость, ускорение. Без обучения</td></tr>
+                  <tr><td>Не строить модель</td><td>Пока не будет событий из разных рыночных эпизодов, а не только золотых</td></tr>
                 </tbody>
-              </table></div>`,
-          tags: [{ c: "open", t: "Ожидает команды" }]
+              </table></div>
+              <p>Каждый день без сбора стоит около пятнадцати событий, которые потом не восстановить. Это самая дорогая из всех задержек — дороже любой формулы, которую мы обсуждали двадцать четыре круга.</p>`,
+          tags: [{ c: "ok", t: "Сбор идёт" }]
         }
       ]
     }
@@ -2228,7 +2220,7 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктов   но л
   footer: [
     "<strong>Страница обновляется после каждого шага</strong> — после каждого ответа GPT или DeepSeek и после каждого изменения Claude эта хронология переписывается и перепубликовывается.",
     "На этой странице и в этом репозитории нет никаких данных трейдеров и никаких учётных данных: только рабочий дневник проекта.",
-    "RoboForex CopyFX Analysis · 23 августа 2026"
+    "RoboForex CopyFX Analysis · 29 августа 2026"
   ]
 },
 
@@ -2249,10 +2241,10 @@ it: {
   roundLabel: "Round <span class='slash'>/</span> Iterazione",
   statusTitle: "Stato attuale",
   stats: [
-    { k: "Fase corrente", v: "0A superata, 0B aperta", s: "Canali e dati sì. Semantica di period, completezza, posizioni aperte e condizioni d'uso ancora no." },
-    { k: "Domanda che decide il progetto", v: "Livello A", s: "Lo storico delle singole operazioni c'è. Il «piano B» non servirà." },
-    { k: "Giri di revisione", v: "9 completati", s: "Claude ↔ GPT ↔ DeepSeek. Consenso raggiunto su tutto tranne una decisione." },
-    { k: "Decisione aperta", v: "Dashboard", s: "Locale o remota con autenticazione. Unico punto ancora da decidere." }
+    { k: "Fase corrente", v: "Raccolta ogni minuto", s: "Fase 0B chiusa: le posizioni aperte esistono ma sono vietate. Il modello no, non ancora." },
+    { k: "Limite di cio' che si vede", v: "Rendimento si', posizioni no", s: "Il rendimento si aggiorna in secondi. Direzione e paniere stanno dietro un 403, irraggiungibili per le vie che conosciamo." },
+    { k: "Giri di revisione", v: "24 completati", s: "Claude ↔ GPT ↔ DeepSeek. Quasi tutto quello che abbiamo proposto e' stato scartato dalla verifica sui dati." },
+    { k: "Domanda aperta", v: "Il gruppo avvisa prima?", s: "Se i trader simili si rompono prima del trader stesso. Attende il primo crollo registrato a dieci minuti di risoluzione." }
   ],
   legend: [
     { c: "user",     t: "Hennadiy — committente" },
@@ -3154,15 +3146,13 @@ KalinkaCapital  13.886,0 &rarr; 13.679,8   &minus;206,2 punti   ma solo &minus;1
       title: "Punto ancora aperto",
       entries: [
         {
-          c: "user", a: "Da decidere", w: "",
-          h: "Dashboard: locale o remota?",
-          b: `<p>I due revisori divergono, e hanno ragione entrambi perché rispondono a domande diverse.</p>
-              <ul>
-                <li><strong>DeepSeek</strong> — repository privato o file locale. Ottimizza il rischio.</li>
-                <li><strong>GPT</strong> — GitHub Pages pubblico va bene se i dati stanno dietro Firebase Auth, Security Rules e whitelist UID. Ottimizza l'accesso remoto.</li>
-              </ul>
-              <p><strong>Raccomandazione di Claude:</strong> partire in locale, che funziona oggi senza una riga di infrastruttura, ma isolare la sorgente dati dietro un solo modulo. Così passare più avanti a Firestore con autenticazione sarà la sostituzione di un modulo, non la riscrittura della dashboard. Locale non come scelta definitiva, ma come scelta gratuita e reversibile finché non si conosce il volume reale dei dati.</p>`,
-          tags: [{ c: "open", t: "In attesa di decisione" }]
+          c: "claude", a: "Domanda aperta", w: "",
+          h: "I trader simili si rompono prima del trader stesso?",
+          b: `<p>La domanda a cui siamo arrivati dopo ventiquattro giri, e a cui per ora non c'e' con cosa rispondere.</p>
+              <p>L'idea e' semplice: se i trader le cui curve si sono mosse insieme per tre mesi cominciano a cedere <strong>prima</strong> che scenda il trader stesso, quello e' un avviso che precede la sua caduta.</p>
+              <p>Sui dati giornalieri non si puo' verificare. Su 23 casi misurabili il residuo si e' acceso prima solo in tre, e in quattordici lo stesso giorno. Ma "lo stesso giorno", su una griglia giornaliera, vuol dire qualsiasi cosa fra ventitre' ore prima e cinque minuti dopo.</p>
+              <p><strong>Serve il primo crollo registrato ogni dieci minuti.</strong> La raccolta e' in corso; al ritmo misurato e' questione di giorni.</p>`,
+          tags: [{ c: "open", t: "In attesa di dati" }]
         }
       ]
     },
@@ -3171,21 +3161,19 @@ KalinkaCapital  13.886,0 &rarr; 13.679,8   &minus;206,2 punti   ma solo &minus;1
       entries: [
         {
           c: "claude", a: "Claude", w: "",
-          h: "Eseguire la Fase 0",
-          b: `<p>Tutto il resto è bloccato. Non per prudenza: lo impone la sezione 26 dello stesso prompt, ed è corretto. Scrivere il collector delle operazioni contro un endpoint che potrebbe non esistere è il modo sicuro di buttare via il lavoro.</p>
-              <p>La ricognizione deve rispondere a queste domande, nell'ordine:</p>
+          h: "Accumulare, non complicare",
+          b: `<p>Dopo ventiquattro giri il sistema che funziona e' piu' modesto di quello di partenza — ed e' questo il risultato principale, non una delusione.</p>
               <div class="scroll"><table>
-                <thead><tr><th>Domanda</th><th>Perché decide qualcosa</th></tr></thead>
+                <thead><tr><th>Cosa si fa</th><th>Perche' proprio questo</th></tr></thead>
                 <tbody>
-                  <tr><td>Per quale canale viaggiano i dati?</td><td>REST, GraphQL, WebSocket o HTML: cambia tutto il collector</td></tr>
-                  <tr><td>Esiste lo storico delle singole operazioni?</td><td>Determina se siamo al livello A o B</td></tr>
-                  <tr><td>Esiste la serie temporale dell'equity?</td><td>Senza, niente drawdown né coefficienti di rischio</td></tr>
-                  <tr><td>La commissione del trader è esposta?</td><td>Serve per il rendimento netto di chi copia</td></tr>
-                  <tr><td>Versamenti e prelievi sono distinguibili?</td><td>Serve per il time-weighted return</td></tr>
-                  <tr><td>Quante pagine e quanti trader in totale?</td><td>Dimensiona il carico e la durata di un giro</td></tr>
+                  <tr><td>Fotografie ogni dieci minuti</td><td>Il rendimento e' vivo: l'86% dei conti si muove nell'arco della giornata</td></tr>
+                  <tr><td>Sorveglianza di chi esce</td><td>743 su 743 rispondono dopo la sparizione. Prima semplicemente non chiedevamo</td></tr>
+                  <tr><td>Congelare un rilevatore semplice</td><td>Perdita relativa dal picco, velocita', accelerazione. Senza addestramento</td></tr>
+                  <tr><td>Non costruire il modello</td><td>Finche' non ci saranno eventi da episodi di mercato diversi, non solo sull'oro</td></tr>
                 </tbody>
-              </table></div>`,
-          tags: [{ c: "open", t: "In attesa del via" }]
+              </table></div>
+              <p>Ogni giorno senza raccolta costa circa quindici eventi che poi non si recuperano. E' il piu' caro di tutti i ritardi — piu' caro di qualsiasi formula discussa in ventiquattro giri.</p>`,
+          tags: [{ c: "ok", t: "Raccolta in corso" }]
         }
       ]
     }
@@ -3193,7 +3181,7 @@ KalinkaCapital  13.886,0 &rarr; 13.679,8   &minus;206,2 punti   ma solo &minus;1
   footer: [
     "<strong>Pagina aggiornata a ogni intervento</strong> — a ogni risposta di GPT o DeepSeek, e a ogni modifica di Claude, questa cronologia viene riscritta e ripubblicata.",
     "Nessun dato di trader e nessuna credenziale è contenuta in questa pagina o in questo repository: solo il diario di lavoro del progetto.",
-    "RoboForex CopyFX Analysis · 23 agosto 2026"
+    "RoboForex CopyFX Analysis · 29 agosto 2026"
   ]
 }
 

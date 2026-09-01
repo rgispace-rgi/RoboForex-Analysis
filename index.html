@@ -291,7 +291,7 @@ uk: {
   stats: [
     { k: "Поточна фаза", v: "Збір щохвилини", s: "Фаза 0B закрита: відкриті позиції існують, але заборонені. Модель — ще ні." },
     { k: "Межа спостережуваності", v: "Дохідність — так, позиції — ні", s: "Дохідність оновлюється за секунди. Напрямок і кошик — за 403, назавжди недоступні через відомі нам шляхи." },
-    { k: "Кола рецензування", v: "24 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Майже все запропоноване було відкинуто перевіркою на даних." },
+    { k: "Кола рецензування", v: "26 завершених", s: "Claude ↔ GPT ↔ DeepSeek. Майже все запропоноване було відкинуто перевіркою на даних." },
     { k: "Відкрите питання", v: "Чи попереджає група", s: "Чи ламаються схожі трейдери раніше за самого трейдера. Чекає на перший колапс, знятий із десятихвилинною роздільністю." }
   ],
   legend: [
@@ -1221,6 +1221,91 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктів   але 
       ]
     },
     {
+      n: 25, title: "Та сама «1», три різні значення",
+      entries: [
+        { c: "user", a: "Геннадій", w: "29 серпня 2026",
+          h: "«Проаналізуй ці умови копіювання»",
+          b: `<p>Три знімки вікна підписки: Proportional, Classic, Fixed. У всіх трьох є поле зі значенням 1.</p>` },
+        { c: "claude", a: "Claude", w: "29 серпня 2026",
+          h: "Це той самий символ, але три різні величини",
+          b: `<p>Саме тут помиляються, бо вікно виглядає однаково і змінюється лише назва поля.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>режим</th><th>поле зветься</th><th>«1» означає</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Proportional</strong></td><td>Coefficient</td><td class="yes">та сама <em>частка</em> ризику, що й у трейдера</td></tr>
+                  <tr><td><strong>Classic</strong></td><td>Volume multiplier</td><td class="no">ті самі <em>лоти</em>, в абсолютному вимірі</td></tr>
+                  <tr><td><strong>Fixed</strong></td><td>Volume</td><td class="no"><em>повний лот</em> на кожній операції</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Лише перший режим дивиться, скільки в тебе є</h4>
+              <p>У Proportional обсяг — це <code>(твій equity / equity трейдера) &times; Coefficient</code>, і він перераховується <strong>на момент кожної операції</strong>. Якщо твій капітал падає, наступні позиції зменшуються самі: це єдиний режим із гальмом.</p>
+              <p>У Classic текст сайту каже прямо: <strong>«account equities are disregarded»</strong>. Якщо в трейдера 128 000 $, а в тебе 1 000 €, з множником 1 ти відкриваєш позиції, розраховані на рахунок у сто двадцять вісім разів більший.</p>
+              <div class="box danger">
+                <div class="box-title">Fixed найнебезпечніший саме з найпоширенішими стратегіями</div>
+                <p>Багато з цих трейдерів використовують грід або мартингал: відкривають мало і збільшують, щоб закрити кошик у нуль. За фіксованого обсягу ти отримуєш маленькі відкриття <strong>того самого розміру</strong>, що й великі закриття. Ти зазнаєш накопичення збитків, не отримавши операції, яка їх відбиває.</p>
+              </div>
+              <h4>Галочка «Round down», що здається дрібницею</h4>
+              <p>Обчислений обсяг майже ніколи не лягає точно на дозволений крок. З галочкою він обрізається вниз. Але важлива інша наслідок:</p>
+              <p><strong>якщо обчислений обсяг менший за мінімальний лот, обрізання вниз дає нуль — і операція не приходить взагалі.</strong></p>
+              <p>На малому рахунку це створює систематичну асиметрію: маленькі операції не доходять, великі доходять. А в грідових стратегіях великі операції — це ті, що відкриваються, коли позиція <em>вже</em> в біді.</p>`,
+          tags: [{ c: "ok", t: "Proportional має гальмо" }, { c: "bad", t: "Fixed ламає грід" }, { c: "bad", t: "Асиметричне обрізання" }] }
+      ]
+    },
+    {
+      n: 26, title: "Хто кому платить",
+      entries: [
+        { c: "claude", a: "Claude", w: "29 серпня 2026",
+          h: "Комісія і число поруч, яке ніхто не читає",
+          b: `<p>Виміряно на 1 871 пропозиції в архіві:</p>
+              <div class="scroll"><table>
+                <tbody>
+                  <tr><td>медіанна комісія</td><td><strong>25% прибутку</strong></td></tr>
+                  <tr><td>середня</td><td>23,8%</td></tr>
+                  <tr><td class="no">максимальна</td><td class="no"><strong>50% — і 104 трейдери її беруть</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Але поруч із комісією є друге число, і воно важить більше, ніж здається: <strong>як часто її стягують</strong>.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>періодичність</th><th>пропозицій</th></tr></thead>
+                <tbody>
+                  <tr><td class="no"><strong>7 днів</strong></td><td class="no"><strong>1 684 (85%)</strong></td></tr>
+                  <tr><td>28 днів</td><td>156</td></tr>
+                  <tr><td>14 днів</td><td>129</td></tr>
+                </tbody>
+              </table></div>
+              <div class="box danger">
+                <div class="box-title">За тижневої виплати комісія кристалізується</div>
+                <pre>тиждень 1:  +100 $  &rarr;  платиш 25 $
+тиждень 2:  &minus;100 $  &rarr;  ти повернувся в нуль, але 25 вже пішли</pre>
+                <p>Два тижні, чистий заробіток нуль, двадцять пʼять доларів сплачено.</p>
+              </div>
+              <h4>Чи це справді так — залежить від одного, і ми цього не перевірили</h4>
+              <p>Усе залежить від наявності <strong>лінії високої води</strong>, що повертає рахунок до історичного максимуму перед перерахунком. У четвертому колі ми записали її як вимогу до власного аналізу, але <strong>цього слова немає у 22 сторінках Client Agreement</strong>, які ми витягли.</p>
+              <p>На семиденному періоді різниця між «є» і «немає» величезна. Це перше питання до підтримки, перед усіма іншими.</p>`,
+          tags: [{ c: "bad", t: "50% у 104 трейдерів" }, { c: "bad", t: "Щотижня у 85%" }, { c: "open", t: "Лінію води не перевірено" }] },
+        { c: "claude", a: "Claude", w: "29 серпня 2026",
+          h: "Партнерська програма: платить саме там, де найбільше падають",
+          b: `<p>Є другий механізм, і його треба тримати окремо: капіталу не вкладаєш, просуваєш трейдера посиланням і береш частку комісії, яку той трейдер стягує з тих, хто прийшов через тебе.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>комісія трейдера</th><th>частка партнера</th><th>твоя частка прибутку інвестора</th></tr></thead>
+                <tbody>
+                  <tr><td>25%</td><td>15%</td><td><strong>3,75%</strong></td></tr>
+                  <tr><td>35%</td><td>10%</td><td><strong>3,50%</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Коли комісія трейдера зростає, частка партнера падає: ефективна частка лишається близько 3,5%. Навпаки: щоб отримати 150 $, інвестори, яких ти привів, мають заробити <strong>4 000 $</strong>.</p>
+              <div class="box danger">
+                <div class="box-title">Проблема, якої не каже жоден із двох екранів</div>
+                <p>Партнер отримує, коли інвестори <strong>платять</strong> комісію, тобто в прибуткові тижні. А ми виміряли, що <strong>59 із 80 трейдерів на вершині рейтингу обвалилися за три дні</strong>, пʼятеро з місць 1, 5, 10 і 12.</p>
+                <p>Трейдер може генерувати тижні комісії — і заробітку для партнера — <strong>до самого дня перед колапсом</strong>. Програма платить найбільше саме там, де частота обвалів найвища.</p>
+              </div>
+              <p>І ми не знаємо, чи повертається заробіток партнера, коли приведені інвестори втрачають усе. Ще одне питання до підтримки.</p>
+              <h4>Чесна позиція</h4>
+              <p>З тим, що ми знаємо сьогодні — покриття 15,8%, жодного сигналу попередження, що витримав перевірку, 59 обвалів із 80 — <strong>ми не в змозі рекомендувати трейдера нікому</strong>. Просувати когось партнерським посиланням було б саме цим, ще й із заохоченням не придивлятися занадто уважно.</p>`,
+          tags: [{ c: "bad", t: "3,5% чужого прибутку" }, { c: "bad", t: "Платить до самого краху" }, { c: "open", t: "Повернення невідоме" }] }
+      ]
+    },
+    {
       title: "Що лишається відкритим",
       entries: [
         {
@@ -1282,7 +1367,7 @@ ru: {
   stats: [
     { k: "Текущая фаза", v: "Сбор ежеминутно", s: "Фаза 0B закрыта: открытые позиции существуют, но запрещены. Модель — ещё нет." },
     { k: "Граница наблюдаемости", v: "Доходность — да, позиции — нет", s: "Доходность обновляется за секунды. Направление и корзина — за 403, недоступны через известные нам пути." },
-    { k: "Круги рецензирования", v: "24 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Почти всё предложенное было отброшено проверкой на данных." },
+    { k: "Круги рецензирования", v: "26 завершено", s: "Claude ↔ GPT ↔ DeepSeek. Почти всё предложенное было отброшено проверкой на данных." },
     { k: "Открытый вопрос", v: "Предупреждает ли группа", s: "Ломаются ли похожие трейдеры раньше самого трейдера. Ждёт первого обвала, снятого с десятиминутным разрешением." }
   ],
   legend: [
@@ -2182,6 +2267,91 @@ KalinkaCapital  13 886,0 &rarr; 13 679,8   &minus;206,2 пунктов   но л
       ]
     },
     {
+      n: 25, title: "Та же «1», три разных смысла",
+      entries: [
+        { c: "user", a: "Геннадий", w: "29 августа 2026",
+          h: "«Проанализируй эти условия копирования»",
+          b: `<p>Три снимка окна подписки: Proportional, Classic, Fixed. Во всех трёх есть поле со значением 1.</p>` },
+        { c: "claude", a: "Claude", w: "29 августа 2026",
+          h: "Это тот же символ, но три разные величины",
+          b: `<p>Именно здесь ошибаются, потому что окно выглядит одинаково и меняется лишь название поля.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>режим</th><th>поле называется</th><th>«1» означает</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Proportional</strong></td><td>Coefficient</td><td class="yes">та же <em>доля</em> риска, что у трейдера</td></tr>
+                  <tr><td><strong>Classic</strong></td><td>Volume multiplier</td><td class="no">те же <em>лоты</em>, в абсолютном выражении</td></tr>
+                  <tr><td><strong>Fixed</strong></td><td>Volume</td><td class="no"><em>полный лот</em> на каждой операции</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Только первый режим смотрит, сколько у тебя есть</h4>
+              <p>В Proportional объём — это <code>(твой equity / equity трейдера) &times; Coefficient</code>, и он пересчитывается <strong>в момент каждой операции</strong>. Если твой капитал падает, следующие позиции уменьшаются сами: это единственный режим с тормозом.</p>
+              <p>В Classic текст сайта говорит прямо: <strong>«account equities are disregarded»</strong>. Если у трейдера 128 000 $, а у тебя 1 000 €, с множителем 1 ты открываешь позиции, рассчитанные на счёт в сто двадцать восемь раз больший.</p>
+              <div class="box danger">
+                <div class="box-title">Fixed опаснее всего именно с самыми распространёнными стратегиями</div>
+                <p>Многие из этих трейдеров используют грид или мартингейл: открывают мало и наращивают, чтобы закрыть корзину в ноль. При фиксированном объёме ты получаешь маленькие открытия <strong>того же размера</strong>, что и крупные закрытия. Ты несёшь накопление убытков, не получая операции, которая их отбивает.</p>
+              </div>
+              <h4>Галочка «Round down», кажущаяся мелочью</h4>
+              <p>Вычисленный объём почти никогда не ложится точно на разрешённый шаг. С галочкой он обрезается вниз. Но важно другое следствие:</p>
+              <p><strong>если вычисленный объём меньше минимального лота, обрезание вниз даёт ноль — и операция не приходит вовсе.</strong></p>
+              <p>На маленьком счёте это создаёт систематическую асимметрию: мелкие операции не доходят, крупные доходят. А в грид-стратегиях крупные операции — те, что открываются, когда позиция <em>уже</em> в беде.</p>`,
+          tags: [{ c: "ok", t: "У Proportional есть тормоз" }, { c: "bad", t: "Fixed ломает грид" }, { c: "bad", t: "Асимметричное обрезание" }] }
+      ]
+    },
+    {
+      n: 26, title: "Кто кому платит",
+      entries: [
+        { c: "claude", a: "Claude", w: "29 августа 2026",
+          h: "Комиссия и число рядом, которое никто не читает",
+          b: `<p>Измерено на 1 871 предложении в архиве:</p>
+              <div class="scroll"><table>
+                <tbody>
+                  <tr><td>медианная комиссия</td><td><strong>25% прибыли</strong></td></tr>
+                  <tr><td>средняя</td><td>23,8%</td></tr>
+                  <tr><td class="no">максимальная</td><td class="no"><strong>50% — и 104 трейдера её берут</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Но рядом с комиссией есть второе число, и оно весит больше, чем кажется: <strong>как часто её взимают</strong>.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>периодичность</th><th>предложений</th></tr></thead>
+                <tbody>
+                  <tr><td class="no"><strong>7 дней</strong></td><td class="no"><strong>1 684 (85%)</strong></td></tr>
+                  <tr><td>28 дней</td><td>156</td></tr>
+                  <tr><td>14 дней</td><td>129</td></tr>
+                </tbody>
+              </table></div>
+              <div class="box danger">
+                <div class="box-title">При еженедельной выплате комиссия кристаллизуется</div>
+                <pre>неделя 1:  +100 $  &rarr;  платишь 25 $
+неделя 2:  &minus;100 $  &rarr;  ты вернулся в ноль, но 25 уже ушли</pre>
+                <p>Две недели, чистый заработок ноль, двадцать пять долларов уплачено.</p>
+              </div>
+              <h4>Так ли это на самом деле — зависит от одного, и мы этого не проверили</h4>
+              <p>Всё зависит от наличия <strong>линии высокой воды</strong>, возвращающей счёт к историческому максимуму перед пересчётом. В четвёртом круге мы записали её как требование к собственному анализу, но <strong>этого слова нет в 22 страницах Client Agreement</strong>, которые мы извлекли.</p>
+              <p>На семидневном периоде разница между «есть» и «нет» огромна. Это первый вопрос к поддержке, прежде всех остальных.</p>`,
+          tags: [{ c: "bad", t: "50% у 104 трейдеров" }, { c: "bad", t: "Еженедельно в 85%" }, { c: "open", t: "Линия воды не проверена" }] },
+        { c: "claude", a: "Claude", w: "29 августа 2026",
+          h: "Партнёрская программа: платит там, где чаще всего рушатся",
+          b: `<p>Есть второй механизм, и его надо держать отдельно: капитала не вкладываешь, продвигаешь трейдера ссылкой и берёшь долю комиссии, которую тот трейдер собирает с пришедших через тебя.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>комиссия трейдера</th><th>доля партнёра</th><th>твоя доля прибыли инвестора</th></tr></thead>
+                <tbody>
+                  <tr><td>25%</td><td>15%</td><td><strong>3,75%</strong></td></tr>
+                  <tr><td>35%</td><td>10%</td><td><strong>3,50%</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Когда комиссия трейдера растёт, доля партнёра падает: эффективная доля остаётся около 3,5%. Наоборот: чтобы получить 150 $, приведённые тобой инвесторы должны заработать <strong>4 000 $</strong>.</p>
+              <div class="box danger">
+                <div class="box-title">Проблема, о которой не говорит ни один из двух экранов</div>
+                <p>Партнёр получает, когда инвесторы <strong>платят</strong> комиссию, то есть в прибыльные недели. А мы измерили, что <strong>59 из 80 трейдеров на вершине рейтинга рухнули за три дня</strong>, пятеро с мест 1, 5, 10 и 12.</p>
+                <p>Трейдер может генерировать недели комиссии — и заработка для партнёра — <strong>вплоть до дня перед обвалом</strong>. Программа платит больше всего именно там, где частота обвалов самая высокая.</p>
+              </div>
+              <p>И мы не знаем, возвращается ли заработок партнёра, когда приведённые инвесторы теряют всё. Ещё один вопрос к поддержке.</p>
+              <h4>Честная позиция</h4>
+              <p>С тем, что мы знаем сегодня — покрытие 15,8%, ни одного сигнала предупреждения, выдержавшего проверку, 59 обвалов из 80 — <strong>мы не в состоянии рекомендовать трейдера никому</strong>. Продвигать кого-то партнёрской ссылкой было бы именно этим, да ещё со стимулом не приглядываться слишком внимательно.</p>`,
+          tags: [{ c: "bad", t: "3,5% чужой прибыли" }, { c: "bad", t: "Платит до самого краха" }, { c: "open", t: "Возврат неизвестен" }] }
+      ]
+    },
+    {
       title: "Что остаётся открытым",
       entries: [
         {
@@ -2243,7 +2413,7 @@ it: {
   stats: [
     { k: "Fase corrente", v: "Raccolta ogni minuto", s: "Fase 0B chiusa: le posizioni aperte esistono ma sono vietate. Il modello no, non ancora." },
     { k: "Limite di cio' che si vede", v: "Rendimento si', posizioni no", s: "Il rendimento si aggiorna in secondi. Direzione e paniere stanno dietro un 403, irraggiungibili per le vie che conosciamo." },
-    { k: "Giri di revisione", v: "24 completati", s: "Claude ↔ GPT ↔ DeepSeek. Quasi tutto quello che abbiamo proposto e' stato scartato dalla verifica sui dati." },
+    { k: "Giri di revisione", v: "26 completati", s: "Claude ↔ GPT ↔ DeepSeek. Quasi tutto quello che abbiamo proposto e' stato scartato dalla verifica sui dati." },
     { k: "Domanda aperta", v: "Il gruppo avvisa prima?", s: "Se i trader simili si rompono prima del trader stesso. Attende il primo crollo registrato a dieci minuti di risoluzione." }
   ],
   legend: [
@@ -3140,6 +3310,91 @@ KalinkaCapital  13.886,0 &rarr; 13.679,8   &minus;206,2 punti   ma solo &minus;1
               <p>Il nuovo programma dava priorita' ai conti «gia' analizzati a fondo». Ma i crollati hanno la curva e <strong>non</strong> l'analisi a fondo, perche' non abbiamo fatto in tempo.</p>
               <p><strong>Avevo costruito il salvataggio e ne avevo escluso proprio i naufraghi.</strong> Me ne sono accorto perche' il test rifatto dava un risultato identico al precedente: troppo pulito per essere vero. Criterio corretto, sorvegliati da 743 a <strong>1.486</strong>.</p>`,
           tags: [{ c: "ok", t: "743 su 743" }, { c: "ok", t: "6.900 punti" }, { c: "bad", t: "Filtro sbagliato" }] }
+      ]
+    },
+    {
+      n: 25, title: "Lo stesso «1», tre significati diversi",
+      entries: [
+        { c: "user", a: "Hennadiy", w: "29 agosto 2026",
+          h: "«Analizza queste condizioni di copy trading»",
+          b: `<p>Tre schermate della finestra di sottoscrizione: Proportional, Classic, Fixed. In tutte e tre c'e' un campo che vale 1.</p>` },
+        { c: "claude", a: "Claude", w: "29 agosto 2026",
+          h: "E' lo stesso carattere, ma sono tre grandezze diverse",
+          b: `<p>E' qui che si sbaglia, perche' la finestra sembra la stessa e cambia solo il nome del campo.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>modalita'</th><th>il campo si chiama</th><th>«1» significa</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Proportional</strong></td><td>Coefficient</td><td class="yes">stessa <em>frazione</em> di rischio del trader</td></tr>
+                  <tr><td><strong>Classic</strong></td><td>Volume multiplier</td><td class="no">stessi <em>lotti</em> del trader, in valore assoluto</td></tr>
+                  <tr><td><strong>Fixed</strong></td><td>Volume</td><td class="no">un <em>lotto pieno</em> a ogni operazione</td></tr>
+                </tbody>
+              </table></div>
+              <h4>Solo la prima guarda quanto hai</h4>
+              <p>In Proportional il volume e' <code>(tuo equity / equity del trader) &times; Coefficient</code>, ricalcolato <strong>al momento di ogni operazione</strong>. Se il tuo capitale scende, le posizioni successive rimpiccioliscono da sole: e' l'unica modalita' con un freno.</p>
+              <p>In Classic il testo del sito lo dice esplicitamente: <strong>«account equities are disregarded»</strong>. Se il trader ha 128.000 $ e tu 1.000 €, con multiplier 1 apri posizioni dimensionate per un conto centoventotto volte piu' grande del tuo.</p>
+              <div class="box danger">
+                <div class="box-title">Fixed e' la piu' pericolosa proprio con le strategie piu' diffuse</div>
+                <p>Molti di questi trader usano griglia o martingala: aprono piccolo e ingrandiscono per chiudere il paniere in pari. A volume fisso ricevi le aperture piccole <strong>alla stessa dimensione</strong> delle chiusure grandi. Subisci l'accumulo delle perdite senza ricevere l'operazione che le recupera.</p>
+              </div>
+              <h4>La casella «Round down», che sembra un dettaglio</h4>
+              <p>Il volume calcolato quasi mai cade esatto su uno step ammesso. Spuntando, si tronca verso il basso. Ma la conseguenza che conta e' un'altra:</p>
+              <p><strong>se il volume calcolato e' sotto il lotto minimo, arrotondando in giu' diventa zero — e l'operazione non arriva affatto.</strong></p>
+              <p>Su un conto piccolo questo crea un'asimmetria sistematica: le operazioni piccole non arrivano, quelle grandi si'. E nelle strategie a griglia le operazioni grandi sono quelle aperte quando la posizione e' <em>gia'</em> in difficolta'.</p>`,
+          tags: [{ c: "ok", t: "Proportional: unica con freno" }, { c: "bad", t: "Fixed rompe la griglia" }, { c: "bad", t: "Arrotondamento asimmetrico" }] }
+      ]
+    },
+    {
+      n: 26, title: "Chi paga chi",
+      entries: [
+        { c: "claude", a: "Claude", w: "29 agosto 2026",
+          h: "La commissione, e il numero che nessuno legge accanto",
+          b: `<p>Misurato su 1.871 offerte in archivio:</p>
+              <div class="scroll"><table>
+                <tbody>
+                  <tr><td>commissione mediana</td><td><strong>25% del profitto</strong></td></tr>
+                  <tr><td>media</td><td>23,8%</td></tr>
+                  <tr><td class="no">massima</td><td class="no"><strong>50% — e 104 trader la applicano</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Ma accanto alla commissione c'e' un secondo numero, e conta di piu' di quanto sembri: <strong>ogni quanto viene pagata</strong>.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>frequenza</th><th>offerte</th></tr></thead>
+                <tbody>
+                  <tr><td class="no"><strong>7 giorni</strong></td><td class="no"><strong>1.684 (85%)</strong></td></tr>
+                  <tr><td>28 giorni</td><td>156</td></tr>
+                  <tr><td>14 giorni</td><td>129</td></tr>
+                </tbody>
+              </table></div>
+              <div class="box danger">
+                <div class="box-title">Con pagamento settimanale la commissione si cristallizza</div>
+                <pre>settimana 1:  +100 $  &rarr;  paghi 25 $
+settimana 2:  &minus;100 $  &rarr;  sei tornato a zero, ma i 25 sono usciti</pre>
+                <p>Due settimane, guadagno netto zero, venticinque dollari pagati.</p>
+              </div>
+              <h4>Se succeda davvero dipende da una cosa sola, e non l'abbiamo verificata</h4>
+              <p>Tutto dipende dall'esistenza di una <strong>linea d'acqua alta</strong> che riporti il conto al massimo storico prima di ricalcolare. Nel quarto giro l'avevamo annotata come requisito per la nostra analisi, ma <strong>la parola non compare nelle 22 pagine del Client Agreement</strong> che abbiamo estratto.</p>
+              <p>Su un periodo di sette giorni la differenza fra «c'e'» e «non c'e'» e' enorme. E' la prima domanda da fare all'assistenza, prima di qualsiasi altra.</p>`,
+          tags: [{ c: "bad", t: "50% per 104 trader" }, { c: "bad", t: "Settimanale nell'85%" }, { c: "open", t: "Linea d'acqua non verificata" }] },
+        { c: "claude", a: "Claude", w: "29 agosto 2026",
+          h: "Il programma partner: si incassa esattamente dove crolla di piu'",
+          b: `<p>C'e' un secondo meccanismo, e va tenuto separato: non ci metti capitale, promuovi un trader con un link e prendi una fetta della commissione che quel trader incassa da chi arriva tramite te.</p>
+              <div class="scroll"><table>
+                <thead><tr><th>commissione trader</th><th>quota partner</th><th>la tua fetta del profitto dell'investitore</th></tr></thead>
+                <tbody>
+                  <tr><td>25%</td><td>15%</td><td><strong>3,75%</strong></td></tr>
+                  <tr><td>35%</td><td>10%</td><td><strong>3,50%</strong></td></tr>
+                </tbody>
+              </table></div>
+              <p>Quando la commissione del trader sale, la quota partner scende: la fetta effettiva resta intorno al 3,5%. Girata al contrario, per incassare 150 $ gli investitori che hai portato devono aver guadagnato <strong>4.000 $</strong>.</p>
+              <div class="box danger">
+                <div class="box-title">Il problema che nessuna delle due schermate dice</div>
+                <p>Il partner incassa quando gli investitori <strong>pagano</strong> commissione, cioe' nelle settimane in profitto. E noi abbiamo misurato che <strong>59 degli 80 trader in cima alla classifica sono crollati in tre giorni</strong>, cinque dai posti 1, 5, 10 e 12.</p>
+                <p>Un trader puo' generare settimane di commissione — e di guadagno per il partner — <strong>fino al giorno prima del crollo</strong>. Il programma rende di piu' proprio sulla popolazione dove il tasso di collasso e' il piu' alto.</p>
+              </div>
+              <p>E non sappiamo se il guadagno del partner venga restituito quando gli investitori portati perdono tutto. Un'altra domanda per l'assistenza.</p>
+              <h4>La posizione onesta</h4>
+              <p>Con quello che sappiamo oggi — copertura al 15,8%, nessun segnale di preavviso che abbia superato la verifica, 59 crolli su 80 — <strong>non siamo in condizione di raccomandare un trader a nessuno</strong>. Promuoverne uno con un link partner sarebbe esattamente quello, con in piu' un incentivo a non guardare troppo da vicino.</p>`,
+          tags: [{ c: "bad", t: "3,5% del profitto altrui" }, { c: "bad", t: "Paga fino al crollo" }, { c: "open", t: "Restituzione ignota" }] }
       ]
     },
     {
